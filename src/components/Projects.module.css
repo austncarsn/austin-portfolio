@@ -11,7 +11,7 @@
 /* ── Blue atmosphere behind the grid ─────────────── */
 
 .section::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -10%;
   right: -5%;
@@ -31,7 +31,7 @@
 }
 
 .section::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 5%;
   left: -8%;
@@ -51,10 +51,18 @@
 }
 
 @keyframes sectionOrb {
-  0%   { transform: translate(0, 0) scale(1); }
-  33%  { transform: translate(-3%, 4%) scale(1.06); }
-  66%  { transform: translate(4%, -2%) scale(0.96); }
-  100% { transform: translate(0, 0) scale(1); }
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-3%, 4%) scale(1.06);
+  }
+  66% {
+    transform: translate(4%, -2%) scale(0.96);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
 }
 
 .container {
@@ -191,12 +199,12 @@
 /* Blue sheen layer — fades in on hover */
 .featuredCard::before,
 .card::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: radial-gradient(
     ellipse at 30% 40%,
-    rgba(91, 155, 213, 0.10) 0%,
+    rgba(91, 155, 213, 0.1) 0%,
     rgba(91, 155, 213, 0.04) 50%,
     transparent 75%
   );
@@ -317,6 +325,11 @@
   min-height: 240px;
 }
 
+.screenshotInteractive {
+  cursor: ew-resize;
+  user-select: none;
+}
+
 .screenshot {
   width: 100%;
   height: 100%;
@@ -346,6 +359,27 @@
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(18, 15, 10, 0.68);
   backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: translateY(0.25rem);
+  transition:
+    opacity 180ms var(--ease),
+    transform 180ms var(--ease);
+}
+
+.featuredCard:hover .screenshotStatus,
+.card:hover .screenshotStatus,
+.screenshotWrap:focus-within .screenshotStatus {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.screenshotHint {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  line-height: 1;
+  letter-spacing: var(--track-mono-tight);
+  color: rgba(255, 248, 240, 0.78);
+  text-transform: uppercase;
 }
 
 .screenshotCount {
@@ -371,6 +405,44 @@
 
 .screenshotDotActive {
   background: var(--ac-blue);
+}
+
+.screenshotNav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(18, 15, 10, 0.68);
+  color: rgba(255, 248, 240, 0.9);
+  transform: translateY(-50%);
+  opacity: 0;
+  transition:
+    opacity 180ms var(--ease),
+    background-color 180ms var(--ease),
+    border-color 180ms var(--ease);
+}
+
+.featuredCard:hover .screenshotNav,
+.card:hover .screenshotNav,
+.screenshotWrap:focus-within .screenshotNav {
+  opacity: 1;
+}
+
+.screenshotNav:hover {
+  background: rgba(18, 15, 10, 0.82);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.screenshotNavPrev {
+  left: 0.75rem;
+}
+
+.screenshotNavNext {
+  right: 0.75rem;
 }
 
 .isMissing {
@@ -430,7 +502,7 @@
   font-family: var(--font-display);
   font-size: clamp(1.4rem, 2.2vw, 1.85rem);
   font-weight: 300;
-  line-height: 1.0;
+  line-height: 1;
   letter-spacing: -0.02em;
   color: var(--color-text-primary);
 }

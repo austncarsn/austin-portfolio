@@ -68,8 +68,7 @@ export const CaseStudy = ({ project }: { project: Project }) => {
     : project.screenshot
       ? [project.screenshot]
       : [];
-  const primaryCaseStudyImage = caseStudyImages[0];
-  const secondaryCaseStudyImages = caseStudyImages.slice(1);
+  const hasCaseStudyGallery = caseStudyImages.length > 1;
 
   return (
     <div
@@ -173,7 +172,7 @@ export const CaseStudy = ({ project }: { project: Project }) => {
       </header>
 
       {/* ── Screenshot / preview ── */}
-      {primaryCaseStudyImage && (
+      {caseStudyImages.length > 0 && (
         <div
           style={{
             background: "var(--paper-3)",
@@ -182,49 +181,37 @@ export const CaseStudy = ({ project }: { project: Project }) => {
           className="px-6 md:px-12 py-16"
         >
           <div className="max-w-4xl mx-auto">
-            <div style={{ display: "grid", gap: "1rem" }}>
-              <img
-                src={primaryCaseStudyImage}
-                alt={`${project.title} screenshot`}
-                style={{
-                  width: "100%",
-                  borderRadius: "var(--r-2)",
-                  border: "1px solid var(--rule)",
-                  display: "block",
-                }}
-              />
-
-              {secondaryCaseStudyImages.length > 0 && (
-                <>
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns:
-                        "repeat(auto-fit, minmax(220px, 1fr))",
-                      gap: "1rem",
-                    }}
-                  >
-                    {secondaryCaseStudyImages.map((image, index) => (
-                      <img
-                        key={image}
-                        src={image}
-                        alt={`${project.title} reference ${index + 2}`}
-                        style={{
-                          width: "100%",
-                          aspectRatio: "16 / 10",
-                          objectFit: "cover",
-                          borderRadius: "var(--r-2)",
-                          border: "1px solid var(--rule)",
-                          display: "block",
-                        }}
-                      />
-                    ))}
-                  </div>
-
-                  <p className="ac-meta">Desktop reference frames from the live deploy.</p>
-                </>
-              )}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: hasCaseStudyGallery
+                  ? "repeat(auto-fit, minmax(260px, 1fr))"
+                  : "1fr",
+                gap: "1rem",
+              }}
+            >
+              {caseStudyImages.map((image, index) => (
+                <img
+                  key={image}
+                  src={image}
+                  alt={`${project.title} reference ${index + 1}`}
+                  style={{
+                    width: "100%",
+                    aspectRatio: "16 / 10",
+                    objectFit: "cover",
+                    borderRadius: "var(--r-2)",
+                    border: "1px solid var(--rule)",
+                    display: "block",
+                  }}
+                />
+              ))}
             </div>
+
+            {hasCaseStudyGallery && (
+              <p className="ac-meta" style={{ marginTop: "1rem" }}>
+                Desktop reference frames from the live deploy.
+              </p>
+            )}
           </div>
         </div>
       )}

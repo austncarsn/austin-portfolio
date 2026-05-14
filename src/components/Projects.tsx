@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import type { Project } from "../data/projects";
 import { projects } from "../data/projects";
 import styles from "./Projects.module.css";
@@ -13,27 +13,77 @@ function ScreenshotPreview({
   title: string;
 }) {
   const images = screenshots?.length ? screenshots : src ? [src] : [];
-  const rotationKey = images.join("|");
   const [activeIndex, setActiveIndex] = useState(0);
-
-  useEffect(() => {
-    setActiveIndex(0);
-
-    if (images.length <= 1) return;
-
-    const intervalId = window.setInterval(() => {
-      setActiveIndex((currentIndex) => (currentIndex + 1) % images.length);
-    }, 2800);
-
-    return () => window.clearInterval(intervalId);
-  }, [images.length, rotationKey]);
+  const pointerStartX = useRef<number | null>(null);
 
   if (!images.length) return null;
 
   const activeImage = images[activeIndex];
 
+  const showPrevious = () => {
+    setActiveIndex((currentIndex) =>
+      currentIndex === 0 ? images.length - 1 : currentIndex - 1,
+    );
+  };
+
+  const showNext = () => {
+    setActiveIndex((currentIndex) => (currentIndex + 1) % images.length);
+  };
+
+  const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    if (images.length <= 1) return;
+
+    const movement =
+      Math.abs(event.deltaX) > Math.abs(event.deltaY)
+        ? event.deltaX
+        : event.deltaY;
+
+    if (Math.abs(movement) < 12) return;
+
+    event.preventDefault();
+
+    if (movement > 0) {
+      showNext();
+      return;
+    }
+
+    showPrevious();
+  };
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (images.length <= 1) return;
+
+    pointerStartX.current = event.clientX;
+  };
+
+  const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (images.length <= 1 || pointerStartX.current === null) return;
+
+    const deltaX = event.clientX - pointerStartX.current;
+    pointerStartX.current = null;
+
+    if (Math.abs(deltaX) < 36) return;
+
+    if (deltaX < 0) {
+      showNext();
+      return;
+    }
+
+    showPrevious();
+  };
+
   return (
-    <div className={styles.screenshotWrap}>
+    <div
+      className={`${styles.screenshotWrap} ${
+        images.length > 1 ? styles.screenshotInteractive : ""
+      }`}
+      onWheel={handleWheel}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={() => {
+        pointerStartX.current = null;
+      }}
+    >
       <img
         key={activeImage}
         className={styles.screenshot}
@@ -50,6 +100,8 @@ function ScreenshotPreview({
 
       {images.length > 1 && (
         <div className={styles.screenshotStatus} aria-hidden="true">
+          <span className={styles.screenshotHint}>Hover and swipe</span>
+
           <span className={styles.screenshotCount}>
             {String(activeIndex + 1).padStart(2, "0")} /
             {String(images.length).padStart(2, "0")}
@@ -66,6 +118,36 @@ function ScreenshotPreview({
             ))}
           </div>
         </div>
+      )}
+
+      {images.length > 1 && (
+        <>
+          <button
+            type="button"
+            className={`${styles.screenshotNav} ${styles.screenshotNavPrev}`}
+            aria-label={`Previous ${title} screenshot`}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              showPrevious();
+            }}
+          >
+            ←
+          </button>
+
+          <button
+            type="button"
+            className={`${styles.screenshotNav} ${styles.screenshotNavNext}`}
+            aria-label={`Next ${title} screenshot`}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              showNext();
+            }}
+          >
+            →
+          </button>
+        </>
       )}
     </div>
   );
