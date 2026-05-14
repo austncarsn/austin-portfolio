@@ -1,0 +1,22 @@
+{
+  "brand": "austincarson.dev",
+  "palette": {
+    "ink": "#111B22",
+    "cyan": "#00BBD4",
+    "orange": "#FF4A12"
+  },
+  "background": "transparent",
+  "format": "SVG source files",
+  "files": [
+    "ac-icon-color.svg",
+    "ac-icon-dev-lockup-color.svg",
+    "ac-icon-dev-lockup-mono-dark.svg",
+    "ac-icon-mono-dark.svg",
+    "ac-icon-mono-white.svg",
+    "austincarson-dev-horizontal-color.svg",
+    "austincarson-dev-horizontal-mono-dark.svg",
+    "austincarson-dev-horizontal-mono-white.svg",
+    "favicon.svg",
+    "README.md"
+  ]
+}

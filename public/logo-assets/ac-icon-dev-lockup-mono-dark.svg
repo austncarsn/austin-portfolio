@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 1024" width="1180" height="1024" fill="none" role="img" aria-label="Austin Carson AC monogram">
+  <title>Austin Carson AC Monogram</title>
+  <desc>Transparent vector logo asset for austincarson.dev.</desc>
+  <defs>
+    <linearGradient id="inkGrad" x1="262" y1="760" x2="575" y2="192" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111B22"/>
+      <stop offset="1" stop-color="#111B22" stop-opacity="0.96"/>
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="430" y1="742" x2="826" y2="334" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111B22"/>
+      <stop offset="1" stop-color="#111B22" stop-opacity="0.94"/>
+    </linearGradient>
+    <linearGradient id="orangeGrad" x1="245" y1="816" x2="407" y2="357" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111B22"/>
+      <stop offset="1" stop-color="#111B22" stop-opacity="0.94"/>
+    </linearGradient>
+  </defs>
+  <g id="ac-mark" transform="translate(17 9)">
+    <path id="a-left-stem" d="M96 836 L477 116 L570 300 L514 316 L474 242 L196 836 Z" fill="url(#inkGrad)"/>
+    <path id="a-inner-stroke" d="M257 836 L385 357 C390 340 402 330 419 332 L438 334 C448 335 452 344 447 354 L304 835 C301 845 293 850 282 850 L267 850 C259 850 254 845 257 836 Z" fill="url(#orangeGrad)"/>
+    <path id="c-ring-top" d="M452 451 C510 348 618 305 724 331 C794 348 855 392 890 462 L806 462 C780 426 742 402 699 393 C630 379 560 401 516 458 C500 477 480 482 452 451 Z" fill="url(#cyanGrad)"/>
+    <path id="c-ring-bottom" d="M405 646 C445 762 560 828 682 808 C733 799 779 775 812 738 L895 738 C848 825 762 879 662 884 C536 891 426 828 374 720 C360 691 371 661 405 646 Z" fill="url(#cyanGrad)"/>
+    <path id="a-crossbar" d="M363 646 L612 646 L560 551 L630 515 L744 735 L672 775 L632 699 L332 699 Z" fill="url(#inkGrad)"/>
+    <path id="a-right-stem" d="M515 464 L590 430 L735 716 L660 751 Z" fill="url(#inkGrad)"/>
+  </g>
+  <g id="dev-lockup" transform="translate(930 560)">
+    <circle cx="0" cy="0" r="17" fill="#111B22"/>
+    <text x="36" y="22" font-family="Inter, Geist, Arial, sans-serif" font-size="92" font-weight="500" letter-spacing="-3" fill="#111B22">dev</text>
+  </g>
+</svg>

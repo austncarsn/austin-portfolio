@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 500" width="1800" height="500" fill="none" role="img" aria-label="austincarson.dev logo">
+  <title>austincarson.dev Logo</title>
+  <desc>Horizontal transparent vector logo lockup for austincarson.dev.</desc>
+  <defs>
+    <linearGradient id="inkGrad" x1="70" y1="385" x2="260" y2="70" gradientUnits="userSpaceOnUse"><stop stop-color="#111B22"/><stop offset="1" stop-color="#111B22" stop-opacity="0.96"/></linearGradient>
+    <linearGradient id="cyanGrad" x1="210" y1="370" x2="455" y2="165" gradientUnits="userSpaceOnUse"><stop stop-color="#111B22"/><stop offset="1" stop-color="#111B22" stop-opacity="0.94"/></linearGradient>
+    <linearGradient id="orangeGrad" x1="135" y1="390" x2="215" y2="165" gradientUnits="userSpaceOnUse"><stop stop-color="#111B22"/><stop offset="1" stop-color="#111B22" stop-opacity="0.94"/></linearGradient>
+  </defs>
+  <g id="icon" transform="translate(40 35) scale(.47)">
+    <path d="M96 836 L477 116 L570 300 L514 316 L474 242 L196 836 Z" fill="url(#inkGrad)"/>
+    <path d="M257 836 L385 357 C390 340 402 330 419 332 L438 334 C448 335 452 344 447 354 L304 835 C301 845 293 850 282 850 L267 850 C259 850 254 845 257 836 Z" fill="url(#orangeGrad)"/>
+    <path d="M452 451 C510 348 618 305 724 331 C794 348 855 392 890 462 L806 462 C780 426 742 402 699 393 C630 379 560 401 516 458 C500 477 480 482 452 451 Z" fill="url(#cyanGrad)"/>
+    <path d="M405 646 C445 762 560 828 682 808 C733 799 779 775 812 738 L895 738 C848 825 762 879 662 884 C536 891 426 828 374 720 C360 691 371 661 405 646 Z" fill="url(#cyanGrad)"/>
+    <path d="M363 646 L612 646 L560 551 L630 515 L744 735 L672 775 L632 699 L332 699 Z" fill="url(#inkGrad)"/>
+    <path d="M515 464 L590 430 L735 716 L660 751 Z" fill="url(#inkGrad)"/>
+  </g>
+  <g id="wordmark" transform="translate(490 284)">
+    <text x="0" y="0" font-family="Inter, Geist, Arial, sans-serif" font-size="132" font-weight="650" letter-spacing="-6" fill="#111B22">austincarson</text>
+    <circle cx="1002" cy="-35" r="18" fill="#111B22"/>
+    <text x="1040" y="0" font-family="Inter, Geist, Arial, sans-serif" font-size="116" font-weight="500" letter-spacing="-4" fill="#111B22">dev</text>
+  </g>
+</svg>

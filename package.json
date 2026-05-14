@@ -1,5 +1,5 @@
 {
-  "name": "austin-portfolio",
+  "name": "austincarson-dev",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,6 +13,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/cormorant": "^5.2.8",
+    "@fontsource/cormorant-garamond": "^5.2.11",
+    "@fontsource/fraunces": "^5.2.9",
     "@fontsource/instrument-serif": "^5.2.8",
     "@fontsource/inter": "^5.0.0",
     "@fontsource/jetbrains-mono": "^5.2.8",

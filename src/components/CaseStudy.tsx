@@ -5,11 +5,11 @@ import { FloralOrigamiInteractive } from "./FloralOrigamiInteractive";
 import { OrbitalUI } from "./OrbitalUI";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { opacity: 0, y: 24 },
   show: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, delay: i * 0.1, ease: [0.2, 0.6, 0.2, 1] },
+    transition: { duration: 0.8, delay: i * 0.12, ease: [0.2, 0.6, 0.2, 1] },
   }),
 };
 
@@ -20,12 +20,14 @@ interface StatProps {
 
 const Stat = ({ label, value }: StatProps) => (
   <div className="flex flex-col gap-1">
-    <span className="ac-meta">{label}</span>
+    <span className="ac-meta" style={{ opacity: 0.4 }}>
+      {label}
+    </span>
     <span
       style={{
         fontFamily: "var(--font-serif)",
         fontSize: "var(--t-h3)",
-        fontWeight: 400,
+        fontWeight: 300,
         color: "var(--ink)",
       }}
     >
@@ -46,10 +48,12 @@ const Section = ({ eyebrow, children, tinted = false }: SectionProps) => (
       background: tinted ? "var(--paper-2)" : "var(--paper)",
       borderTop: "1px dashed var(--rule)",
     }}
-    className="py-20 px-6 md:px-12"
+    className="py-24 px-6 md:px-12"
   >
     <div className="max-w-4xl mx-auto">
-      <p className="ac-eyebrow mb-10">{eyebrow}</p>
+      <p className="ac-eyebrow mb-12" style={{ letterSpacing: "0.2em" }}>
+        {eyebrow}
+      </p>
       {children}
     </div>
   </section>
@@ -68,6 +72,7 @@ export const CaseStudy = ({ project }: { project: Project }) => {
     : project.screenshot
       ? [project.screenshot]
       : [];
+  const heroImage = caseStudyImages[0];
   const hasCaseStudyGallery = caseStudyImages.length > 1;
 
   return (
@@ -75,143 +80,251 @@ export const CaseStudy = ({ project }: { project: Project }) => {
       style={{ background: "var(--paper)", color: "var(--ink)" }}
       className="min-h-screen antialiased"
     >
-      {/* ── Hero ── */}
+      {/* ── REDESIGNED HERO ── */}
       <header
         style={{
           background: "var(--cameo-onyx)",
           color: "var(--bone)",
-          minHeight: "92vh",
+          minHeight: "100vh",
+          display: "grid",
+          gridTemplateColumns: "repeat(12, 1fr)",
+          position: "relative",
+          overflow: "hidden",
         }}
-        className="flex flex-col justify-end px-6 md:px-12 pb-16 pt-32"
+        className="px-6 md:px-12"
       >
-        <div className="max-w-4xl mx-auto w-full">
-          <motion.div
-            custom={0}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-          >
-            <span className="ac-eyebrow" style={{ color: "var(--ink-3)" }}>
-              {project.label} — Case Study
-            </span>
-          </motion.div>
-
-          <motion.h1
-            custom={1}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(3rem, 8vw, 7rem)",
-              fontWeight: 300,
-              lineHeight: 1.0,
-              letterSpacing: "-0.02em",
-              color: "var(--bone)",
-              marginTop: "1.25rem",
-              marginBottom: "2rem",
-            }}
-          >
-            {project.title}
-          </motion.h1>
-
-          <motion.p
-            custom={2}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "clamp(1rem, 1.5vw, 1.2rem)",
-              fontWeight: 300,
-              lineHeight: 1.6,
-              color: "var(--ink-3)",
-              maxWidth: "38rem",
-            }}
-          >
-            {project.description}
-          </motion.p>
-
-          <motion.div
-            custom={3}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            className="mt-12 pt-8 grid grid-cols-2 md:grid-cols-4 gap-8"
-            style={{ borderTop: "1px dashed rgba(255,255,255,0.12)" }}
-          >
-            <Stat label="Type" value={project.label} />
-            <Stat label="Date" value={project.date} />
-            {project.url && project.url !== "#" && (
-              <div className="flex flex-col gap-1">
-                <span className="ac-meta">Live</span>
-                <a
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "var(--t-small)",
-                    color: "var(--ac-blue)",
-                    letterSpacing: "var(--track-mono)",
-                    textDecoration: "none",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.textDecoration = "underline")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.textDecoration = "none")
-                  }
-                >
-                  View Project ↗
-                </a>
-              </div>
-            )}
-          </motion.div>
-        </div>
-      </header>
-
-      {/* ── Screenshot / preview ── */}
-      {caseStudyImages.length > 0 && (
+        {/* Background Geometric Element */}
         <div
           style={{
-            background: "var(--paper-3)",
-            borderTop: "1px dashed var(--rule)",
+            position: "absolute",
+            top: "50%",
+            right: "-10%",
+            width: "60vw",
+            height: "60vw",
+            background:
+              "radial-gradient(circle, rgba(91,155,213,0.12) 0%, transparent 70%)",
+            borderRadius: "50%",
+            zIndex: 0,
+            pointerEvents: "none",
           }}
-          className="px-6 md:px-12 py-16"
+        />
+
+        <div
+          style={{
+            gridColumn: "span 12",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            height: "100vh",
+            position: "relative",
+            zIndex: 2,
+          }}
         >
-          <div className="max-w-4xl mx-auto">
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: hasCaseStudyGallery
-                  ? "repeat(auto-fit, minmax(260px, 1fr))"
-                  : "1fr",
-                gap: "1rem",
-              }}
+          {/* Top-left coordinates / breadcrumb */}
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            style={{
+              position: "absolute",
+              top: "clamp(2rem, 5vw, 5rem)",
+              left: "clamp(2rem, 5vw, 5rem)",
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--t-micro)",
+              letterSpacing: "var(--track-mono)",
+              color: "rgba(255,255,255,0.3)",
+              textTransform: "uppercase",
+            }}
+          >
+            {project.label} / {project.date} / index_01
+          </motion.div>
+
+          <div className="max-w-4xl mx-auto w-full">
+            <motion.div
+              custom={0}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              className="mb-4"
             >
-              {caseStudyImages.map((image, index) => (
-                <img
-                  key={image}
-                  src={image}
-                  alt={`${project.title} reference ${index + 1}`}
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--t-micro)",
+                  letterSpacing: "var(--track-mono)",
+                  textTransform: "uppercase",
+                  color: "var(--ac-blue)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                }}
+              >
+                <span
                   style={{
-                    width: "100%",
-                    aspectRatio: "16 / 10",
-                    objectFit: "cover",
-                    borderRadius: "var(--r-2)",
-                    border: "1px solid var(--rule)",
-                    display: "block",
+                    display: "inline-block",
+                    width: 8,
+                    height: 1,
+                    background: "var(--ac-blue)",
                   }}
                 />
-              ))}
-            </div>
+                {project.label}
+              </span>
+            </motion.div>
 
-            {hasCaseStudyGallery && (
-              <p className="ac-meta" style={{ marginTop: "1rem" }}>
-                Desktop reference frames from the live deploy.
-              </p>
-            )}
+            <motion.h1
+              custom={1}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(3rem, 10vw, 8rem)",
+                fontWeight: 300,
+                lineHeight: 0.9,
+                letterSpacing: "-0.04em",
+                color: "var(--bone)",
+                marginTop: "1rem",
+                marginBottom: "2.5rem",
+              }}
+            >
+              {project.title}
+            </motion.h1>
+
+            <motion.p
+              custom={2}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "clamp(1rem, 1.2vw, 1.3rem)",
+                fontWeight: 300,
+                lineHeight: 1.6,
+                color: "rgba(255,255,255,0.5)",
+                maxWidth: "32rem",
+                marginBottom: "4rem",
+              }}
+            >
+              {project.description}
+            </motion.p>
+
+            <motion.div
+              custom={3}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              className="flex gap-12 pt-8"
+              style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}
+            >
+              <Stat label="Type" value={project.label} />
+              <Stat label="Date" value={project.date} />
+              {project.url && project.url !== "#" && (
+                <div className="flex flex-col gap-1">
+                  <span className="ac-meta" style={{ opacity: 0.4 }}>
+                    Live
+                  </span>
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "var(--t-small)",
+                      color: "var(--ac-blue)",
+                      textDecoration: "none",
+                      letterSpacing: "var(--track-mono-tight)",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.textDecoration = "underline")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.textDecoration = "none")
+                    }
+                  >
+                    Access ↗
+                  </a>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Absolute Image Layer - Minimalist Reveal */}
+        {heroImage && (
+          <motion.div
+            initial={{ opacity: 0, filter: "grayscale(100%) brightness(0.5)" }}
+            animate={{ opacity: 0.4, filter: "grayscale(50%) brightness(0.6)" }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 1,
+              pointerEvents: "none",
+            }}
+          >
+            <img
+              src={heroImage}
+              alt={project.title}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "center",
+              }}
+            />
+          </motion.div>
+        )}
+      </header>
+
+      {/* ── Image Gallery ── */}
+      {hasCaseStudyGallery && (
+        <div
+          style={{
+            background: "var(--cameo-onyx)",
+            borderTop: "1px solid rgba(255,255,255,0.06)",
+          }}
+          className="px-6 md:px-12 pb-24"
+        >
+          <div
+            style={{
+              maxWidth: "72rem",
+              margin: "0 auto",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: "1.5rem",
+            }}
+          >
+            {caseStudyImages.slice(1).map((image, index) => (
+              <motion.img
+                key={image}
+                src={image}
+                alt={`${project.title} view ${index + 2}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
+                style={{
+                  width: "100%",
+                  aspectRatio: "16 / 10",
+                  objectFit: "cover",
+                  borderRadius: "var(--r-2)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  filter: "saturate(0.9) brightness(0.8)",
+                }}
+              />
+            ))}
+          </div>
+          <div style={{ maxWidth: "72rem", margin: "1.5rem auto 0" }}>
+            <span
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--t-micro)",
+                letterSpacing: "var(--track-mono)",
+                textTransform: "uppercase",
+                color: "rgba(255,255,255,0.2)",
+              }}
+            >
+              Production Reference Frames
+            </span>
           </div>
         </div>
       )}
@@ -434,3 +547,4 @@ export const CaseStudy = ({ project }: { project: Project }) => {
     </div>
   );
 };
+

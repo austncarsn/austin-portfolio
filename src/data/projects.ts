@@ -13,39 +13,39 @@ export interface Project {
 export const projects: Project[] = [
   {
     title: "Montana Civic Data",
-    label: "Data",
+    label: "Interactive Atlas",
     date: "May 2026",
     description:
-      "A reference atlas documenting every Montana municipality — 499 places across 56 counties — with demographic, government, and historical records sourced and linked for each location.",
+      "A definitive reference atlas documenting Montana's civic landscape — 499 municipalities across 56 counties — synthesizing demographic, government, and historical records into a structured digital archive.",
     learned:
-      "Data pipeline design, building searchable/filterable interfaces over large datasets, and structuring reference sites with editorial clarity.",
-    url: "https://montana-civic-data.vercel.app/",
+      "Engineered a high-performance data pipeline to index vast civic records, building a searchable architectural interface that prioritizes editorial clarity and rapid information retrieval.",
+    url: "https://montana-civic-data.vercel.app",
     screenshot: "/screenshots/montana-civic-data.png",
   },
   {
     title: "Daily Mike",
-    label: "App",
+    label: "OS Dashboard",
     date: "Jan 2026",
     description:
-      "Personal React dashboard with a Star Trek/Borg aesthetic. Includes poker strategy tools, stock analysis, a Star Trek quiz, and personal log content.",
+      "A personalized command center with a Borg-inspired LCARS aesthetic. Integrates quantitative poker strategy tools, equity analysis, and a chronological personal log system.",
     learned:
-      "Large-scale Tailwind/shadcn component architecture, file structure refactoring, and building multiple tools under a single cohesive design system.",
+      "Developed a scaled design system using Tailwind and shadcn, optimizing component architecture to maintain a singular high-fidelity aesthetic across diverse utility-driven modules.",
     url: "https://mikethecookie.com/",
     screenshot: "/screenshots/daily-mike.png",
   },
   {
     title: "Cameo Web",
-    label: "App",
+    label: "UI Experiment",
     date: "Oct 2025",
     description:
-      "A web application project exploring UI interaction patterns and component design.",
+      "A research-driven exploration of modern UI interaction patterns, focuses on fluid component transitions and a minimalist atomic design approach.",
     learned:
-      "Component composition and building reusable UI patterns in React.",
+      "Iterated on component composition and state-driven UI transitions to establish a library of reusable, high-fidelity interaction patterns in React.",
     url: "https://cameo-web.vercel.app/",
     screenshot: "/screenshots/cameo-web.gif",
   },
   {
-    title: "Floral Origami Case Study",
+    title: "Floral Origami Interactive",
     slug: "floral-origami",
     label: "Interactive App",
     date: "May 2026",

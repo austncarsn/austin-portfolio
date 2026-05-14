@@ -1,0 +1,134 @@
+/* ── Wrapper ─────────────────────────────────────────── */
+
+.wrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(0.75rem, 2vw, 1.25rem) 0;
+  overflow: visible;
+}
+
+.svg {
+  width: min(820px, 96vw);
+  height: auto;
+  overflow: visible;
+}
+
+/* ── Base rules ──────────────────────────────────────── */
+
+.rule {
+  stroke: color-mix(in srgb, var(--color-text-tertiary) 30%, transparent);
+  stroke-width: 0.6;
+}
+
+/* ── Scrollwork arms ─────────────────────────────────── */
+
+.scroll {
+  stroke: color-mix(in srgb, var(--color-text-tertiary) 55%, transparent);
+  stroke-width: 1.1;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.curlSmall {
+  stroke: color-mix(in srgb, var(--color-text-tertiary) 45%, transparent);
+  stroke-width: 0.9;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.arm {
+  stroke: color-mix(in srgb, var(--color-text-tertiary) 38%, transparent);
+  stroke-width: 0.7;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.leaf {
+  fill: color-mix(in srgb, var(--color-text-tertiary) 30%, transparent);
+  stroke: none;
+}
+
+/* ── Dots & knots ────────────────────────────────────── */
+
+.dot {
+  fill: color-mix(in srgb, var(--color-text-tertiary) 50%, transparent);
+}
+
+.dotSmall {
+  fill: color-mix(in srgb, var(--color-text-tertiary) 35%, transparent);
+}
+
+/* ── Fleur-de-lis terminals ──────────────────────────── */
+
+.fleurStem {
+  stroke: color-mix(in srgb, var(--color-text-tertiary) 50%, transparent);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.fleurPetal {
+  fill: color-mix(in srgb, var(--color-text-tertiary) 42%, transparent);
+  stroke: none;
+}
+
+.fleurCollar {
+  stroke: color-mix(in srgb, var(--color-text-tertiary) 60%, transparent);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+/* ── Central cartouche ───────────────────────────────── */
+
+.cartoucheOuter {
+  stroke: color-mix(in srgb, var(--color-text-tertiary) 35%, transparent);
+  stroke-width: 0.7;
+  fill: var(--color-bg);
+}
+
+.cartoucheInner {
+  stroke: color-mix(in srgb, var(--color-accent) 28%, transparent);
+  stroke-width: 0.6;
+  fill: none;
+  stroke-dasharray: 2 3;
+}
+
+.cartoucheCap {
+  fill: color-mix(in srgb, var(--color-text-tertiary) 28%, transparent);
+  stroke: none;
+}
+
+/* ── Crown flourish above/below medallion ────────────── */
+
+.crownArc {
+  stroke: color-mix(in srgb, var(--color-text-tertiary) 38%, transparent);
+  stroke-width: 0.7;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.crownDot {
+  fill: color-mix(in srgb, var(--color-accent) 45%, transparent);
+}
+
+/* ── AC monogram ─────────────────────────────────────── */
+
+.monogram {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-style: italic;
+  fill: color-mix(in srgb, var(--color-text-tertiary) 70%, transparent);
+  letter-spacing: 0.08em;
+  user-select: none;
+}
+
+/* ── Reduced motion ──────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .wrap * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
