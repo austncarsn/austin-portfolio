@@ -1,8 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
-  <title>Austin Carson favicon</title>
-  <rect width="64" height="64" rx="12" fill="#0a0a0a" />
-  <path
-    d="M21 46 30.5 18h3L43 46h-4.2l-2.2-6.8h-9.3L25 46Zm7.4-10.2h7l-3.5-11.1Z"
-    fill="#f5f5f4"
-  />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" fill="none" role="img" aria-label="AC favicon">
+  <title>AC Favicon</title>
+  <defs>
+    <linearGradient id="g1" x1="34" y1="216" x2="127" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#111B22"/><stop offset="1" stop-color="#111B22" stop-opacity=".96"/></linearGradient>
+    <linearGradient id="g2" x1="95" y1="196" x2="219" y2="82" gradientUnits="userSpaceOnUse"><stop stop-color="#00BBD4"/><stop offset="1" stop-color="#00BBD4" stop-opacity=".94"/></linearGradient>
+    <linearGradient id="g3" x1="66" y1="220" x2="111" y2="82" gradientUnits="userSpaceOnUse"><stop stop-color="#FF4A12"/><stop offset="1" stop-color="#FF4A12" stop-opacity=".94"/></linearGradient>
+  </defs>
+  <path d="M24 220 121 26l25 51-15 4-11-20-71 159Z" fill="url(#g1)"/>
+  <path d="M66 220 98 91c2-8 7-12 15-11l5 1c4 1 6 4 4 8L86 219c-1 5-5 8-10 8h-6c-4 0-6-3-4-7Z" fill="url(#g3)"/>
+  <path d="M109 116c17-35 53-50 89-40 22 6 41 20 52 40h-37c-8-8-18-14-31-16-22-3-45 5-59 24-4 6-9 6-14-8Z" fill="url(#g2)"/>
+  <path d="M95 159c12 37 48 57 88 51 13-2 25-8 35-17h36c-18 32-50 51-88 52-42 0-79-22-96-59-5-11 3-22 25-27Z" fill="url(#g2)"/>
+  <path d="M92 159h65l-14-27 25-12 37 72-26 13-10-20H84Z" fill="url(#g1)"/>
+  <path d="M126 118 153 106 193 189 166 202Z" fill="url(#g1)"/>
 </svg>

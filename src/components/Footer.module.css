@@ -1,0 +1,144 @@
+/* ── Wrapper ─────────────────────────────────────── */
+
+.footer {
+  margin: 4rem auto 2rem;
+  max-width: 920px;
+  padding: 0 1.5rem;
+}
+
+/* ── Card ────────────────────────────────────────── */
+
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+  border: 1px solid var(--rule);
+  background: var(--bone);
+  padding: 2.5rem 2rem;
+  box-shadow: var(--shadow-card);
+}
+
+/* ── Top dashed rule — editorial signature ───────── */
+
+.accentLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 1px dashed var(--rule);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ── Bottom hairline — no glow ───────────────────── */
+
+.bottomGlow {
+  display: none;
+}
+
+/* ── Inner content ───────────────────────────────── */
+
+.inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+/* ── Nav list ────────────────────────────────────── */
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Link pill ───────────────────────────────────── */
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 0;
+  border: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 400;
+  letter-spacing: var(--track-mono-tight);
+  text-transform: uppercase;
+  color: var(--ink-2);
+  text-decoration: none;
+  transition:
+    color 200ms var(--ease),
+    border-color 200ms var(--ease),
+    background-color 200ms var(--ease),
+    transform 200ms var(--ease);
+}
+
+.link:hover,
+.link:focus-visible {
+  color: var(--ink);
+  border-color: var(--ink-3);
+  background-color: var(--paper-3);
+  transform: translateY(-1px);
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.linkArrow {
+  opacity: 0.4;
+  font-size: 0.8rem;
+  transition: opacity 200ms var(--ease);
+}
+
+.link:hover .linkArrow,
+.link:focus-visible .linkArrow {
+  opacity: 0.75;
+}
+
+/* ── Divider — dashed rule ───────────────────────── */
+
+.divider {
+  width: 100%;
+  max-width: 360px;
+  height: 0;
+  border-top: 1px dashed var(--rule-soft);
+}
+
+/* ── Copyright ───────────────────────────────────── */
+
+.copyright {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  color: var(--ink-4);
+  opacity: 0.65;
+  text-align: center;
+}
+
+/* ── Motion reduction ────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    transition: color 0ms, border-color 0ms, background-color 0ms, transform 0ms;
+  }
+
+  .link:hover,
+  .link:focus-visible {
+    transform: none;
+  }
+}

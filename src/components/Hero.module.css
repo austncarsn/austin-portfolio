@@ -1,0 +1,281 @@
+/* ── Section ────────────────────────────────────── */
+
+.section {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 82vh;
+  padding: clamp(5.5rem, 13vw, 10rem) 1.5rem clamp(4.5rem, 9vw, 7rem);
+  overflow: visible;
+  clip-path: inset(0);
+  text-align: center;
+  isolation: isolate;
+  background: var(--color-bg);
+}
+
+/* ── Blue atmosphere — slow drifting orbs ───────── */
+
+.blueOrb1 {
+  position: absolute;
+  top: 12%;
+  left: 18%;
+  width: clamp(280px, 48vw, 560px);
+  height: clamp(280px, 48vw, 560px);
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(91, 155, 213, 0.13) 0%,
+    rgba(91, 155, 213, 0.055) 45%,
+    transparent 72%
+  );
+  filter: blur(32px);
+  z-index: -2;
+  pointer-events: none;
+  animation: orbDrift1 22s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.blueOrb2 {
+  position: absolute;
+  bottom: 8%;
+  right: 12%;
+  width: clamp(200px, 36vw, 420px);
+  height: clamp(200px, 36vw, 420px);
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(168, 192, 207, 0.12) 0%,
+    rgba(91, 155, 213, 0.05) 50%,
+    transparent 72%
+  );
+  filter: blur(40px);
+  z-index: -2;
+  pointer-events: none;
+  animation: orbDrift2 28s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes orbDrift1 {
+  0%   { transform: translate(0, 0) scale(1);      opacity: 1; }
+  30%  { transform: translate(3%, 5%) scale(1.04); opacity: 0.8; }
+  60%  { transform: translate(-2%, 3%) scale(0.97); opacity: 1; }
+  80%  { transform: translate(4%, -2%) scale(1.02); opacity: 0.85; }
+  100% { transform: translate(0, 0) scale(1);      opacity: 1; }
+}
+
+@keyframes orbDrift2 {
+  0%   { transform: translate(0, 0) scale(1);       opacity: 0.9; }
+  25%  { transform: translate(-4%, -3%) scale(1.06); opacity: 1; }
+  55%  { transform: translate(3%, -5%) scale(0.95);  opacity: 0.75; }
+  80%  { transform: translate(-2%, 4%) scale(1.03);  opacity: 1; }
+  100% { transform: translate(0, 0) scale(1);       opacity: 0.9; }
+}
+
+/* ── Grain texture — paper feel ─────────────────── */
+
+.grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 180px;
+  opacity: 0.5;
+  z-index: -3;
+  pointer-events: none;
+}
+
+/* ── Horizontal dashed rule — editorial signature ── */
+
+.glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(680px, 90vw);
+  height: 1px;
+  transform: translateX(-50%) translateY(-50%);
+  border-top: 1px dashed var(--rule);
+  opacity: 0.35;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* ── Border frame — hairline inset ──────────────── */
+
+.frame {
+  position: absolute;
+  inset: 1.25rem;
+  border: 1px solid var(--rule-soft);
+  border-radius: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+/* ── Inner wrapper ──────────────────────────────── */
+
+.inner {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+/* ── Artwork ────────────────────────────────────── */
+
+.artwork {
+  display: block;
+  width: clamp(200px, 34vw, 380px);
+  height: auto;
+  margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  will-change: transform;
+  filter: drop-shadow(var(--shadow-sticker));
+  animation: fadeUp 0.8s var(--ease-out) both;
+  animation-delay: 60ms;
+}
+
+/* ── Sticker Row ────────────────────────────────── */
+
+.stickerRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(0.6rem, 2.5vw, 1.25rem);
+  margin: 0 auto clamp(1.25rem, 3vw, 2rem);
+  pointer-events: none;
+}
+
+.sticker {
+  display: block;
+  width: clamp(52px, 13vw, 96px);
+  height: auto;
+  border-radius: 0;
+  filter: drop-shadow(var(--shadow-sticker));
+  animation: fadeUp 0.8s var(--ease-out) both;
+  animation-delay: 320ms;
+}
+
+.stickerHeart {
+  transform: none;
+  width: clamp(52px, 13vw, 96px);
+  animation-delay: 320ms;
+  align-self: center;
+}
+
+/* ── Eyebrow ────────────────────────────────────── */
+
+.eyebrow {
+  margin: 0 0 1.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  color: var(--ink-3);
+  animation: fadeUp 0.8s var(--ease-out) both;
+  animation-delay: 220ms;
+}
+
+/* dot separator hidden on mobile; line break shown instead */
+.eyebrowSep { display: inline; }
+.eyebrowBreak { display: none; }
+
+@media (max-width: 520px) {
+  .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    line-height: 1.8;
+  }
+
+  .eyebrowSep { display: none; }
+  .eyebrowBreak { display: inline; }
+}
+
+/* ── Name — Cormorant Garamond display ──────────── */
+
+.name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 17vw, 12rem);
+  font-weight: 300;
+  line-height: var(--lh-tight);
+  letter-spacing: -0.03em;
+  color: var(--color-text-primary);
+  text-wrap: balance;
+  text-transform: lowercase;
+  /* start blurry + dim; JS sharpens on scroll */
+  filter: blur(12px);
+  opacity: 0.35;
+  will-change: filter, opacity;
+}
+
+/* "Carson" — heavier italic for visual hierarchy break */
+.nameItalic {
+  display: block;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+  position: relative;
+}
+
+/* ── Bio ────────────────────────────────────────── */
+
+.bio {
+  max-width: 480px;
+  margin: clamp(2rem, 4.5vw, 3rem) auto 0;
+  font-family: var(--font-sans);
+  font-size: clamp(0.88rem, 1.2vw, 1rem);
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--ink-2);
+  letter-spacing: 0.005em;
+  animation: fadeUp 0.8s var(--ease-out) both;
+  animation-delay: 580ms;
+}
+
+/* ── Scroll cue — dashed rule aesthetic ─────────── */
+
+.scrollCue {
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  animation: fadeIn 0.7s ease both;
+  animation-delay: 800ms;
+  will-change: opacity, transform;
+}
+
+.scrollLine {
+  display: block;
+  width: 1px;
+  height: 36px;
+  border-radius: 0;
+  background: linear-gradient(to bottom, var(--rule), transparent);
+  opacity: 0.6;
+}
+
+.scrollLabel {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  color: var(--ink-3);
+  opacity: 0.65;
+}
+
+/* ── Motion reduction ───────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .artwork,
+  .sticker,
+  .eyebrow,
+  .name,
+  .bio,
+  .scrollCue,
+  .blueOrb1,
+  .blueOrb2 {
+    animation: none;
+  }
+}

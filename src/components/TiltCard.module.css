@@ -1,0 +1,14 @@
+.tiltWrap {
+  position: relative;
+  display: inline-block;
+  cursor: none;
+  perspective: 800px;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tiltWrap {
+    transform: none !important;
+    filter: none !important;
+  }
+}

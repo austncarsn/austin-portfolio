@@ -1,47 +1,231 @@
 /* ──────────────────────────────────────────────────────────────
-   FONT IMPORTS
+   FONT IMPORTS — self-hosted via @fontsource
    ────────────────────────────────────────────────────────────── */
 
+/* Fraunces — editorial serif display + body */
+@import '@fontsource/fraunces/300.css';
+@import '@fontsource/fraunces/400.css';
+@import '@fontsource/fraunces/500.css';
+@import '@fontsource/fraunces/700.css';
+
+/* Cormorant Garamond — classical serif for headlines */
+@import '@fontsource/cormorant-garamond/300.css';
+@import '@fontsource/cormorant-garamond/300-italic.css';
+@import '@fontsource/cormorant-garamond/400.css';
+@import '@fontsource/cormorant-garamond/400-italic.css';
+@import '@fontsource/cormorant-garamond/500.css';
+@import '@fontsource/cormorant-garamond/600.css';
+
+/* Cormorant — display weight variant */
+@import '@fontsource/cormorant/300.css';
+@import '@fontsource/cormorant/400.css';
+@import '@fontsource/cormorant/500.css';
+
+/* JetBrains Mono — monospace for labels, meta, eyebrows */
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+
+/* Inter — clean sans fallback */
 @import '@fontsource/inter/300.css';
 @import '@fontsource/inter/400.css';
 @import '@fontsource/inter/500.css';
-@import '@fontsource/inter/600.css';
-@import '@fontsource/playfair-display/400.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ═══════════════════════════════════════════════════════════════
-   DESIGN TOKENS
+   DESIGN TOKENS — Austin Carson editorial system
+   Black ink on cool ivory. Mono + classical serif.
    ═══════════════════════════════════════════════════════════════ */
 
 :root {
-  /* Typography */
-  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-serif: 'Playfair Display', Georgia, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  /* ── Surfaces — natural off-white ── */
+  --paper:           #F7F6F3;
+  --paper-2:         #EEECEA;
+  --paper-3:         #E3E0DC;
+  --chrome:          #C8C4BF;
+  --bone:            #FAFAF8;
 
-  /* Light mode (Cream & Sage Green design) */
+  /* ── Ink — true black on paper ── */
+  --ink:             #0C0C0C;
+  --ink-2:           #262827;
+  --ink-3:           #6A6E6C;
+  --ink-4:           #9A9E9C;
+  --rule:            #C4C1BC;
+  --rule-soft:       #D8D5D0;
+
+  /* ── Brand block primaries (from AC logo) ── */
+  --ac-blue:         #5B9BD5;
+  --ac-yellow:       #FFD60A;
+  --ac-red:          #E8352E;
+
+  /* ── Cameo pastels ── */
+  --cameo-lilac:     #BFB0CC;
+  --cameo-blue:      #A8C0CF;
+  --cameo-sage:      #8FA98A;
+  --cameo-citron:    #E3D45A;
+  --cameo-onyx:      #1A1816;
+  --cameo-plum:      #EDECE2;
+  --cameo-chalk:     #EDECE2;
+
+  /* ── Semantic aliases ── */
+  --bg:              var(--paper);
+  --bg-elevated:     var(--bone);
+  --fg:              var(--ink);
+  --fg-muted:        var(--ink-3);
+  --fg-faint:        var(--ink-4);
+  --border:          var(--rule);
+  --border-soft:     var(--rule-soft);
+  --accent:          var(--ac-blue);
+
+  /* ── Semantic component vars (mapped from source palette) ── */
+  --color-bg:           var(--paper);
+  --color-bg-secondary: var(--paper-2);
+  --color-bg-sage:      var(--paper-3);
+  --color-accent:       var(--ac-blue);
+  --color-accent-muted: rgba(0, 87, 183, 0.10);
+
+  --color-text-primary:   var(--ink);
+  --color-text-secondary: var(--ink-2);
+  --color-text-tertiary:  var(--ink-3);
+
+  --color-border:        rgba(12, 12, 12, 0.10);
+  --color-border-strong: rgba(12, 12, 12, 0.18);
+  --color-surface-glow:  rgba(0, 87, 183, 0.06);
+
+  /* ── Fonts ── */
+  --font-mono:       'JetBrains Mono', 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-body:       'Fraunces', 'Cormorant Garamond', Georgia, serif;
+  --font-serif:      'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+  --font-display:    'Cormorant Garamond', 'Cormorant', Georgia, serif;
+  --font-sans:       'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* ── Font weights ── */
+  --fw-light:     300;
+  --fw-normal:    400;
+  --fw-medium:    500;
+  --fw-semibold:  600;
+  --fw-bold:      700;
+  --fw-extrabold: 800;
+
+  /* ── Type scale — editorial, generous ── */
+  --t-display:  clamp(56px, 7vw, 96px);
+  --t-h1:       48px;
+  --t-h2:       32px;
+  --t-h3:       22px;
+  --t-body:     15px;
+  --t-small:    13px;
+  --t-mono:     12px;
+  --t-micro:    11px;
+
+  /* ── Fluid-friendly aliases matching existing component vars ── */
+  --fs-xs:   0.7rem;
+  --fs-sm:   0.85rem;
+  --fs-base: 1rem;
+  --fs-md:   1.1rem;
+  --fs-lg:   1.2rem;
+  --fs-xl:   1.6rem;
+  --fs-2xl:  2.25rem;
+  --fs-hero: clamp(5rem, 16vw, 11.5rem);
+
+  /* ── Line heights ── */
+  --lh-caps:    1;
+  --lh-tight:   0.84;
+  --lh-heading: 1.1;
+  --lh-display: 1.0;
+  --lh-body:    1.6;
+
+  /* ── Tracking — monospace is always tracked ── */
+  --track-mono:       0.14em;
+  --track-mono-tight: 0.08em;
+  --track-caps:       0.18em;
+
+  /* Letter spacing aliases */
+  --tracking-tight:     -0.025em;
+  --tracking-body:       0.005em;
+  --tracking-caps:       0.18em;
+  --tracking-caps-wide:  0.22em;
+
+  /* ── Spacing — 4-step grid ── */
+  --s-1:  4px;   --s-2:  8px;   --s-3:  12px;  --s-4:  16px;
+  --s-5:  24px;  --s-6:  32px;  --s-7:  48px;  --s-8:  64px;
+  --s-9:  96px;  --s-10: 128px;
+
+  /* ── Layout ── */
+  --container-max: 680px;
+
+  /* ── Radii — almost-square; sharp is the brand ── */
+  --r-0:    0px;
+  --r-1:    2px;
+  --r-2:    4px;
+  --r-3:    8px;
+  --r-pill: 999px;
+
+  /* ── Radius aliases (keep existing names working) ── */
+  --radius-xs: var(--r-2);
+  --radius-sm: var(--r-3);
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  /* ── Border widths ── */
+  --bw:   1px;
+  --bw-2: 1.5px;
+
+  /* ── Shadows — sparse; hairlines, not glow ── */
+  --shadow-1:      0 1px 0 0 rgba(12, 12, 12, 0.06);
+  --shadow-2:      0 2px 8px -2px rgba(12, 12, 12, 0.08), 0 1px 0 0 rgba(12, 12, 12, 0.04);
+  --shadow-card:   4px 4px 0 0 var(--paper-3);
+  --shadow-sticker: 0 6px 18px -8px rgba(12, 12, 12, 0.35);
+
+  /* ── Motion — slow, mechanical, no bounce ── */
+  --ease:            cubic-bezier(0.2, 0.6, 0.2, 1);
+  --ease-out:        cubic-bezier(0.2, 0.6, 0.2, 1);
+  --ease-in-out:     cubic-bezier(0.4, 0, 0.6, 1);
+  --dur-fast:        120ms;
+  --dur:             200ms;
+  --dur-slow:        360ms;
+  --transition-base: 200ms var(--ease);
+  --transition-slow: 360ms var(--ease);
+
   color-scheme: light;
-
-  --color-bg: #F3EFE9;
-  --color-bg-sage: #bdc5b5;
-  --color-text-primary: #181818;
-  --color-text-secondary: #4a4a4a;
-  --color-text-tertiary: #717171;
-  --color-border: rgba(0, 0, 0, 0.12);
 }
 
+/* ── Dark mode — cool charcoal on near-black ── */
 .dark {
-  /* Dark mode */
   color-scheme: dark;
-  --color-bg: #1A1A1A;
-  --color-bg-sage: #2A3127;
-  --color-text-primary: #f5f5f5;
-  --color-text-secondary: #b3b3b3;
-  --color-text-tertiary: #8b8b8b;
-  --color-border: rgba(255, 255, 255, 0.15);
+
+  --paper:           #1C1E1C;
+  --paper-2:         #242624;
+  --paper-3:         #2C2E2C;
+  --bone:            #202220;
+  --chrome:          #3A3C3A;
+
+  --ink:             #EAECE8;
+  --ink-2:           #C8CCC9;
+  --ink-3:           #8A8E8C;
+  --ink-4:           #5A5E5C;
+  --rule:            #3A3E3B;
+  --rule-soft:       #2E322F;
+
+  --ac-blue:         #4A8FD4;
+
+  --color-bg:           var(--paper);
+  --color-bg-secondary: var(--paper-2);
+  --color-bg-sage:      var(--paper-3);
+  --color-accent:       var(--ac-blue);
+  --color-accent-muted: rgba(74, 143, 212, 0.12);
+
+  --color-text-primary:   var(--ink);
+  --color-text-secondary: var(--ink-2);
+  --color-text-tertiary:  var(--ink-3);
+
+  --color-border:        rgba(234, 236, 232, 0.08);
+  --color-border-strong: rgba(234, 236, 232, 0.14);
+  --color-surface-glow:  rgba(74, 143, 212, 0.06);
+  --card-hover-bg:       rgba(255, 255, 255, 0.025);
+
+  --shadow-card: 4px 4px 0 0 var(--paper-3);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -74,23 +258,8 @@ body {
   background: transparent;
   color: var(--color-text-primary);
   font-family: var(--font-sans);
-  font-weight: 400;
+  font-weight: var(--fw-normal);
   line-height: 1.6;
-}
-
-.divider-bar {
-  width: 100%;
-  height: 6px;
-  background: transparent;
-  border-top: 1px solid rgba(0, 0, 0, 0.4);
-  border-bottom: 3px solid rgba(0, 0, 0, 0.4);
-  opacity: 0.15;
-}
-
-.dark .divider-bar {
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
-  border-bottom: 3px solid rgba(255, 255, 255, 0.5);
-  opacity: 0.15;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -113,6 +282,7 @@ body {
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-sm);
   color: var(--color-text-primary);
+  font-family: var(--font-mono);
   font-size: var(--fs-xs);
   font-weight: var(--fw-semibold);
   letter-spacing: var(--tracking-caps);
@@ -131,107 +301,22 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   TYPOGRAPHY
+   BASE TYPOGRAPHY
    ═══════════════════════════════════════════════════════════════ */
 
 h1,
 h2,
-h3,
-.hero-name {
+h3 {
   color: var(--color-text-primary);
-  font-family: var(--font-sans);
   text-wrap: balance;
 }
 
-h1,
-.hero-name {
-  font-weight: var(--fw-normal);
-  letter-spacing: -0.04em;
-}
-
-h1 {
-  font-size: var(--fs-2xl);
-  line-height: var(--lh-display);
-}
-
-.hero-name {
-  font-size: var(--fs-hero);
-  line-height: var(--lh-tight);
-}
-
-h2 {
-  font-size: var(--fs-xl);
-  font-weight: var(--fw-bold);
-  line-height: var(--lh-heading);
-  letter-spacing: var(--tracking-tight);
-}
-
-h3 {
-  font-size: var(--fs-md);
-  font-weight: var(--fw-semibold);
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-}
-
-p,
-.hero-bio {
+p {
   color: var(--color-text-secondary);
   font-size: var(--fs-base);
   font-weight: var(--fw-normal);
   line-height: var(--lh-body);
   letter-spacing: var(--tracking-body);
-}
-
-.hero-bio {
-  max-width: 520px;
-  line-height: 1.7;
-}
-
-.hero-tagline {
-  color: var(--color-text-secondary);
-  font-size: var(--fs-lg);
-  font-style: normal;
-  font-weight: var(--fw-light);
-  line-height: 1.55;
-  letter-spacing: -0.018em;
-  text-wrap: balance;
-}
-
-/* Shared uppercase utility */
-.eyebrow,
-.hero-tag,
-.project-index,
-.project-label-badge,
-.projects-label,
-.projects-count,
-.theme-toggle,
-label {
-  font-family: var(--font-sans);
-  font-weight: var(--fw-semibold);
-  line-height: var(--lh-caps);
-  letter-spacing: var(--tracking-caps);
-  text-transform: uppercase;
-}
-
-.eyebrow {
-  color: var(--color-accent);
-  font-size: var(--fs-xs);
-  letter-spacing: var(--tracking-caps-wide);
-}
-
-.hero-tag {
-  color: var(--color-text-tertiary);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-}
-
-.hero-tag-row {
-  flex-wrap: wrap;
-}
-
-label {
-  color: var(--color-text-tertiary);
-  font-size: 0.75rem;
 }
 
 button {
@@ -241,260 +326,156 @@ button {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   PROJECT LIST HEADER
+   AC SEMANTIC TYPE CLASSES
    ═══════════════════════════════════════════════════════════════ */
 
-.projects-header {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-  margin-bottom: 3rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 0.5px solid var(--color-border);
-}
-
-.projects-label {
-  color: var(--color-text-tertiary);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-}
-
-.projects-count {
-  color: var(--color-text-tertiary);
-  font-size: 0.6rem;
-  letter-spacing: 0.08em;
-  opacity: 0.45;
-}
-
-.projects-list {
-  display: flex;
-  flex-direction: column;
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   PROJECT CARDS
-   ═══════════════════════════════════════════════════════════════ */
-
-.project-card {
-  position: relative;
-  padding: 1.5rem 0;
-  border-top: 1px solid var(--color-border);
-}
-
-.project-card:last-child {
-  border-bottom: 1px solid var(--color-border);
-}
-
-.project-card-header {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.project-title {
-  color: var(--color-text-primary);
-  font-size: 1.08rem;
-  font-weight: var(--fw-bold);
-  line-height: 1.25;
+.ac-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--t-display);
+  line-height: 1.0;
   letter-spacing: -0.025em;
+  text-transform: lowercase;
+  color: var(--fg);
 }
 
-.project-type {
-  color: var(--color-text-tertiary);
-  font-size: 0.8rem;
-  font-weight: var(--fw-medium);
-  line-height: 1.4;
+.ac-h1 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--t-h1);
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg);
 }
 
-.project-desc {
-  color: var(--color-text-secondary);
-  margin-bottom: 0.75rem;
-  font-size: 0.9rem;
-  line-height: 1.55;
+.ac-h2 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--t-h2);
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: var(--fg);
 }
 
-.project-learned {
-  color: var(--color-text-tertiary);
-  margin-bottom: 1rem;
-  font-size: 0.85rem;
-  line-height: 1.55;
+.ac-h3 {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--t-h3);
+  letter-spacing: var(--track-mono-tight);
+  text-transform: uppercase;
+  color: var(--fg);
 }
 
-.project-entry-link {
-  color: var(--color-text-primary);
-  font-size: 0.85rem;
-  font-weight: var(--fw-semibold);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
+.ac-eyebrow {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--t-mono);
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
 
-.project-entry-link:hover {
-  text-decoration: none;
+.ac-tag {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--t-mono);
+  letter-spacing: var(--track-mono-tight);
+  text-transform: uppercase;
+  color: var(--fg);
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   LINKS
-   ═══════════════════════════════════════════════════════════════ */
-
-.footer-link,
-.project-link {
-  color: var(--color-text-secondary);
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-medium);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-  transition:
-    color var(--transition-base),
-    text-decoration-color var(--transition-base);
+.ac-body {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: 0.005em;
+  color: var(--ink-2);
 }
 
-.footer-link:hover,
-.project-link:hover {
-  color: var(--color-text-primary);
-  text-decoration: none;
+.ac-prose {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.45;
+  color: var(--fg);
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   THEME TOGGLE
-   ═══════════════════════════════════════════════════════════════ */
-
-.theme-toggle {
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  transition:
-    color var(--transition-base),
-    background-color var(--transition-base),
-    border-color var(--transition-base),
-    box-shadow var(--transition-base),
-    transform var(--transition-base);
+.ac-mono {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--t-mono);
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  color: var(--ink-2);
 }
 
-.theme-toggle:hover {
-  color: var(--color-text-primary);
-  background-color: var(--color-bg-secondary);
-  border-color: var(--color-border-strong);
-  box-shadow: 0 0 0 3px var(--color-surface-glow);
+.ac-meta {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--t-micro);
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
 
-.theme-toggle:active {
-  transform: scale(0.97);
-}
+/* ── Ornament: bracketed mono labels ── */
+.ac-bracket::before { content: "== "; color: var(--ink-3); }
+.ac-bracket::after  { content: " =="; color: var(--ink-3); }
 
-/* ═══════════════════════════════════════════════════════════════
-   FORTUNE BOX
-   ═══════════════════════════════════════════════════════════════ */
+.ac-square::before  { content: "[ "; color: var(--ink-3); }
+.ac-square::after   { content: " ]"; color: var(--ink-3); }
 
-.fortune-container {
-  background: var(--color-bg-secondary);
-  border: 0.5px solid var(--color-border-strong);
-  border-radius: var(--radius-sm);
-  padding: 2.5rem 2rem;
-}
-
-.fortune-btn {
-  position: relative;
-  overflow: hidden;
-}
-
-.fortune-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.fortune-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--color-bg-secondary);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--transition-base);
-}
-
-.fortune-btn:hover::before {
-  opacity: 1;
-}
-
-.fortune-action-button {
-  transition:
-    background-color var(--transition-base),
-    color var(--transition-base),
-    transform var(--transition-base);
-}
-
-.fortune-action-button:not(:disabled):hover {
-  background-color: var(--color-bg-secondary);
-}
-
-.fortune-action-button:not(:disabled):active {
-  transform: scale(0.96);
-}
-
-.fortune-primary-icon {
-  transition: transform var(--transition-base);
-}
-
-.fortune-primary-button:not(:disabled):active .fortune-primary-icon {
-  transform: rotate(90deg);
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   LAYOUT
-   ═══════════════════════════════════════════════════════════════ */
-
-.section-rule {
-  margin: 0;
+/* ── Dashed hairline divider — the brand's signature ── */
+.ac-rule {
   border: 0;
-  border-top: 1px solid var(--color-border);
+  border-top: var(--bw) dashed var(--rule);
+  margin: var(--s-5) 0;
 }
+.ac-rule--dotted { border-top-style: dotted; }
+.ac-rule--solid  { border-top-style: solid; }
 
-.section-container,
-.hero-section {
-  width: 100%;
-  max-width: var(--container-max);
-  margin-inline: auto;
-  padding-inline: 1rem;
-}
-
-.hero-section {
-  padding-block: 7rem 5rem;
-}
-
-.footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-}
-
-@media (min-width: 480px) {
-  .section-container,
-  .hero-section {
-    padding-inline: 1.5rem;
-  }
-
-  .footer-links {
-    gap: 2rem;
-  }
-}
-
-@media (min-width: 521px) {
-  .fortune-content-area {
-    min-height: 9rem;
-  }
-}
-
-@media (min-width: 769px) {
-  .hero-section {
-    padding-block: 10rem 6rem;
-  }
+/* ── Page base ── */
+.ac-page {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: var(--t-body);
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   VIEW TRANSITIONS & MOTION
+   DIVIDER
+   ═══════════════════════════════════════════════════════════════ */
+
+.divider-bar {
+  width: 100%;
+  height: 1px;
+  background: var(--color-border);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ENTRANCE ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VIEW TRANSITIONS
    ═══════════════════════════════════════════════════════════════ */
 
 ::view-transition-old(root),

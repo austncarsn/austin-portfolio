@@ -1,5 +1,6 @@
 import { Sun, Moon } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import styles from './ThemeToggle.module.css'
 
 interface Props {
   dark: boolean
@@ -7,53 +8,52 @@ interface Props {
 }
 
 export default function ThemeToggle({ dark, onToggle }: Props) {
+  const reduced = useReducedMotion()
+
+  const iconTransition = reduced
+    ? { duration: 0 }
+    : { duration: 0.2, ease: [0.22, 1, 0.36, 1] as const }
+
+  const iconVariants = reduced
+    ? { initial: {}, animate: {}, exit: {} }
+    : {
+        initial: (rotate: number) => ({ opacity: 0, rotate, scale: 0.6 }),
+        animate: { opacity: 1, rotate: 0, scale: 1 },
+        exit: (rotate: number) => ({ opacity: 0, rotate, scale: 0.6 }),
+      }
+
   return (
     <motion.button
       onClick={onToggle}
       aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-      className="theme-toggle"
-      whileHover={{ opacity: 0.7 }}
-      whileTap={{ opacity: 0.5 }}
-      title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-      style={{
-        position: 'fixed',
-        top: '1.5rem',
-        right: '1.5rem',
-        zIndex: 50,
-        background: 'var(--color-bg)',
-        border: '0.5px solid var(--color-border)',
-        borderRadius: '50%',
-        width: '2.75rem',
-        height: '2.75rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: 'var(--color-text-tertiary)',
-        cursor: 'pointer',
-        padding: 0,
-        overflow: 'hidden',
-      }}
+      className={styles.button}
+      whileHover={reduced ? undefined : { opacity: 0.75 }}
+      whileTap={reduced ? undefined : { scale: 0.94 }}
     >
       <AnimatePresence mode="wait" initial={false}>
         {dark ? (
           <motion.span
             key="sun"
-            initial={{ opacity: 0, rotate: -45, scale: 0.6 }}
-            animate={{ opacity: 1, rotate: 0, scale: 1 }}
-            exit={{ opacity: 0, rotate: 45, scale: 0.6 }}
-            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            className={styles.icon}
+            custom={-45}
+            initial={reduced ? {} : { opacity: 0, rotate: -45, scale: 0.6 }}
+            animate={reduced ? {} : { opacity: 1, rotate: 0, scale: 1 }}
+            exit={reduced ? {} : { opacity: 0, rotate: 45, scale: 0.6 }}
+            transition={iconTransition}
+            variants={iconVariants}
           >
             <Sun size={15} strokeWidth={1.5} />
           </motion.span>
         ) : (
           <motion.span
             key="moon"
-            initial={{ opacity: 0, rotate: 45, scale: 0.6 }}
-            animate={{ opacity: 1, rotate: 0, scale: 1 }}
-            exit={{ opacity: 0, rotate: -45, scale: 0.6 }}
-            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            className={styles.icon}
+            custom={45}
+            initial={reduced ? {} : { opacity: 0, rotate: 45, scale: 0.6 }}
+            animate={reduced ? {} : { opacity: 1, rotate: 0, scale: 1 }}
+            exit={reduced ? {} : { opacity: 0, rotate: -45, scale: 0.6 }}
+            transition={iconTransition}
+            variants={iconVariants}
           >
             <Moon size={15} strokeWidth={1.5} />
           </motion.span>
