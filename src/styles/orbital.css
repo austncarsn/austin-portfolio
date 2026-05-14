@@ -1,0 +1,301 @@
+@keyframes starTwinkle {
+  0%,
+  100% {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.3);
+  }
+}
+
+@keyframes nucleusPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes orbitalSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes satelliteOrbit {
+  from {
+    transform: translate3d(-50%, -50%, 0) rotate(calc(var(--phase) * 1deg));
+  }
+  to {
+    transform: translate3d(-50%, -50%, 0)
+      rotate(calc((var(--phase) + 360) * 1deg));
+  }
+}
+
+@keyframes satelliteCounterOrbit {
+  from {
+    transform: translate3d(var(--orbit-radius), -50%, 0)
+      rotate(calc(var(--phase) * -1deg));
+  }
+  to {
+    transform: translate3d(var(--orbit-radius), -50%, 0)
+      rotate(calc((var(--phase) + 360) * -1deg));
+  }
+}
+
+@keyframes ringDrift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0) scale(1.01);
+  }
+}
+
+/* Scoped to the embed container to avoid global overrides */
+.orbital-embed {
+  --accent-color: #00e5ff;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(0, 229, 255, 0.07) 0%,
+    rgba(5, 5, 16, 0.96) 38%,
+    #010102 72%,
+    #000000 100%
+  );
+  cursor: crosshair;
+  touch-action: manipulation;
+  position: relative;
+  overflow: hidden;
+}
+
+.orbital-embed .orbital-stage {
+  will-change: transform;
+}
+
+.orbital-embed .central-bloom {
+  left: 50%;
+  top: 50%;
+  width: min(620px, 90vw);
+  height: min(620px, 90vw);
+  transform: translate3d(-50%, -50%, 0);
+  z-index: 1;
+}
+
+.orbital-embed .orbital-ring {
+  animation: ringDrift 12s ease-in-out infinite;
+  will-change: transform;
+}
+
+.orbital-embed .satellite-orbit {
+  left: 50%;
+  top: 50%;
+  z-index: 18;
+  animation: satelliteOrbit var(--orbit-duration) linear infinite;
+  transform-origin: 0 0;
+  will-change: transform, opacity;
+}
+
+.orbital-embed .satellite-counter {
+  left: 0;
+  top: 0;
+  animation: satelliteCounterOrbit var(--orbit-duration) linear infinite;
+  will-change: transform;
+}
+
+.orbital-embed .satellite-button {
+  width: 140px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  pointer-events: auto;
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.orbital-embed .satellite-button:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 8px;
+  border-radius: 10px;
+}
+
+.orbital-embed .satellite-sphere {
+  width: 50px;
+  height: 50px;
+  background: radial-gradient(
+    circle at 35% 35%,
+    color-mix(in srgb, currentColor 52%, transparent),
+    rgba(1, 1, 2, 0.88) 72%
+  );
+  border: 1px solid color-mix(in srgb, currentColor 38%, transparent);
+  box-shadow:
+    0 0 18px color-mix(in srgb, currentColor 28%, transparent),
+    inset 0 0 16px color-mix(in srgb, currentColor 20%, transparent);
+}
+
+.orbital-embed .satellite-button:hover .satellite-sphere,
+.orbital-embed .satellite-button:focus-visible .satellite-sphere {
+  box-shadow:
+    0 0 24px color-mix(in srgb, currentColor 38%, transparent),
+    inset 0 0 18px color-mix(in srgb, currentColor 24%, transparent);
+}
+
+.orbital-embed .satellite-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.orbital-embed .satellite-label {
+  min-width: 112px;
+  padding: 6px 9px;
+  background: rgba(1, 1, 2, 0.68);
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 8px;
+  opacity: 0;
+  box-shadow: inset 0 0 12px color-mix(in srgb, currentColor 10%, transparent);
+  transform: translate3d(0, -4px, 0);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.orbital-embed .satellite-button:hover .satellite-label,
+.orbital-embed .satellite-button:focus-visible .satellite-label {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.orbital-embed .satellite-title,
+.orbital-embed .satellite-subtitle {
+  font-family: "JetBrains Mono", monospace;
+  white-space: nowrap;
+}
+
+.orbital-embed .satellite-title {
+  color: currentColor;
+  font-size: 11px;
+}
+
+.orbital-embed .satellite-subtitle {
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 9px;
+}
+
+.orbital-embed .nucleus {
+  width: min(300px, 68vw);
+  height: min(300px, 68vw);
+  z-index: 36;
+}
+
+.orbital-embed .nucleus-glow-outer {
+  width: 100%;
+  height: 100%;
+  animation: nucleusPulse 4s ease-in-out infinite;
+}
+
+.orbital-embed .nucleus-glow-inner {
+  width: 75%;
+  height: 75%;
+  animation: nucleusPulse 3s ease-in-out 0.5s infinite;
+}
+
+.orbital-embed .nucleus-core {
+  width: min(142px, 34vw);
+  height: min(142px, 34vw);
+}
+
+.orbital-embed .nucleus-card {
+  top: calc(50% + min(34px, 10vw));
+  width: min(250px, 76vw);
+  padding: 14px 18px;
+  background: rgba(1, 1, 2, 0.84);
+  border-radius: 8px;
+  z-index: 2;
+}
+
+.orbital-embed .hud-panel {
+  max-width: min(44vw, 455px);
+  padding: 10px 12px;
+  background: rgba(1, 1, 2, 0.62);
+  border: 1px solid rgba(0, 229, 255, 0.12);
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.orbital-embed .nucleus-category {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+}
+
+.orbital-embed .nucleus-title {
+  font-size: 17px;
+  line-height: 1.3;
+}
+
+.orbital-embed .nucleus-description {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 10px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-height: 1.5;
+}
+
+/* Selection and scrollbar scoped */
+.orbital-embed ::-webkit-scrollbar {
+  display: none;
+}
+
+.orbital-embed * {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.orbital-embed ::selection {
+  background: rgba(0, 229, 255, 0.3);
+  color: #ffffff;
+}
+
+@media (max-width: 820px) {
+  .orbital-embed .nucleus-card {
+    padding: 16px 18px;
+  }
+}
+
+@media (max-width: 560px) {
+  .orbital-embed .satellite-label {
+    min-width: 96px;
+  }
+
+  .orbital-embed .satellite-title {
+    font-size: 10px;
+  }
+
+  .orbital-embed .satellite-subtitle {
+    display: none;
+  }
+
+  .orbital-embed .nucleus-description {
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbital-embed *,
+  .orbital-embed *::before,
+  .orbital-embed *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
