@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750">
+  <defs>
+    <linearGradient id="g1" x1="0" x2="1">
+      <stop offset="0" stop-color="#4F46E5" />
+      <stop offset="1" stop-color="#06B6D4" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="#0f172a" />
+  <g transform="translate(80,80)">
+    <rect width="1040" height="580" rx="18" fill="#0b1220" />
+    <rect x="24" y="24" width="992" height="68" rx="8" fill="url(#g1)" opacity="0.95" />
+    <g fill="#fff" font-family="Inter, sans-serif">
+      <text x="48" y="70" font-size="28" font-weight="700">PromptVault — Figma Prompt Generator</text>
+    </g>
+
+    <g transform="translate(40,120)">
+      <rect width="300" height="380" rx="10" fill="#0c1724" stroke="#1f2937" />
+      <rect x="320" width="520" height="380" rx="10" fill="#071026" stroke="#1f2937" />
+      <rect x="860" width="160" height="380" rx="10" fill="#071026" stroke="#1f2937" />
+
+      <g fill="#c7d2fe" font-family="JetBrains Mono, monospace">
+        <text x="18" y="30" font-size="14">Search</text>
+        <text x="340" y="30" font-size="14">Prompts</text>
+        <text x="876" y="30" font-size="14">Details</text>
+      </g>
+
+      <g fill="#94a3b8">
+        <rect x="18" y="48" width="264" height="28" rx="6" fill="#0b1220" />
+        <rect x="340" y="48" width="468" height="24" rx="6" fill="#071226" />
+        <rect x="876" y="48" width="116" height="24" rx="6" fill="#071226" />
+
+        <rect x="18" y="86" width="264" height="18" rx="4" />
+        <rect x="18" y="110" width="220" height="18" rx="4" />
+        <rect x="18" y="134" width="180" height="18" rx="4" />
+
+        <rect x="340" y="86" width="468" height="18" rx="4" />
+        <rect x="340" y="110" width="468" height="18" rx="4" />
+        <rect x="340" y="134" width="468" height="18" rx="4" />
+
+        <rect x="876" y="86" width="116" height="24" rx="6" />
+        <rect x="876" y="120" width="116" height="24" rx="6" />
+      </g>
+    </g>
+  </g>
+</svg>
