@@ -11,9 +11,11 @@ import './styles/globals.css'
 
 function CaseStudyRoute() {
   const { projectId } = useParams<{ projectId: string }>()
-  const project = projects.find(p => p.slug === projectId)
+  const project = projects.find(p =>
+    (p.slug ?? p.title.toLowerCase().replace(/\s+/g, '-')) === projectId
+  )
   if (!project) return <p style={{ padding: '4rem' }}>Project not found.</p>
-  return <CaseStudy project={project} />
+  return <CaseStudy />
 }
 
 export default function App() {
@@ -42,11 +44,29 @@ export default function App() {
 
   return (
     <Router>
-      <main style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh' }}>
+      <main style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', overflowX: 'hidden' }}>
         <ThemeToggle dark={dark} onToggle={toggleTheme} />
         <Routes>
           <Route path="/" element={
             <>
+              {/* Fixed inset border frame — outer */}
+              <div style={{
+                position: 'fixed',
+                inset: '0px',
+                border: '12px solid #ffffff',
+                borderRadius: '20px',
+                pointerEvents: 'none',
+                zIndex: 9999,
+              }} />
+              {/* Fixed inset border frame — inner */}
+              <div style={{
+                position: 'fixed',
+                inset: '18px',
+                border: '4px solid #FFD700',
+                borderRadius: '12px',
+                pointerEvents: 'none',
+                zIndex: 9999,
+              }} />
               <Hero />
               <Projects />
               <Footer />

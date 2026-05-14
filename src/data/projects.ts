@@ -30,7 +30,7 @@ export const projects: Project[] = [
     learned:
       "Data pipeline design, building searchable/filterable interfaces over large datasets, and structuring reference sites with editorial clarity.",
     url: "https://montana-civic-data.vercel.app/",
-    screenshot: "/screenshots/montana-civic-data.png",
+    screenshot: "/assets/screenshots/montana-civic-data.png",
   },
   {
     title: "Daily Mike",
@@ -41,7 +41,7 @@ export const projects: Project[] = [
     learned:
       "Large-scale Tailwind/shadcn component architecture, file structure refactoring, and building multiple tools under a single cohesive design system.",
     url: "https://mikethecookie.com/",
-    screenshot: "/screenshots/daily-mike.png",
+    screenshot: "/assets/screenshots/daily-mike.png",
   },
   {
     title: "Cameo Web",
@@ -52,7 +52,7 @@ export const projects: Project[] = [
     learned:
       "Component composition and building reusable UI patterns in React.",
     url: "https://cameo-web.vercel.app/",
-    screenshot: "/screenshots/cameo-web.gif",
+    screenshot: "/assets/screenshots/cameo-web.gif",
   },
   {
     title: "Floral Origami Case Study",
@@ -74,7 +74,7 @@ export const projects: Project[] = [
     learned:
       "Content architecture, image handling, and building sites with editorial structure.",
     url: "https://east-texas-heritage.vercel.app/",
-    screenshot: "/screenshots/east-texas-history.png",
+    screenshot: "/assets/screenshots/east-texas-history.png",
   },
   {
     title: "AI Text Sanitizer",
@@ -95,7 +95,7 @@ export const projects: Project[] = [
     learned:
       "Prompt engineering for AI design tools and how to distill research into actionable reference material.",
     url: "https://refmake.vercel.app/",
-    screenshot: "/screenshots/figma-make-mastery.png",
+    screenshot: "/assets/screenshots/figma-make-mastery.png",
   },
   {
     title: "Orbital UI Concept",
@@ -117,12 +117,12 @@ export const projects: Project[] = [
     learned:
       "Built a token-first design system, crafted motion-led homepage interactions, and optimized the static Vite build for deployment-ready delivery.",
     url: "/work/cowboy-2050",
-    screenshot: "/screenshots/cowboy-2050-hero.png",
+    screenshot: "/assets/screenshots/cowboy-2050-hero.png",
     screenshots: [
-      "/screenshots/cowboy-2050-hero.png",
-      "/screenshots/cowboy-2050-edit.png",
-      "/screenshots/cowboy-2050-wanted.png",
-      "/screenshots/cowboy-2050-visit.png",
+      "/assets/screenshots/cowboy-2050-hero.png",
+      "/assets/screenshots/cowboy-2050-edit.png",
+      "/assets/screenshots/cowboy-2050-wanted.png",
+      "/assets/screenshots/cowboy-2050-visit.png",
     ],
   },
 ];

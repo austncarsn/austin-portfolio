@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
+  <defs>
+    <filter id="hotdog-shadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="2.5" stdDeviation="2" flood-color="#2a1505" flood-opacity="0.28"/>
+    </filter>
+    <radialGradient id="bun-back-grad" cx="45%" cy="40%" r="58%">
+      <stop offset="0%" stop-color="#F5C06A"/>
+      <stop offset="60%" stop-color="#D99142"/>
+      <stop offset="100%" stop-color="#B8712A"/>
+    </radialGradient>
+    <radialGradient id="bun-front-grad" cx="40%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#FDDFA0"/>
+      <stop offset="55%" stop-color="#F3B360"/>
+      <stop offset="100%" stop-color="#D4883A"/>
+    </radialGradient>
+    <radialGradient id="frank-grad" cx="38%" cy="35%" r="58%">
+      <stop offset="0%" stop-color="#D85040"/>
+      <stop offset="50%" stop-color="#B83428"/>
+      <stop offset="100%" stop-color="#8C2018"/>
+    </radialGradient>
+  </defs>
+
+  <g filter="url(#hotdog-shadow)">
+    <!-- Back Bun -->
+    <path d="M 8 10 C 4 14, 5.5 25, 10 28.5 C 14.5 32, 26 30, 29.5 26 C 33 22, 31 10, 26.5 6.5 C 22 3, 12 6, 8 10 Z"
+          fill="url(#bun-back-grad)"/>
+    <!-- Bun back shadow edge -->
+    <path d="M 10 28.5 C 14.5 32, 26 30, 29.5 26 C 30.5 24.5, 31 22, 31 20 C 28 25, 18 30, 10 28.5 Z"
+          fill="#B8712A" opacity="0.35"/>
+
+    <!-- Frankfurter -->
+    <path d="M 5 7 C 1 11.5, 4.5 26, 9 30 C 13.5 34, 26 34, 30 30 C 34 26, 32 11, 27.5 7 C 23 3, 9 3, 5 7 Z"
+          fill="url(#frank-grad)"/>
+    <!-- Frank highlight -->
+    <path d="M 9 8 C 6 11, 6 17, 8 21 C 9.5 18, 11 14, 12.5 11 Z"
+          fill="#E86050" opacity="0.4"/>
+    <!-- Frank shadow edge -->
+    <path d="M 9 30 C 13.5 34, 26 34, 30 30 C 32 28, 33 25, 33 22 C 29 28, 18 33, 9 30 Z"
+          fill="#7a1a10" opacity="0.3"/>
+
+    <!-- Mustard zigzag -->
+    <path d="M 6 8.5 Q 12 5.5, 10 13 T 16 17.5 T 14.5 23.5 T 21 27 T 22 31"
+          fill="none" stroke="#F5C40A" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Mustard highlight -->
+    <path d="M 6 8.5 Q 12 5.5, 10 13 T 16 17.5 T 14.5 23.5 T 21 27 T 22 31"
+          fill="none" stroke="#FDE560" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+
+    <!-- Front Bun -->
+    <path d="M 3 4.5 C 0 9, 1 18, 4.5 24 C 6 17, 11 10, 18.5 6.5 C 23.5 4, 29 5.5, 31 7 C 30 2, 24.5 -0.5, 18 0.5 C 12 0.5, 7 0.5, 3 4.5 Z"
+          fill="url(#bun-front-grad)"/>
+    <!-- Front bun top sheen -->
+    <path d="M 6 3 C 3.5 5.5, 2.5 9, 3.5 13 C 5 10, 8 7, 12 5 Z"
+          fill="white" opacity="0.18"/>
+  </g>
+</svg>

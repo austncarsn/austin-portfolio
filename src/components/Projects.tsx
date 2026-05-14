@@ -1,263 +1,141 @@
-import { useRef, useState } from "react";
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  AnimatePresence,
+} from "framer-motion";
+import type { MotionValue } from "framer-motion";
 import type { Project } from "../data/projects";
 import { projects } from "../data/projects";
 import styles from "./Projects.module.css";
 
-function ScreenshotPreview({
-  src,
-  screenshots,
-  title,
-}: {
-  src?: string;
-  screenshots?: string[];
-  title: string;
-}) {
-  const images = screenshots?.length ? screenshots : src ? [src] : [];
-  const [activeIndex, setActiveIndex] = useState(0);
-  const pointerStartX = useRef<number | null>(null);
+// ── Helpers ──────────────────────────────────────────────────────────
 
-  if (!images.length) return null;
+function getSlug(project: Project): string {
+  return project.slug ?? project.title.toLowerCase().replace(/\s+/g, "-");
+}
 
-  const activeImage = images[activeIndex];
+// ── Animation constants ──────────────────────────────────────────────
 
-  const showPrevious = () => {
-    setActiveIndex((currentIndex) =>
-      currentIndex === 0 ? images.length - 1 : currentIndex - 1,
-    );
-  };
+const EASE = [0.2, 0.6, 0.2, 1] as const;
 
-  const showNext = () => {
-    setActiveIndex((currentIndex) => (currentIndex + 1) % images.length);
-  };
+const listVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.07 } },
+};
 
-  const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
-    if (images.length <= 1) return;
+const rowVariants = {
+  hidden: { opacity: 0, y: 14 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: EASE },
+  },
+};
 
-    const movement =
-      Math.abs(event.deltaX) > Math.abs(event.deltaY)
-        ? event.deltaX
-        : event.deltaY;
+// ── HoverPreview ─────────────────────────────────────────────────────
 
-    if (Math.abs(movement) < 12) return;
+interface HoverPreviewProps {
+  project: Project | null;
+  x: MotionValue<number>;
+  y: MotionValue<number>;
+}
 
-    event.preventDefault();
-
-    if (movement > 0) {
-      showNext();
-      return;
-    }
-
-    showPrevious();
-  };
-
-  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (images.length <= 1) return;
-
-    pointerStartX.current = event.clientX;
-  };
-
-  const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (images.length <= 1 || pointerStartX.current === null) return;
-
-    const deltaX = event.clientX - pointerStartX.current;
-    pointerStartX.current = null;
-
-    if (Math.abs(deltaX) < 36) return;
-
-    if (deltaX < 0) {
-      showNext();
-      return;
-    }
-
-    showPrevious();
-  };
+function HoverPreview({ project, x, y }: HoverPreviewProps) {
+  const src = project?.screenshots?.[0] ?? project?.screenshot;
 
   return (
-    <div
-      className={`${styles.screenshotWrap} ${
-        images.length > 1 ? styles.screenshotInteractive : ""
-      }`}
-      onWheel={handleWheel}
-      onPointerDown={handlePointerDown}
-      onPointerUp={handlePointerUp}
-      onPointerLeave={() => {
-        pointerStartX.current = null;
-      }}
-    >
-      <img
-        key={activeImage}
-        className={styles.screenshot}
-        src={activeImage}
-        alt={`${title} preview ${activeIndex + 1}`}
-        loading="lazy"
-        decoding="async"
-        onError={(e) => {
-          e.currentTarget
-            .closest(`.${styles.screenshotWrap}`)
-            ?.classList.add(styles.isMissing);
-        }}
-      />
-
-      {images.length > 1 && (
-        <div className={styles.screenshotStatus} aria-hidden="true">
-          <span className={styles.screenshotHint}>Hover and swipe</span>
-
-          <span className={styles.screenshotCount}>
-            {String(activeIndex + 1).padStart(2, "0")} /
-            {String(images.length).padStart(2, "0")}
-          </span>
-
-          <div className={styles.screenshotDots}>
-            {images.map((image, index) => (
-              <span
-                key={`${image}-${index}`}
-                className={`${styles.screenshotDot} ${
-                  index === activeIndex ? styles.screenshotDotActive : ""
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {images.length > 1 && (
-        <>
-          <button
-            type="button"
-            className={`${styles.screenshotNav} ${styles.screenshotNavPrev}`}
-            aria-label={`Previous ${title} screenshot`}
-            onClick={(event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              showPrevious();
+    <AnimatePresence>
+      {project && src && (
+        <motion.div
+          key={project.title}
+          className={styles.preview}
+          style={{
+            x,
+            y,
+            translateX: "-50%",
+            translateY: "-108%",
+          }}
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.92 }}
+          transition={{ duration: 0.18, ease: EASE }}
+        >
+          <img
+            className={styles.previewImg}
+            src={src}
+            alt={`${project.title} preview`}
+            loading="lazy"
+            decoding="async"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
             }}
-          >
-            ←
-          </button>
-
-          <button
-            type="button"
-            className={`${styles.screenshotNav} ${styles.screenshotNavNext}`}
-            aria-label={`Next ${title} screenshot`}
-            onClick={(event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              showNext();
-            }}
-          >
-            →
-          </button>
-        </>
+          />
+        </motion.div>
       )}
-    </div>
+    </AnimatePresence>
   );
 }
 
-function ProjectMeta({ project, index }: { project: Project; index: number }) {
-  return (
-    <div className={styles.meta}>
-      <span className={styles.index}>{String(index).padStart(2, "0")}</span>
+// ── ProjectRow ───────────────────────────────────────────────────────
 
-      <span className={styles.label}>{project.label}</span>
-
-      {project.date && (
-        <>
-          <span className={styles.metaDot} aria-hidden="true" />
-          <span className={styles.date}>{project.date}</span>
-        </>
-      )}
-    </div>
-  );
+interface ProjectRowProps {
+  project: Project;
+  index: number;
+  onEnter: (p: Project) => void;
 }
 
-function FeaturedCard({ project }: { project: Project }) {
-  const isExternal = project.url.startsWith("http");
+function ProjectRow({ project, index, onEnter }: ProjectRowProps) {
+  const hasPreview = !!(project.screenshot || project.screenshots?.length);
 
   return (
-    <Link
-      className={styles.featuredCard}
-      to={`/work/${project.slug || project.title.toLowerCase().replace(/\s+/g, '-')}`}
-      aria-label={`${project.title}, ${project.description}${isExternal ? ", opens in new tab" : ""}`}
+    <motion.li
+      className={styles.row}
+      variants={rowVariants}
+      onMouseEnter={hasPreview ? () => onEnter(project) : undefined}
     >
-      <div className={styles.featuredContent}>
-        <ProjectMeta project={project} index={1} />
+      <Link
+        className={styles.rowLink}
+        to={`/work/${getSlug(project)}`}
+        aria-label={`${project.title} — ${project.label}`}
+        onClick={() => window.scrollTo({ top: 0 })}
+      >
+        <span className={styles.rowIndex} aria-hidden="true">
+          {String(index).padStart(2, "0")}
+        </span>
 
-        <div className={styles.featuredText}>
-          <h3 className={styles.featuredTitle}>{project.title}</h3>
+        <span className={styles.rowLabel}>{project.label}</span>
 
-          <p className={styles.description}>{project.description}</p>
+        <span className={styles.rowTitle}>{project.title}</span>
 
-          {project.learned && (
-            <p className={styles.learned}>
-              <span className={styles.learnedLabel}>Takeaway</span>
-              {project.learned}
-            </p>
-          )}
-        </div>
+        <span className={styles.rowDate}>{project.date}</span>
 
-        <div className={styles.ctaRow}>
-          <span className={styles.ctaText}>View project</span>
-          <span className={styles.arrow} aria-hidden="true">
-            ↗
-          </span>
-        </div>
-      </div>
-
-      <ScreenshotPreview
-        src={project.screenshot}
-        screenshots={project.screenshots}
-        title={project.title}
-      />
-      </Link>
-  );
-}
-
-function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const isExternal = project.url.startsWith("http");
-
-  return (
-    <Link
-      className={styles.card}
-      to={`/work/${project.slug || project.title.toLowerCase().replace(/\s+/g, '-')}`}
-      aria-label={`${project.title}, ${project.description}${isExternal ? ", opens in new tab" : ""}`}
-    >
-      <div className={styles.cardTop}>
-        <ProjectMeta project={project} index={index} />
-
-        <span className={styles.arrow} aria-hidden="true">
+        <span className={styles.rowArrow} aria-hidden="true">
           ↗
         </span>
-      </div>
-
-      <ScreenshotPreview
-        src={project.screenshot}
-        screenshots={project.screenshots}
-        title={project.title}
-      />
-
-      <div className={styles.cardBody}>
-        <h3 className={styles.title}>{project.title}</h3>
-
-        <div className={styles.infoWrap}>
-          <p className={styles.description}>{project.description}</p>
-
-          {project.learned && (
-            <p className={styles.learned}>
-              <span className={styles.learnedLabel}>Takeaway</span>
-              {project.learned}
-            </p>
-          )}
-        </div>
-      </div>
       </Link>
+    </motion.li>
   );
 }
 
+// ── Projects ─────────────────────────────────────────────────────────
+
 export default function Projects() {
+  const [activePreview, setActivePreview] = useState<Project | null>(null);
+
+  const cursorX = useMotionValue(0);
+  const cursorY = useMotionValue(0);
+  const springX = useSpring(cursorX, { stiffness: 280, damping: 28, mass: 0.6 });
+  const springY = useSpring(cursorY, { stiffness: 280, damping: 28, mass: 0.6 });
+
   if (!projects.length) return null;
 
-  const [featured, ...rest] = projects;
+  const handleMouseMove = (e: React.MouseEvent) => {
+    cursorX.set(e.clientX);
+    cursorY.set(e.clientY);
+  };
 
   return (
     <>
@@ -265,39 +143,31 @@ export default function Projects() {
 
       <section
         id="work"
+        aria-label="Selected work"
         className={styles.section}
-        aria-labelledby="work-heading"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={() => setActivePreview(null)}
       >
         <div className={styles.container}>
-          <div className={styles.header}>
-            <div className={styles.headingBlock}>
-              <span className={styles.kicker}>Selected work</span>
-              <h2 className={styles.heading} id="work-heading">
-                Develop<em className={styles.headingItalic}>ments</em>
-              </h2>
-            </div>
-
-            <div className={styles.headerRight}>
-              <span className={styles.count} aria-hidden="true">
-                {String(projects.length).padStart(2, "0")}
-              </span>
-            </div>
-          </div>
-
-          <FeaturedCard project={featured} />
-
-          {rest.length > 0 && (
-            <div className={styles.grid}>
-              {rest.map((project, i) => (
-                <ProjectCard
-                  key={project.url ?? project.title}
-                  project={project}
-                  index={i + 2}
-                />
-              ))}
-            </div>
-          )}
+          <motion.ul
+            className={styles.list}
+            variants={listVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.08 }}
+          >
+            {projects.map((project, i) => (
+              <ProjectRow
+                key={project.slug ?? project.title}
+                project={project}
+                index={i + 1}
+                onEnter={setActivePreview}
+              />
+            ))}
+          </motion.ul>
         </div>
+
+        <HoverPreview project={activePreview} x={springX} y={springY} />
       </section>
 
       <div className="divider-bar" />

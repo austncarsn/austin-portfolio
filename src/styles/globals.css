@@ -20,24 +20,24 @@
   color-scheme: light;
 
   /* Surfaces */
-  --paper: #EAECE8;
-  --paper-2: #DEE1DE;
-  --paper-3: #CFD3D0;
-  --chrome: #BCC0BD;
-  --bone: #F4F5F2;
+  --paper: #F0EDE6;
+  --paper-2: #E6E2DA;
+  --paper-3: #D8D4CB;
+  --chrome: #B8B4AB;
+  --bone: #F8F6F1;
 
   /* Ink */
-  --ink: #0C0C0C;
-  --ink-2: #262827;
-  --ink-3: #6A6E6C;
-  --ink-4: #9A9E9C;
-  --rule: #BEC2BF;
-  --rule-soft: #D2D6D3;
+  --ink: #0A0906;
+  --ink-2: #231F18;
+  --ink-3: #6B6560;
+  --ink-4: #9C9890;
+  --rule: #C4BFB6;
+  --rule-soft: #D8D4CB;
 
   /* Brand accents */
-  --ac-blue: #0057B7;
-  --ac-yellow: #FFD60A;
-  --ac-red: #E8352E;
+  --ac-blue: #0052A8;
+  --ac-yellow: #F5C800;
+  --ac-red: #D42E28;
 
   /* Cameo palette */
   --cameo-lilac: #BFB0CC;
@@ -175,18 +175,18 @@
 
 .dark {
   color-scheme: dark;
-  --paper: #141413;
-  --paper-2: #1A1A18;
-  --paper-3: #252623;
-  --chrome: #5C625D;
-  --bone: #1E201E;
+  --paper: #16140F;
+  --paper-2: #1D1A14;
+  --paper-3: #28251D;
+  --chrome: #5A5650;
+  --bone: #201E18;
 
-  --ink: #F4F5F2;
-  --ink-2: #D9DDD8;
-  --ink-3: #A8AEA8;
-  --ink-4: #6F7670;
-  --rule: #3D423E;
-  --rule-soft: #2C312D;
+  --ink: #F5F2EB;
+  --ink-2: #DDD9D0;
+  --ink-3: #A09C94;
+  --ink-4: #6A6660;
+  --rule: #3A362E;
+  --rule-soft: #2A271F;
 
   --bg: var(--paper);
   --bg-elevated: var(--bone);
@@ -243,7 +243,7 @@ html {
 body {
   min-height: 100%;
   background:
-    linear-gradient(180deg, rgba(244, 245, 242, 0.28), transparent 220px),
+    linear-gradient(180deg, rgba(248, 246, 241, 0.32), transparent 280px),
     var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
@@ -278,17 +278,38 @@ select {
 
 .divider-bar {
   width: 100%;
-  height: 7px;
-  background: transparent;
-  border-top: var(--bw) solid var(--rule);
-  border-bottom: var(--bw-2) solid var(--rule);
-  opacity: 0.72;
+  height: 18px;
+  background: linear-gradient(
+    to bottom,
+    #f8f6f1 0%,
+    #ede9e1 18%,
+    #d8d4cb 40%,
+    #c8c4ba 55%,
+    #d4d0c7 72%,
+    #e6e2da 88%,
+    #f0ede6 100%
+  );
+  box-shadow:
+    0 -1px 0 rgba(255,252,245,0.9),
+    0 2px 6px rgba(10,9,6,0.10),
+    0 6px 18px rgba(10,9,6,0.06);
 }
 
 .dark .divider-bar {
-  border-top-color: var(--rule);
-  border-bottom-color: var(--rule);
-  opacity: 0.6;
+  background: linear-gradient(
+    to bottom,
+    #38342c 0%,
+    #2c2820 20%,
+    #211e17 45%,
+    #181510 55%,
+    #221f18 72%,
+    #2c2820 88%,
+    #34302a 100%
+  );
+  box-shadow:
+    0 -1px 0 rgba(245,242,235,0.06),
+    0 2px 6px rgba(0,0,0,0.38),
+    0 6px 18px rgba(0,0,0,0.22);
 }
 
 /* ═══════════════════════════════════════════════════════════════

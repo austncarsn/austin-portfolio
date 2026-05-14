@@ -8,16 +8,24 @@ export default function Footer() {
   return (
     <footer
       style={{
-        padding: '3rem 1.5rem',
-        maxWidth: '800px',
+        padding: '4rem 1.5rem 0',
+        maxWidth: '56rem',
         margin: '0 auto',
+        marginTop: '4rem',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        gap: '2rem',
+        alignItems: 'flex-start',
+        gap: '3rem',
+        borderTop: '1px solid var(--rule)',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      <div style={{ display: 'flex', gap: '3rem' }}>
+      <div style={{ 
+        display: 'flex', 
+        gap: '2rem',
+        flexWrap: 'wrap' 
+      }}>
         {links.map((link) => (
           <a
             key={link.label}
@@ -25,27 +33,66 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              fontSize: '0.9rem',
+              fontFamily: 'var(--font-mono)',
+              fontSize: 'var(--t-micro)',
+              letterSpacing: 'var(--track-mono)',
               textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              color: 'var(--color-text-secondary)',
-              textDecoration: 'none'
+              color: 'var(--ink-3)',
+              textDecoration: 'none',
+              transition: 'color 0.2s ease',
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--ink)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ink-3)')}
           >
             {link.label}
           </a>
         ))}
       </div>
 
-      <div style={{ textAlign: 'center' }}>
+      {/* Tulip — anchored to bottom center */}
+      <img
+        src="/assets/icons/tulip.png"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          height: '192px',
+          width: 'auto',
+          objectFit: 'contain',
+          display: 'block',
+          pointerEvents: 'none',
+        }}
+      />
+
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        paddingBottom: '4rem',
+        position: 'relative',
+        zIndex: 1,
+      }}>
         <p style={{
-          fontSize: '0.85rem',
-          letterSpacing: '0.05em',
-          color: 'var(--color-text-secondary)',
-          opacity: 0.8,
-          marginTop: '0.5rem'
+          fontFamily: 'var(--font-mono)',
+          fontSize: 'var(--t-micro)',
+          letterSpacing: 'var(--track-mono)',
+          color: 'var(--ink-4)',
+          textTransform: 'uppercase',
         }}>
-          © {new Date().getFullYear()} Austin Carson. All rights reserved.
+          © {new Date().getFullYear()} Austin Carson
+        </p>
+        <p style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 'var(--t-micro)',
+          letterSpacing: 'var(--track-mono)',
+          color: 'var(--ink-4)',
+          textTransform: 'uppercase',
+        }}>
+          Site developed by AC
         </p>
       </div>
     </footer>
