@@ -7,6 +7,7 @@ export interface Project {
   label: string;
   date: string;
   screenshot?: string;
+  screenshots?: string[];
 }
 
 export const projects: Project[] = [
@@ -42,6 +43,17 @@ export const projects: Project[] = [
       "Component composition and building reusable UI patterns in React.",
     url: "https://cameo-web.vercel.app/",
     screenshot: "/screenshots/cameo-web.gif",
+  },
+  {
+    title: "Floral Origami Case Study",
+    slug: "floral-origami",
+    label: "Interactive App",
+    date: "May 2026",
+    description:
+      "A reactive Vite + React experience built with motion-driven neon UI, stage-based interaction, and a custom mini-game-inspired button flow.",
+    learned:
+      "Designed a motion-led interactive surface, layered neon styling, and an event-driven press-count state machine with particle animation.",
+    url: "/work/floral-origami",
   },
   {
     title: "East Texas History",
@@ -95,6 +107,12 @@ export const projects: Project[] = [
     learned:
       "Built a token-first design system, crafted motion-led homepage interactions, and optimized the static Vite build for deployment-ready delivery.",
     url: "/work/cowboy-2050",
-    screenshot: "/screenshots/cowboy-2050.png",
+    screenshot: "/screenshots/cowboy-2050-hero.png",
+    screenshots: [
+      "/screenshots/cowboy-2050-hero.png",
+      "/screenshots/cowboy-2050-edit.png",
+      "/screenshots/cowboy-2050-wanted.png",
+      "/screenshots/cowboy-2050-visit.png",
+    ],
   },
 ];
