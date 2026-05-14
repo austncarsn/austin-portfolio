@@ -12,6 +12,16 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Figma Prompt Generator",
+    label: "Tool",
+    date: "May 2026",
+    description:
+      "A utility site for crafting and generating effective prompts tailored specifically for Figma design generation, helping users iterate on AI-assisted designs.",
+    learned:
+      "Building prompt generation interfaces and structuring web tools to streamline repetitive AI design workflows.",
+    url: "https://figma-prompt-generator.vercel.app/",
+  },
+  {
     title: "Montana Civic Data",
     label: "Data",
     date: "May 2026",
