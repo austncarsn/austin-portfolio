@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import React from "react";
-import { Project } from "../data/projects";
-import { OrbitalUI } from "../ui/OrbitalUI";
+import { useParams, Link } from "react-router-dom";
+import { Project } from "../../data/projects";
+import { projects } from "../../data/projects";
+// import { OrbitalUI } from "../ui/OrbitalUI"; // Component missing from source
 
 // ── Motion ──────────────────────────────────────────────────────────
 const fadeUp = {
@@ -184,7 +186,21 @@ const buildContent = (project: Project): CaseStudyContent => {
 };
 
 // ── Main ────────────────────────────────────────────────────────────
-export const CaseStudy = ({ project }: { project: Project }) => {
+export default function CaseStudy() {
+  const { projectId } = useParams<{ projectId: string }>();
+  const project = projects.find(p => p.slug === projectId || p.title.toLowerCase().replace(/\s+/g, '-') === projectId);
+
+  if (!project) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg)] text-[var(--bone)]">
+        <div className="text-center">
+          <h1 className="text-4xl font-display mb-4">Project Not Found</h1>
+          <Link to="/" className="ac-eyebrow hover:underline">← Back to home</Link>
+        </div>
+      </div>
+    );
+  }
+
   const content = buildContent(project);
   const images = project.screenshots?.length
     ? project.screenshots
@@ -198,7 +214,6 @@ export const CaseStudy = ({ project }: { project: Project }) => {
       style={{ background: "var(--paper)", color: "var(--ink)" }}
       className="min-h-screen antialiased"
     >
-      {/* ── Hero ── */}
       <header
         style={{
           background: "var(--cameo-onyx)",
@@ -267,7 +282,6 @@ export const CaseStudy = ({ project }: { project: Project }) => {
         </div>
       </header>
 
-      {/* ── Screenshot strip ── */}
       {images.length > 0 && (
         <div
           style={{
@@ -311,17 +325,11 @@ export const CaseStudy = ({ project }: { project: Project }) => {
         </div>
       )}
 
-      {/* ── The Vision ── */}
       <Section eyebrow="The Vision">
         <div className="flex flex-col gap-8">
           <p className="ac-prose" style={{ maxWidth: "38rem" }}>
             {content.vision}
           </p>
-          {content.visionExtra === "orbital" && (
-            <div style={{ marginTop: "1rem" }}>
-              <OrbitalUI />
-            </div>
-          )}
           {content.visionExtra === "first-image" && images[0] && (
             <div style={{ marginTop: "1rem" }}>
               <img
@@ -339,7 +347,6 @@ export const CaseStudy = ({ project }: { project: Project }) => {
         </div>
       </Section>
 
-      {/* ── Engineering ── */}
       <Section eyebrow="Engineering" tinted>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {content.engineering.map((card) => (
@@ -351,14 +358,12 @@ export const CaseStudy = ({ project }: { project: Project }) => {
         </div>
       </Section>
 
-      {/* ── Outcome ── */}
       <Section eyebrow="Outcome">
         <blockquote style={blockquoteStyle}>
           {content.outcome ?? project.description}
         </blockquote>
       </Section>
 
-      {/* ── Footer nav ── */}
       <div
         style={{
           borderTop: "1px dashed var(--rule)",
@@ -368,11 +373,11 @@ export const CaseStudy = ({ project }: { project: Project }) => {
         className="md:px-12"
       >
         <div className="max-w-4xl mx-auto">
-          <a href="/" className="ac-eyebrow ac-back-link">
+          <Link to="/" className="ac-eyebrow ac-back-link">
             ← Back to work
-          </a>
+          </Link>
         </div>
       </div>
     </div>
   );
-};
+}

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { Link } from 'react-router-dom';
 import type { Project } from "../data/projects";
 import { projects } from "../data/projects";
 import styles from "./Projects.module.css";
@@ -174,11 +175,9 @@ function FeaturedCard({ project }: { project: Project }) {
   const isExternal = project.url.startsWith("http");
 
   return (
-    <a
+    <Link
       className={styles.featuredCard}
-      href={project.url}
-      target={isExternal ? "_blank" : undefined}
-      rel={isExternal ? "noopener noreferrer" : undefined}
+      to={`/work/${project.slug || project.title.toLowerCase().replace(/\s+/g, '-')}`}
       aria-label={`${project.title}, ${project.description}${isExternal ? ", opens in new tab" : ""}`}
     >
       <div className={styles.featuredContent}>
@@ -210,7 +209,7 @@ function FeaturedCard({ project }: { project: Project }) {
         screenshots={project.screenshots}
         title={project.title}
       />
-    </a>
+      </Link>
   );
 }
 
@@ -218,11 +217,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   const isExternal = project.url.startsWith("http");
 
   return (
-    <a
+    <Link
       className={styles.card}
-      href={project.url}
-      target={isExternal ? "_blank" : undefined}
-      rel={isExternal ? "noopener noreferrer" : undefined}
+      to={`/work/${project.slug || project.title.toLowerCase().replace(/\s+/g, '-')}`}
       aria-label={`${project.title}, ${project.description}${isExternal ? ", opens in new tab" : ""}`}
     >
       <div className={styles.cardTop}>
@@ -253,7 +250,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           )}
         </div>
       </div>
-    </a>
+      </Link>
   );
 }
 

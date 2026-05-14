@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realistic 3D Animated Laptop Widget</title>
+    <style>
+        :root {
+            /* Ultra-Premium Titanium Silver */
+            --alum-top: #fdfdfe;
+            --alum-mid: #e8ebee;
+            --alum-bottom: #b5bbc4;
+            --alum-edge-dark: #8c939d;
+            --alum-edge-light: #ffffff;
+            --alum-hinge: #40434a;
+            
+            /* Screen & Keyboard */
+            --screen-bezel: #040405;
+            --screen-bg: #090c11;
+            --keyboard-bg: #111114;
+            --key-color: #17171a;
+            --key-highlight: #2c2c32;
+            
+            /* UI Window Colors */
+            --window-bg: #141417;
+            --window-header: #202025;
+            --window-border: #2a2a32;
+            --terminal-bg: #0a0a0c;
+            
+            /* Code Syntax (Modern Neon) */
+            --code-blue: #58a6ff;
+            --code-pink: #ff7b72;
+            --code-yellow: #f2cc60;
+            --code-string: #a5d6ff;
+            --code-green: #3fb950;
+            --code-purple: #d2a8ff;
+            --code-comment: #8b949e;
+            --code-text: #e6edf3;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* Transparent background for perfect website integration */
+            background: transparent; 
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Strict 500x500 framing */
+        .scene {
+            width: 500px;
+            height: 500px;
+            perspective: 1600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Handles interactive Parallax without distorting the layout frame */
+        .laptop-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform-style: preserve-3d;
+            transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+            /* Scale down slightly to ensure animations never clip outside the 500x500 box */
+            transform: scale(0.85); 
+        }
+
+        /* Adaptive Ambient Shadow - works on light and dark backgrounds */
+        .shadow {
+            position: absolute;
+            width: 420px;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.4);
+            filter: blur(28px);
+            border-radius: 50%;
+            transform: translateY(150px) rotateX(60deg) rotateZ(-30deg) translateZ(-90px);
+            animation: shadowFloat 12s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shadowFloat {
+            0%, 100% { transform: translateY(150px) rotateX(60deg) rotateZ(-30deg) translateZ(-90px) scale(1); opacity: 0.5; filter: blur(28px); }
+            50% { transform: translateY(150px) rotateX(60deg) rotateZ(-30deg) translateZ(-90px) scale(0.85); opacity: 0.2; filter: blur(38px); }
+        }
+
+        /* Soft screen glow bleeding out from the laptop */
+        .ambient-glow {
+            position: absolute;
+            width: 450px; height: 450px;
+            background: radial-gradient(circle, rgba(88, 166, 255, 0.12) 0%, transparent 65%);
+            filter: blur(40px);
+            animation: ambientPulse 12s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+            pointer-events: none;
+        }
+
+        @keyframes ambientPulse {
+            0%, 20% { opacity: 0; transform: scale(0.9); }
+            45%, 65% { opacity: 1; transform: scale(1.05); }
+            90%, 100% { opacity: 0; transform: scale(0.9); }
+        }
+
+        /* Main Laptop Body */
+        .laptop {
+            position: absolute;
+            transform-style: preserve-3d;
+            transform: rotateX(60deg) rotateZ(-30deg);
+            animation: float 12s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: rotateX(60deg) rotateZ(-30deg) translateZ(0px); }
+            50% { transform: rotateX(62.5deg) rotateZ(-28deg) translateZ(35px); }
+        }
+
+        .face {
+            position: absolute;
+            left: 50%; top: 50%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        /* ================= BASE ASSEMBLY ================= */
+        .base {
+            position: absolute;
+            left: 50%; top: 50%;
+            transform-style: preserve-3d;
+        }
+
+        .base-top {
+            width: 320px; height: 220px;
+            margin-left: -160px; margin-top: -110px;
+            background: linear-gradient(135deg, var(--alum-top) 0%, var(--alum-mid) 45%, var(--alum-bottom) 100%);
+            border-radius: 14px;
+            transform: translateZ(5px);
+            box-shadow: 
+                inset 0 0 3px rgba(255,255,255,1),
+                inset 0 1px 2px rgba(255,255,255,0.7);
+        }
+
+        .base-bottom {
+            width: 320px; height: 220px;
+            margin-left: -160px; margin-top: -110px;
+            background: linear-gradient(135deg, #7c828d, var(--alum-bottom));
+            border-radius: 14px;
+            transform: rotateX(180deg) translateZ(5px);
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.4);
+        }
+
+        .base-front {
+            width: 300px; height: 10px;
+            margin-left: -150px; margin-top: -5px;
+            background: linear-gradient(to bottom, var(--alum-edge-dark), #6b7078);
+            transform: rotateX(-90deg) translateZ(110px);
+            border-radius: 2px;
+        }
+
+        .base-back {
+            width: 300px; height: 10px;
+            margin-left: -150px; margin-top: -5px;
+            background: linear-gradient(to bottom, #6b7078, var(--alum-hinge));
+            transform: rotateX(90deg) translateZ(110px);
+        }
+
+        .base-left {
+            width: 10px; height: 200px;
+            margin-left: -5px; margin-top: -100px;
+            background: linear-gradient(to right, var(--alum-edge-light), var(--alum-mid));
+            transform: rotateY(-90deg) translateZ(160px);
+        }
+
+        .base-right {
+            width: 10px; height: 200px;
+            margin-left: -5px; margin-top: -100px;
+            background: linear-gradient(to right, var(--alum-mid), var(--alum-edge-dark));
+            transform: rotateY(90deg) translateZ(160px);
+        }
+
+        /* Keyboard Well */
+        .keyboard-well {
+            position: absolute;
+            top: 22px; left: 18px;
+            width: 284px; height: 108px;
+            background: linear-gradient(180deg, #131316 0%, #0a0a0c 100%);
+            border-radius: 7px;
+            box-shadow: 
+                inset 0 2px 6px rgba(0,0,0,0.8), 
+                inset 0 0 2px rgba(0,0,0,1),
+                0 1px 0 rgba(255,255,255,0.6);
+            display: flex;
+            flex-direction: column;
+            padding: 4px;
+            gap: 2px;
+        }
+
+        .kb-row { display: flex; gap: 2px; flex: 1; }
+        .key {
+            background: linear-gradient(180deg, #1d1d22 0%, #101013 100%);
+            border-radius: 2.5px;
+            flex: 1;
+            box-shadow: 
+                inset 0 1px 0 rgba(255,255,255,0.1),
+                inset 0 -1px 0 rgba(0,0,0,0.8),
+                0 1px 2px rgba(0,0,0,1);
+            position: relative;
+        }
+        .key::after {
+            content: ''; position: absolute;
+            top: 15%; left: 15%; right: 15%; bottom: 15%;
+            border-radius: 1px;
+            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 80%);
+        }
+        .k-wide { flex: 1.5; }
+        .k-wider { flex: 2; }
+        .k-space { flex: 6; }
+        .k-half { flex: 0.5; }
+
+        /* Keyboard Backlight */
+        .kb-backlight {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(88, 166, 255, 0.15) 0%, transparent 70%);
+            border-radius: 7px;
+            pointer-events: none;
+            animation: kbGlow 12s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+        }
+
+        @keyframes kbGlow {
+            0%, 20% { opacity: 0.1; }
+            45%, 65% { opacity: 1; }
+            90%, 100% { opacity: 0.1; }
+        }
+
+        /* Trackpad - Frosted Glass Reflection */
+        .trackpad {
+            position: absolute;
+            bottom: 14px; left: 50%;
+            transform: translateX(-50%);
+            width: 110px; height: 68px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(0,0,0,0.02));
+            border-radius: 7px;
+            box-shadow: 
+                inset 0 2px 5px rgba(0,0,0,0.15),
+                inset 0 -1px 1px rgba(255,255,255,0.3),
+                0 1px 0 rgba(255,255,255,0.8);
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+
+        /* Speaker grilles */
+        .speaker {
+            position: absolute;
+            top: 25px;
+            width: 14px; height: 105px;
+            background-image: radial-gradient(circle, #08080a 1px, transparent 1.5px);
+            background-size: 3px 3px;
+            opacity: 0.4;
+        }
+        .speaker-left { left: 4px; }
+        .speaker-right { right: 4px; }
+
+        /* Screen Glow Reflecting on Base */
+        .keyboard-glow {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 65%;
+            background: radial-gradient(ellipse at top center, rgba(88, 166, 255, 0.2) 0%, transparent 75%);
+            pointer-events: none;
+            border-radius: 14px;
+            animation: syncGlow 12s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+        }
+
+        /* ================= LID ASSEMBLY ================= */
+        .lid {
+            position: absolute;
+            left: 50%; top: 50%;
+            width: 320px; height: 210px;
+            margin-left: -160px;
+            margin-top: -320px;
+            transform-origin: bottom center;
+            transform-style: preserve-3d;
+            animation: openClose 12s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+        }
+
+        @keyframes openClose {
+            0%, 12% { transform: translateZ(6px) rotateX(-179.8deg); }
+            35%, 75% { transform: translateZ(6px) rotateX(-70deg); }
+            92%, 100% { transform: translateZ(6px) rotateX(-179.8deg); }
+        }
+
+        .lid-front {
+            width: 320px; height: 210px;
+            margin-left: -160px; margin-top: -105px;
+            background: var(--screen-bezel);
+            border-radius: 12px;
+            transform: translateZ(2px);
+            border: 1.5px solid #161618;
+            box-shadow: inset 0 0 0 1.5px #000;
+        }
+
+        .lid-back {
+            width: 320px; height: 210px;
+            margin-left: -160px; margin-top: -105px;
+            background: linear-gradient(135deg, var(--alum-top) 0%, var(--alum-mid) 50%, var(--alum-bottom) 100%);
+            border-radius: 12px;
+            transform: rotateX(180deg) translateZ(2px);
+            box-shadow: 
+                inset 0 0 3px rgba(255,255,255,0.8),
+                inset 0 1px 2px rgba(255,255,255,0.6);
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* OUTER DIGITAL SCREEN - E-Ink Matte Display */
+        .outer-display {
+            width: 250px;
+            height: 130px;
+            background: #e4e7eb; /* Paper-like background */
+            border-radius: 8px;
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 
+                inset 0 2px 8px rgba(0,0,0,0.12),
+                0 1px 1px rgba(255,255,255,0.5); /* Slight bevel in titanium */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .outer-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 14px;
+            background: transparent;
+            border-bottom: 2px solid #1a1a1a;
+            z-index: 2;
+        }
+
+        .outer-time {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 22px;
+            font-weight: 800;
+            color: #1a1a1a;
+            text-shadow: none;
+            display: flex;
+            align-items: center;
+            letter-spacing: 2px;
+        }
+
+        .blink {
+            animation: blinker 1s steps(2, start) infinite;
+            margin: 0 2px;
+        }
+        @keyframes blinker { to { visibility: hidden; } }
+
+        .outer-date {
+            color: #444;
+            font-size: 9px;
+            font-family: -apple-system, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 800;
+            opacity: 1;
+        }
+
+        .outer-swipe-container {
+            flex: 1;
+            position: relative;
+            display: flex;
+            width: 200%;
+            animation: panelSwipe 12s cubic-bezier(0.8, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes panelSwipe {
+            0%, 42% { transform: translateX(0); }
+            50%, 92% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        .outer-panel {
+            width: 50%;
+            height: 100%;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Panel 1: System Status */
+        .status-panel {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            padding: 0 10px;
+        }
+        .status-ring {
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            border: 4px solid #b5b9c0;
+            border-top-color: #1a1a1a;
+            border-right-color: #1a1a1a;
+            animation: spinRing 2s linear infinite;
+            box-shadow: none;
+        }
+        @keyframes spinRing { to { transform: rotate(360deg); } }
+
+        .status-lines {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .s-line {
+            height: 5px;
+            background: #b5b9c0;
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+        }
+        .s-line::after {
+            content: ''; position: absolute;
+            top: 0; left: 0; bottom: 0;
+            background: #1a1a1a;
+            box-shadow: none;
+            animation: pulseLine 2.5s ease-in-out infinite alternate;
+        }
+        .s-line:nth-child(2)::after { background: #555; animation-delay: -1.2s; }
+        .s-line:nth-child(3)::after { background: #888; animation-delay: -0.7s; }
+
+        @keyframes pulseLine {
+            0% { width: 25%; }
+            100% { width: 95%; }
+        }
+
+        /* Panel 2: Digital Keyboard */
+        .digital-kb {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+        }
+        .dkb-row {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+        .dkb-key {
+            height: 18px;
+            background: #cfd3d9;
+            border: 1px solid #aeb2b8;
+            border-radius: 4px;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        .dkb-key::after {
+            content: ''; position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #1a1a1a;
+            opacity: 0;
+        }
+        
+        .dkb-key:nth-child(3n+1)::after { animation: typeKey 2.2s infinite 0.2s; }
+        .dkb-key:nth-child(2n)::after { animation: typeKey 2.7s infinite 0.9s; }
+        .dkb-key:nth-child(5n)::after { animation: typeKey 3.1s infinite 1.4s; }
+        .dkb-space { flex: 4; }
+        .dkb-space::after { animation: typeKey 4.5s infinite 2.5s; }
+
+        @keyframes typeKey {
+            0%, 10% { opacity: 0; box-shadow: none; }
+            15% { opacity: 1; box-shadow: none; }
+            20%, 100% { opacity: 0; box-shadow: none; }
+        }
+
+        /* Matte E-ink Overlay */
+        .outer-reflection {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.08) 100%);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* ================= INNER SCREEN ================= */
+        .lid-top {
+            width: 300px; height: 4px;
+            margin-left: -150px; margin-top: -2px;
+            background: linear-gradient(to bottom, var(--alum-edge-light), var(--alum-mid));
+            transform: rotateX(90deg) translateZ(105px);
+        }
+
+        .lid-bottom {
+            width: 300px; height: 4px;
+            margin-left: -150px; margin-top: -2px;
+            background: linear-gradient(to bottom, #42454a, var(--alum-hinge));
+            transform: rotateX(-90deg) translateZ(105px);
+        }
+
+        .lid-left {
+            width: 4px; height: 190px;
+            margin-left: -2px; margin-top: -95px;
+            background: linear-gradient(to right, var(--alum-edge-dark), var(--alum-mid));
+            transform: rotateY(-90deg) translateZ(160px);
+        }
+
+        .lid-right {
+            width: 4px; height: 190px;
+            margin-left: -2px; margin-top: -95px;
+            background: linear-gradient(to right, var(--alum-mid), var(--alum-edge-light));
+            transform: rotateY(90deg) translateZ(160px);
+        }
+
+        .screen {
+            position: absolute;
+            top: 8px; left: 8px; right: 8px; bottom: 20px;
+            background: var(--screen-bg);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .screen-content {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            animation: screenPower 12s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+        }
+
+        @keyframes screenPower {
+            0%, 20% { opacity: 0; filter: brightness(0); }
+            28% { opacity: 1; filter: brightness(1.2); }
+            32%, 78% { opacity: 1; filter: brightness(1); }
+            86%, 100% { opacity: 0; filter: brightness(0); }
+        }
+
+        /* Wallpaper */
+        .wallpaper {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(74, 25, 66, 0.7) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(45, 27, 78, 0.8) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(30, 58, 95, 0.6) 0%, transparent 60%),
+                linear-gradient(180deg, #070911 0%, #16102a 50%, #0a0817 100%);
+        }
+
+        /* Stars on wallpaper */
+        .stars {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                radial-gradient(1px 1px at 20px 15px, rgba(255,255,255,0.9), transparent),
+                radial-gradient(1.5px 1.5px at 50px 30px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(1px 1px at 90px 10px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 130px 25px, rgba(255,255,255,0.5), transparent),
+                radial-gradient(1.5px 1.5px at 180px 18px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1px 1px at 220px 40px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(1px 1px at 260px 12px, rgba(255,255,255,0.9), transparent);
+            background-size: 300px 80px;
+            opacity: 0.7;
+        }
+
+        /* Menu bar */
+        .menu-bar {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 11px;
+            background: rgba(20, 20, 25, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            padding: 0 5px;
+            font-size: 5px;
+            color: #e6edf3;
+            gap: 5px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .menu-bar .apple-icon {
+            width: 5px; height: 5px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.9;
+        }
+        .menu-item { font-weight: 600; opacity: 0.85; }
+        .menu-item.bold { font-weight: 700; opacity: 1; }
+        .menu-spacer { flex: 1; }
+        .menu-status { font-size: 4.5px; opacity: 0.8; letter-spacing: 0.3px; }
+
+        /* Windows */
+        .window {
+            position: absolute;
+            background: var(--window-bg);
+            border-radius: 4px;
+            box-shadow: 
+                0 10px 25px rgba(0,0,0,0.8),
+                0 0 0 0.5px rgba(255,255,255,0.1);
+            overflow: hidden;
+            border: 0.5px solid var(--window-border);
+        }
+
+        .window-header {
+            height: 10px;
+            background: linear-gradient(180deg, #2a2a32, #202025);
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            gap: 2.5px;
+            border-bottom: 0.5px solid #101014;
+        }
+
+        .traffic-light {
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            box-shadow: inset 0 0 1.5px rgba(0,0,0,0.4);
+        }
+        .tl-red { background: #ff5f57; }
+        .tl-yellow { background: #febc2e; }
+        .tl-green { background: #28c840; }
+
+        .window-title {
+            flex: 1;
+            text-align: center;
+            font-size: 4.5px;
+            color: #b0b0b0;
+            font-weight: 600;
+            margin-right: 18px;
+            letter-spacing: 0.4px;
+        }
+
+        /* Code Editor Window */
+        .editor-window {
+            top: 14px; left: 6px;
+            width: 175px; height: 110px;
+        }
+
+        .editor-tabs {
+            height: 9px;
+            background: #18181b;
+            display: flex;
+            font-size: 4px;
+            border-bottom: 0.5px solid #000;
+        }
+        .editor-tab {
+            padding: 0 5px;
+            display: flex;
+            align-items: center;
+            color: #888;
+            border-right: 0.5px solid #000;
+        }
+        .editor-tab.active {
+            background: var(--window-bg);
+            color: #fff;
+        }
+        .editor-tab .dot {
+            width: 3px; height: 3px;
+            background: #58a6ff;
+            border-radius: 50%;
+            margin-right: 2px;
+        }
+
+        .editor-body {
+            display: flex;
+            height: calc(100% - 19px);
+        }
+
+        .line-numbers {
+            width: 12px;
+            background: #111114;
+            color: #555;
+            font-family: 'Courier New', monospace;
+            font-size: 4.5px;
+            text-align: right;
+            padding: 3px 2px 0 0;
+            line-height: 1.45;
+            border-right: 0.5px solid #000;
+        }
+
+        .code-area {
+            flex: 1;
+            padding: 3px 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 4.5px;
+            line-height: 1.45;
+            color: var(--code-text);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .code-lines-wrap {
+            position: relative;
+            animation: scrollCode 16s ease-in-out infinite;
+        }
+
+        @keyframes scrollCode {
+            0%, 20% { transform: translateY(0); }
+            50%, 70% { transform: translateY(-30px); }
+            100% { transform: translateY(0); }
+        }
+
+        .c-kw { color: var(--code-pink); }
+        .c-fn { color: var(--code-purple); }
+        .c-st { color: var(--code-string); }
+        .c-pr { color: var(--code-blue); }
+        .c-nm { color: var(--code-yellow); }
+        .c-cm { color: var(--code-comment); font-style: italic; }
+
+        .cursor {
+            display: inline-block;
+            width: 1px; height: 5px;
+            background: #fff;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+
+        /* Terminal Window */
+        .terminal-window {
+            top: 70px; left: 110px;
+            width: 175px; height: 95px;
+        }
+        .terminal-window .window-header {
+            background: linear-gradient(180deg, #24222c, #1a1820);
+        }
+        .terminal-body {
+            background: var(--terminal-bg);
+            padding: 3px 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 4.5px;
+            line-height: 1.5;
+            color: #d0d0d0;
+            height: calc(100% - 10px);
+            overflow: hidden;
+        }
+        .term-prompt { color: var(--code-green); }
+        .term-path { color: var(--code-blue); }
+        .term-output { color: #999; }
+        .term-success { color: var(--code-green); }
+        .term-warn { color: var(--code-yellow); }
+
+        .terminal-line {
+            opacity: 0;
+            animation: typeLine 12s cubic-bezier(0.1, 0.9, 0.2, 1) infinite;
+        }
+        .terminal-line:nth-child(1) { animation-delay: 3.5s; }
+        .terminal-line:nth-child(2) { animation-delay: 3.9s; }
+        .terminal-line:nth-child(3) { animation-delay: 4.4s; }
+        .terminal-line:nth-child(4) { animation-delay: 4.8s; }
+        .terminal-line:nth-child(5) { animation-delay: 5.3s; }
+        .terminal-line:nth-child(6) { animation-delay: 5.7s; }
+        .terminal-line:nth-child(7) { animation-delay: 6.2s; }
+        .terminal-line:nth-child(8) { animation-delay: 6.8s; }
+        .terminal-line:nth-child(9) { animation-delay: 7.2s; }
+
+        @keyframes typeLine {
+            0%, 10% { opacity: 0; transform: translateX(-2px); }
+            15%, 85% { opacity: 1; transform: translateX(0); }
+            90%, 100% { opacity: 0; }
+        }
+
+        /* Dock - Glassmorphism */
+        .dock {
+            position: absolute;
+            bottom: 3px; left: 50%;
+            transform: translateX(-50%);
+            height: 16px;
+            background: linear-gradient(180deg, rgba(40,40,48,0.85), rgba(20,20,25,0.85));
+            backdrop-filter: blur(4px);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            gap: 3.5px;
+            border: 0.5px solid rgba(255,255,255,0.15);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+        }
+        .dock-icon {
+            width: 11px; height: 11px;
+            border-radius: 2.5px;
+            position: relative;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+        .dock-icon.finder { background: linear-gradient(135deg, #4a9eff, #1a6fd4); }
+        .dock-icon.code { background: linear-gradient(135deg, #007acc, #0050a0); }
+        .dock-icon.term { background: linear-gradient(135deg, #323238, #15151a); }
+        .dock-icon.browser { background: linear-gradient(135deg, #ff6b62, #d93832); }
+        .dock-icon.music { background: linear-gradient(135deg, #ff3b60, #b8003c); }
+        .dock-icon.mail { background: linear-gradient(135deg, #4bc6ff, #0a8acc); }
+        .dock-icon.photos { background: linear-gradient(135deg, #ffcc02, #ff6b00, #ff2d55, #af52de); }
+        .dock-icon.settings { background: linear-gradient(135deg, #98989d, #48484a); }
+        .dock-icon.trash { background: linear-gradient(135deg, #d1d1d6, #8e8e93); }
+
+        .dock-icon.active::after {
+            content: '';
+            position: absolute;
+            bottom: -3.5px; left: 50%;
+            transform: translateX(-50%);
+            width: 2px; height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.8;
+            box-shadow: 0 0 2px #fff;
+        }
+
+        /* Webcam */
+        .webcam {
+            position: absolute;
+            top: 2.5px; left: 50%;
+            transform: translateX(-50%);
+            width: 3px; height: 3px;
+            background: radial-gradient(circle, #1a1a1a 30%, #000 100%);
+            border-radius: 50%;
+            border: 0.5px solid #2a2a2a;
+        }
+        .webcam::after {
+            content: '';
+            position: absolute;
+            top: 0.5px; left: 0.5px;
+            width: 1px; height: 1px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+        }
+
+        .brand-text {
+            position: absolute;
+            bottom: 5px; left: 50%;
+            transform: translateX(-50%);
+            color: #666;
+            font-size: 5px;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* Screen overlays */
+        .scanlines {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0,0,0,0.08) 0px,
+                rgba(0,0,0,0.08) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 20;
+            opacity: 0.4;
+        }
+
+        .reflection {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(115deg, 
+                rgba(255,255,255,0.1) 0%, 
+                rgba(255,255,255,0) 25%, 
+                rgba(255,255,255,0) 70%, 
+                rgba(255,255,255,0.05) 100%);
+            pointer-events: none;
+            z-index: 21;
+        }
+
+        .vignette {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%);
+            pointer-events: none;
+            z-index: 22;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Strict 500x500 Bounding Box for perfect widget framing -->
+<div class="scene">
+    <!-- Inner wrapper handles the parallax tilt without moving the bounding box -->
+    <div class="laptop-wrapper">
+        <div class="ambient-glow"></div>
+        <div class="shadow"></div>
+        
+        <div class="laptop">
+            <!-- LAPTOP BASE -->
+            <div class="base">
+                <div class="face base-top">
+                    <div class="speaker speaker-left"></div>
+                    <div class="speaker speaker-right"></div>
+                    
+                    <div class="keyboard-well">
+                        <div class="kb-backlight"></div>
+                        <!-- Function Row -->
+                        <div class="kb-row">
+                            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                            <div class="key"></div><div class="key"></div>
+                        </div>
+                        <!-- Number Row -->
+                        <div class="kb-row">
+                            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                            <div class="key k-wide"></div>
+                        </div>
+                        <!-- QWERTY Row -->
+                        <div class="kb-row">
+                            <div class="key k-wide"></div>
+                            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                        </div>
+                        <!-- ASDF Row -->
+                        <div class="kb-row">
+                            <div class="key k-wider"></div>
+                            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                            <div class="key"></div><div class="key"></div><div class="key k-wider"></div>
+                        </div>
+                        <!-- ZXCV Row -->
+                        <div class="kb-row">
+                            <div class="key k-wider" style="flex: 2.5"></div>
+                            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                            <div class="key"></div><div class="key k-wider" style="flex: 2.5"></div>
+                        </div>
+                        <!-- Spacebar Row -->
+                        <div class="kb-row">
+                            <div class="key k-wide"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                            <div class="key k-space"></div>
+                            <div class="key"></div><div class="key"></div>
+                            <div class="key k-half"></div><div class="key k-half"></div><div class="key k-half"></div>
+                        </div>
+                    </div>
+                    <div class="trackpad"></div>
+                    <div class="keyboard-glow"></div>
+                </div>
+                
+                <div class="face base-bottom"></div>
+                <div class="face base-front"></div>
+                <div class="face base-back"></div>
+                <div class="face base-left"></div>
+                <div class="face base-right"></div>
+            </div>
+
+            <!-- LAPTOP LID -->
+            <div class="lid">
+                <div class="face lid-front">
+                    <div class="screen">
+                        <div class="screen-content">
+                            <!-- Wallpaper -->
+                            <div class="wallpaper">
+                                <div class="stars"></div>
+                            </div>
+                            
+                            <!-- Menu Bar -->
+                            <div class="menu-bar">
+                                <div class="apple-icon"></div>
+                                <span class="menu-item bold">Code</span>
+                                <span class="menu-item">File</span>
+                                <span class="menu-item">Edit</span>
+                                <span class="menu-item">View</span>
+                                <span class="menu-item">Run</span>
+                                <span class="menu-item">Help</span>
+                                <span class="menu-spacer"></span>
+                                <span class="menu-status">100%</span>
+                                <span class="menu-status">Wi-Fi</span>
+                                <span class="menu-status" id="inner-time">9:41</span>
+                            </div>
+                            
+                            <!-- Code Editor Window -->
+                            <div class="window editor-window">
+                                <div class="window-header">
+                                    <div class="traffic-light tl-red"></div>
+                                    <div class="traffic-light tl-yellow"></div>
+                                    <div class="traffic-light tl-green"></div>
+                                    <div class="window-title">main.ts — developer-studio</div>
+                                </div>
+                                <div class="editor-tabs">
+                                    <div class="editor-tab active"><span class="dot"></span>main.ts</div>
+                                    <div class="editor-tab">utils.ts</div>
+                                    <div class="editor-tab">app.tsx</div>
+                                </div>
+                                <div class="editor-body">
+                                    <div class="line-numbers">
+                                        1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17
+                                    </div>
+                                    <div class="code-area">
+                                        <div class="code-lines-wrap">
+<span class="c-cm">// Initialize secure environment</span><br>
+<span class="c-kw">import</span> { <span class="c-fn">System</span> } <span class="c-kw">from</span> <span class="c-st">'@core/os'</span>;<br>
+<span class="c-kw">import</span> { <span class="c-fn">Graphics</span> } <span class="c-kw">from</span> <span class="c-st">'@hw/gpu'</span>;<br>
+<br>
+<span class="c-kw">const</span> <span class="c-pr">device</span> = <span class="c-kw">new</span> <span class="c-fn">System</span>({<br>
+&nbsp;&nbsp;<span class="c-pr">arch</span>: <span class="c-st">'ARM64'</span>,<br>
+&nbsp;&nbsp;<span class="c-pr">memory</span>: <span class="c-nm">64</span> * <span class="c-nm">1024</span>,<br>
+&nbsp;&nbsp;<span class="c-pr">display</span>: <span class="c-st">'Retina'</span><br>
+});<br>
+<br>
+<span class="c-kw">async function</span> <span class="c-fn">boot</span>() {<br>
+&nbsp;&nbsp;<span class="c-kw">await</span> <span class="c-pr">device</span>.<span class="c-fn">powerOn</span>();<br>
+&nbsp;&nbsp;<span class="c-fn">Graphics</span>.<span class="c-fn">render</span>({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-pr">raytracing</span>: <span class="c-kw">true</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-pr">fps</span>: <span class="c-nm">120</span><br>
+&nbsp;&nbsp;});<br>
+&nbsp;&nbsp;<span class="c-kw">return</span> <span class="c-st">'ready'</span>;<br>
+}<br>
+<br>
+<span class="c-fn">boot</span>().<span class="c-fn">then</span>(<span class="c-fn">log</span>);<span class="cursor"></span><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Terminal Window -->
+                            <div class="window terminal-window">
+                                <div class="window-header">
+                                    <div class="traffic-light tl-red"></div>
+                                    <div class="traffic-light tl-yellow"></div>
+                                    <div class="traffic-light tl-green"></div>
+                                    <div class="window-title">zsh — 80×24</div>
+                                </div>
+                                <div class="terminal-body">
+                                    <div class="terminal-line"><span class="term-prompt">➜</span> <span class="term-path">~/dev</span> npm run build</div>
+                                    <div class="terminal-line"><span class="term-output">→ Compiling TypeScript...</span></div>
+                                    <div class="terminal-line"><span class="term-success">✓ 47 modules compiled</span></div>
+                                    <div class="terminal-line"><span class="term-output">→ Bundling assets...</span></div>
+                                    <div class="terminal-line"><span class="term-success">✓ Bundle: 124.3 kB</span></div>
+                                    <div class="terminal-line"><span class="term-warn">⚠ 2 warnings</span></div>
+                                    <div class="terminal-line"><span class="term-success">✓ Build complete in 2.4s</span></div>
+                                    <div class="terminal-line"><span class="term-prompt">➜</span> <span class="term-path">~/dev</span> npm start</div>
+                                    <div class="terminal-line"><span class="term-success">● Server running :3000</span> <span class="cursor"></span></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Dock -->
+                            <div class="dock">
+                                <div class="dock-icon finder active"></div>
+                                <div class="dock-icon code active"></div>
+                                <div class="dock-icon term active"></div>
+                                <div class="dock-icon browser"></div>
+                                <div class="dock-icon mail"></div>
+                                <div class="dock-icon music"></div>
+                                <div class="dock-icon photos"></div>
+                                <div class="dock-icon settings"></div>
+                                <div class="dock-icon trash"></div>
+                            </div>
+                            
+                            <!-- Screen overlays -->
+                            <div class="scanlines"></div>
+                            <div class="reflection"></div>
+                            <div class="vignette"></div>
+                        </div>
+                    </div>
+                    <div class="webcam"></div>
+                    <div class="brand-text">Developer Studio</div>
+                </div>
+                
+                <div class="face lid-back">
+                    <!-- OUTER DIGITAL SCREEN -->
+                    <div class="outer-display">
+                        <!-- Top Bar w/ Time -->
+                        <div class="outer-top-bar">
+                            <div class="outer-time" id="outer-time">04<span class="blink">:</span>55</div>
+                            <div class="outer-date" id="outer-date">Thu, Apr 30</div>
+                        </div>
+                        
+                        <!-- Swipe Container -->
+                        <div class="outer-swipe-container">
+                            <!-- Panel 1: Status Monitors -->
+                            <div class="outer-panel">
+                                <div class="status-panel">
+                                    <div class="status-ring"></div>
+                                    <div class="status-lines">
+                                        <div class="s-line"></div>
+                                        <div class="s-line"></div>
+                                        <div class="s-line"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Panel 2: Digital Keyboard -->
+                            <div class="outer-panel">
+                                <div class="digital-kb">
+                                    <div class="dkb-row">
+                                        <div class="dkb-key"></div><div class="dkb-key"></div><div class="dkb-key"></div>
+                                        <div class="dkb-key"></div><div class="dkb-key"></div><div class="dkb-key"></div>
+                                        <div class="dkb-key"></div><div class="dkb-key"></div><div class="dkb-key"></div>
+                                        <div class="dkb-key"></div>
+                                    </div>
+                                    <div class="dkb-row">
+                                        <div class="dkb-key" style="flex:1.5"></div><div class="dkb-key"></div><div class="dkb-key"></div>
+                                        <div class="dkb-key"></div><div class="dkb-key"></div><div class="dkb-key"></div>
+                                        <div class="dkb-key"></div><div class="dkb-key"></div><div class="dkb-key" style="flex:1.5"></div>
+                                    </div>
+                                    <div class="dkb-row">
+                                        <div class="dkb-key" style="flex:2"></div><div class="dkb-key dkb-space"></div><div class="dkb-key" style="flex:2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Screen Reflection / Glare -->
+                        <div class="outer-reflection"></div>
+                    </div>
+                </div>
+                
+                <div class="face lid-top"></div>
+                <div class="face lid-bottom"></div>
+                <div class="face lid-left"></div>
+                <div class="face lid-right"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. Dynamic Parallax Mouse Effect (Added safely to inner wrapper)
+    const laptopWrapper = document.querySelector('.laptop-wrapper');
+    document.addEventListener('mousemove', (e) => {
+        // Calculate mouse position relative to center of screen
+        const x = (e.clientX / window.innerWidth - 0.5) * 15; 
+        const y = (e.clientY / window.innerHeight - 0.5) * -15;
+        
+        // Gently tilt the 3D wrapper. scale(0.85) ensures it stays inside 500x500 box
+        laptopWrapper.style.transform = `scale(0.85) rotateX(${y}deg) rotateY(${x}deg)`;
+    });
+
+    // 2. Real-Time Clock Synchronization
+    function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const dateStr = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        
+        // Grab elements
+        const outerTimeEl = document.getElementById('outer-time');
+        const innerTimeEl = document.getElementById('inner-time');
+        const outerDateEl = document.getElementById('outer-date');
+
+        // Safety checks
+        if (outerTimeEl) {
+            outerTimeEl.innerHTML = `${hours}<span class="blink">:</span>${minutes}`;
+        }
+        if (innerTimeEl) {
+            innerTimeEl.innerText = `${hours}:${minutes}`;
+        }
+        if (outerDateEl) {
+            outerDateEl.innerText = dateStr;
+        }
+    }
+    
+    // Initialize clock loop
+    setInterval(updateClock, 1000);
+    updateClock();
+</script>
+</body>
+</html>
