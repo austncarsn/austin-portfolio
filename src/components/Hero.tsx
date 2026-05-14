@@ -173,7 +173,15 @@ export default function Hero() {
                   objectFit: 'contain',
                   userSelect: 'none',
                   flexShrink: 0,
-                  filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.16))',
+                  imageRendering: 'crisp-edges',
+                  filter: [
+                    'drop-shadow(0 1px 0px rgba(0,0,0,0.55))',
+                    'drop-shadow(0 2px 0px rgba(0,0,0,0.4))',
+                    'drop-shadow(0 4px 0px rgba(0,0,0,0.25))',
+                    'drop-shadow(0 8px 16px rgba(0,0,0,0.32))',
+                    'drop-shadow(0 16px 32px rgba(0,0,0,0.18))',
+                    'contrast(1.06) saturate(1.12) brightness(1.03)',
+                  ].join(' '),
                 }}
               />
             ))}

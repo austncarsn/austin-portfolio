@@ -58,15 +58,6 @@ export default function App() {
                 pointerEvents: 'none',
                 zIndex: 9999,
               }} />
-              {/* Fixed inset border frame — inner */}
-              <div style={{
-                position: 'fixed',
-                inset: '18px',
-                border: '4px solid #FFD700',
-                borderRadius: '12px',
-                pointerEvents: 'none',
-                zIndex: 9999,
-              }} />
               <Hero />
               <Projects />
               <Footer />
