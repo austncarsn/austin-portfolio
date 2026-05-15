@@ -54,7 +54,6 @@ export default function App() {
                 position: 'fixed',
                 inset: '0px',
                 border: '12px solid #ffffff',
-                borderRadius: '20px',
                 pointerEvents: 'none',
                 zIndex: 9999,
               }} />
