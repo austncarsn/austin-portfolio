@@ -1,7 +1,7 @@
+import { AnimatePresence, motion } from "framer-motion";
+import { Grid3X3, Menu, Moon, Sun } from "lucide-react";
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Grid3X3, Menu, Moon, Sun } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 
 interface SiteHeaderProps {
   dark: boolean;
@@ -32,7 +32,6 @@ export default function SiteHeader({ dark, onToggle }: SiteHeaderProps): React.R
   return (
     <header className="site-header" role="banner">
       <div className="site-header-inner">
-
         {/* ── Brand ─────────────────────────────────── */}
         <Link to="/" className="site-header-brand" aria-label="Austin Carson — home">
           <span className="site-header-stamp" aria-hidden="true">
@@ -65,11 +64,7 @@ export default function SiteHeader({ dark, onToggle }: SiteHeaderProps): React.R
                 />
               </a>
             ) : (
-              <NavLink
-                key={item.label}
-                to={item.href}
-                className="site-header-nav-item"
-              >
+              <NavLink key={item.label} to={item.href} className="site-header-nav-item">
                 <span className="site-header-nav-label">{item.label}</span>
                 <span
                   className="site-header-nav-line"
@@ -89,6 +84,7 @@ export default function SiteHeader({ dark, onToggle }: SiteHeaderProps): React.R
 
           <span className="site-header-location" aria-hidden="true">
             <span>UTC-07:00</span>
+            <span className="site-header-meta-dot">·</span>
             <span>Missoula, Montana</span>
           </span>
 
@@ -148,9 +144,9 @@ export default function SiteHeader({ dark, onToggle }: SiteHeaderProps): React.R
         <span>Status</span>
         <span className="site-header-meta-available">Available</span>
         <span className="site-header-meta-dot">|</span>
-        <span>UTC-06:00</span>
+        <span>UTC-07:00</span>
         <span className="site-header-meta-dot">|</span>
-        <span>Austin, TX</span>
+        <span>Missoula, Montana</span>
         <span className="site-header-meta-spacer" />
         <span>AC-2026</span>
       </div>
