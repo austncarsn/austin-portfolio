@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="og-title og-desc">
+  <title id="og-title">Austin Carson</title>
+  <desc id="og-desc">Portfolio of Austin Carson — designer and builder.</desc>
+
+  <defs>
+    <!-- Warm paper background gradient -->
+    <linearGradient id="bg-grad" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F5F1E8"/>
+      <stop offset="100%" stop-color="#EAE5D8"/>
+    </linearGradient>
+    <!-- Subtle vignette -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="100%" stop-color="rgba(10,9,6,0.08)"/>
+    </radialGradient>
+    <!-- Vertical rule gradient -->
+    <linearGradient id="rule-grad" x1="0" y1="0" x2="0" y2="502" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#C4BFB6" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#C4BFB6"/>
+      <stop offset="80%" stop-color="#C4BFB6"/>
+      <stop offset="100%" stop-color="#C4BFB6" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base -->
+  <rect width="1200" height="630" fill="url(#bg-grad)"/>
+  <rect width="1200" height="630" fill="url(#vignette)"/>
+
+  <!-- Outer border inset -->
+  <rect x="48" y="48" width="1104" height="534" rx="4" fill="none" stroke="#C4BFB6" stroke-width="1" opacity="0.7"/>
+
+  <!-- Thin top accent rule -->
+  <rect x="48" y="48" width="1104" height="2" fill="#0A0906" rx="1"/>
+
+  <!-- Left column: monogram block -->
+  <rect x="80" y="80" width="72" height="72" rx="10" fill="#0A0906"/>
+  <!-- A glyph -->
+  <path d="M95 145 L104 117 L108 117 L117 145 L113 145 L111.2 139.5 L100.8 139.5 L99 145 Z M102 136 L110 136 L106 125.8 Z" fill="#F0EDE6"/>
+
+  <!-- Domain label -->
+  <text x="170" y="107" font-family="'JetBrains Mono', 'IBM Plex Mono', monospace" font-size="13" font-weight="500" letter-spacing="3" fill="#6B6560" text-transform="uppercase">AUSTINCARSON.DEV</text>
+  <text x="170" y="131" font-family="'JetBrains Mono', 'IBM Plex Mono', monospace" font-size="11" font-weight="400" letter-spacing="2" fill="#9C9890">PORTFOLIO  ·  2026</text>
+
+  <!-- Vertical divider rule -->
+  <rect x="80" y="184" width="1" height="394" fill="url(#rule-grad)"/>
+
+  <!-- Name — large display serif -->
+  <text x="112" y="348" font-family="'Cormorant Garamond', Georgia, serif" font-size="148" font-weight="500" letter-spacing="-4" fill="#0A0906">Austin</text>
+  <text x="112" y="488" font-family="'Cormorant Garamond', Georgia, serif" font-size="148" font-weight="500" letter-spacing="-4" fill="#0A0906">Carson</text>
+
+  <!-- Tagline -->
+  <text x="115" y="554" font-family="'Inter', Arial, sans-serif" font-size="18" font-weight="300" letter-spacing="0.5" fill="#6B6560">Designer and builder making things on the internet.</text>
+
+  <!-- Bottom-right: role chips -->
+  <rect x="868" y="520" width="112" height="28" rx="3" fill="none" stroke="#C4BFB6" stroke-width="1"/>
+  <text x="924" y="539" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="500" letter-spacing="1.5" fill="#6B6560" text-anchor="middle">DESIGN</text>
+
+  <rect x="992" y="520" width="112" height="28" rx="3" fill="none" stroke="#C4BFB6" stroke-width="1"/>
+  <text x="1048" y="539" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="500" letter-spacing="1.5" fill="#6B6560" text-anchor="middle">BUILD</text>
+
+  <rect x="1116" y="520" width="84" height="28" rx="3" fill="none" stroke="#C4BFB6" stroke-width="1"/>
+  <text x="1158" y="539" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="500" letter-spacing="1.5" fill="#6B6560" text-anchor="middle">SHIP</text>
+
+  <!-- Horizontal base rule above chips -->
+  <line x1="868" y1="508" x2="1200" y2="508" stroke="#C4BFB6" stroke-width="1" opacity="0.5"/>
+</svg>
