@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="fav-title">
+  <title id="fav-title">Austin Carson</title>
+  <rect width="64" height="64" rx="14" fill="#0A0906"/>
+  <!-- A: two angled strokes meeting at apex, with crossbar -->
+  <path d="M13 47 L22 19 L27 19 L36 47 L31.4 47 L29.2 40.4 L19.8 40.4 L17.6 47 Z M21.2 36.2 L27.8 36.2 L24.5 26.1 Z" fill="#F0EDE6"/>
+  <!-- C: open arc, generous gap -->
+  <path d="M56 27.5 C53.8 24.2 50.2 22 46 22 C39.4 22 34 27.4 34 34 C34 40.6 39.4 46 46 46 C50.3 46 53.9 43.7 56 40.3 L51.8 37.9 C50.5 40 48.4 41.4 46 41.4 C41.9 41.4 38.6 38.1 38.6 34 C38.6 29.9 41.9 26.6 46 26.6 C48.3 26.6 50.4 27.9 51.7 29.9 Z" fill="#F0EDE6"/>
+</svg>

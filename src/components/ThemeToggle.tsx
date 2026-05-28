@@ -6,33 +6,15 @@ interface Props {
   onToggle: () => void
 }
 
-export default function ThemeToggle({ dark, onToggle }: Props) {
+export default function ThemeToggle({ dark, onToggle }: Props): JSX.Element {
   return (
     <motion.button
       onClick={onToggle}
       aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+      aria-pressed={dark}
       className="theme-toggle"
-      whileHover={{ opacity: 0.7 }}
-      whileTap={{ opacity: 0.5 }}
+      whileTap={{ scale: 0.96 }}
       title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-      style={{
-        position: 'fixed',
-        top: '1.5rem',
-        right: '1.5rem',
-        zIndex: 50,
-        background: 'var(--color-bg)',
-        border: '0.5px solid var(--color-border)',
-        borderRadius: '50%',
-        width: '2.75rem',
-        height: '2.75rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: 'var(--color-text-tertiary)',
-        cursor: 'pointer',
-        padding: 0,
-        overflow: 'hidden',
-      }}
     >
       <AnimatePresence mode="wait" initial={false}>
         {dark ? (
@@ -44,7 +26,7 @@ export default function ThemeToggle({ dark, onToggle }: Props) {
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
-            <Sun size={15} strokeWidth={1.5} />
+            <Sun size={16} strokeWidth={1.6} />
           </motion.span>
         ) : (
           <motion.span
@@ -55,7 +37,7 @@ export default function ThemeToggle({ dark, onToggle }: Props) {
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
-            <Moon size={15} strokeWidth={1.5} />
+            <Moon size={16} strokeWidth={1.6} />
           </motion.span>
         )}
       </AnimatePresence>

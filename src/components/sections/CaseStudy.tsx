@@ -1,123 +1,102 @@
-import { motion } from "framer-motion";
-import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { Project } from "../../data/projects";
-import { projects } from "../../data/projects";
+import { motion, useInView } from "framer-motion";
+import React, { useRef, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import type { Project } from "../../data/projects";
+import { getProjectScreenshots, projects } from "../../data/projects";
+import {
+  ArchiveLabelUnderline,
+  CurlArrowDown,
+  EngineeringMarginArrow,
+  EngineeringWaveUnderline,
+  FigBracketAnnotation,
+  InkFilterDefs,
+  OutcomeStarMark,
+  OverviewUnderline,
+  ReturnArrowAnnotation,
+  StatusCircleAnnotation,
+  TitleBracketAnnotation,
+} from "../InkAnnotations";
 
 // ── Motion ──────────────────────────────────────────────────────────
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  show: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.65, delay: i * 0.1, ease: [0.22, 0.6, 0.22, 1] },
-  }),
+const stagger = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
+
+const typeIn = {
+  hidden: { opacity: 0, y: 2 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
 };
 
 // ── Style constants ──────────────────────────────────────────────────
-const eyebrowStyle: React.CSSProperties = {
+const pageStyle: React.CSSProperties = {
+  background: "var(--paper)",
+  color: "var(--ink)",
+  minHeight: "100vh",
   fontFamily: "var(--font-mono)",
-  fontSize: "var(--t-micro)",
-  letterSpacing: "var(--track-mono)",
-  textTransform: "uppercase",
+  fontSize: "0.95rem",
+  lineHeight: 1.6,
+  padding: "8rem 1.5rem 4rem",
+};
+
+const containerStyle: React.CSSProperties = {
+  maxWidth: "var(--container-max)",
+  margin: "0 auto",
+  display: "flex",
+  flexDirection: "column",
+  gap: "3rem",
+};
+
+const labelStyle: React.CSSProperties = {
   color: "var(--ink-3)",
-};
-
-const displayH1Style: React.CSSProperties = {
-  fontFamily: "var(--font-display)",
-  fontSize: "clamp(3rem, 8vw, 6.5rem)",
-  fontWeight: 400,
-  lineHeight: 0.96,
-  letterSpacing: "-0.025em",
-  color: "var(--bone)",
-  marginTop: "1rem",
-  marginBottom: "1.75rem",
-};
-
-const heroLeadStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans)",
-  fontSize: "clamp(0.9rem, 1.4vw, 1.1rem)",
-  fontWeight: 300,
-  lineHeight: 1.68,
-  color: "var(--ink-3)",
-  maxWidth: "36rem",
-};
-
-const statLabelStyle: React.CSSProperties = {
-  fontFamily: "var(--font-mono)",
-  fontSize: "var(--t-micro)",
-  letterSpacing: "var(--track-mono)",
   textTransform: "uppercase",
-  color: "var(--ink-4)",
-  marginBottom: "0.35rem",
-  display: "block",
+  letterSpacing: "0.05em",
+  fontSize: "0.85rem",
 };
 
-const statValueStyle: React.CSSProperties = {
-  fontFamily: "var(--font-serif)",
-  fontSize: "var(--t-h3)",
-  fontWeight: 400,
-  color: "var(--ink-2)",
-};
-
-const liveLinkStyle: React.CSSProperties = {
-  fontFamily: "var(--font-mono)",
-  fontSize: "var(--t-micro)",
-  letterSpacing: "var(--track-mono-tight)",
-  textDecoration: "none",
-  color: "var(--ac-blue)",
-  textTransform: "uppercase",
-};
-
-const subHeadStyle: React.CSSProperties = {
-  fontFamily: "var(--font-mono)",
-  fontSize: "var(--t-small)",
-  letterSpacing: "var(--track-mono)",
-  textTransform: "uppercase",
+const valueStyle: React.CSSProperties = {
   color: "var(--ink)",
-  marginBottom: "0.75rem",
 };
 
-const bodyStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans)",
-  fontSize: "15px",
-  fontWeight: 300,
-  lineHeight: 1.65,
-  color: "var(--ink-2)",
+const dividerStyle: React.CSSProperties = {
+  borderTop: "1px dashed var(--rule-strong)",
+  width: "100%",
+  margin: "1.5rem 0",
 };
 
-const proseStyle: React.CSSProperties = {
-  fontFamily: "var(--font-serif)",
-  fontSize: "clamp(1.05rem, 1.6vw, 1.25rem)",
-  fontWeight: 400,
-  lineHeight: 1.55,
+const linkStyle: React.CSSProperties = {
   color: "var(--ink)",
-  maxWidth: "38rem",
+  textDecoration: "underline",
+  textUnderlineOffset: "4px",
+  textDecorationThickness: "1px",
 };
 
-const blockquoteStyle: React.CSSProperties = {
-  fontFamily: "var(--font-display)",
-  fontSize: "clamp(1.5rem, 3vw, 2.4rem)",
-  fontWeight: 300,
-  fontStyle: "italic",
-  lineHeight: 1.28,
-  color: "var(--ink)",
-  borderLeft: "2px solid var(--rule)",
-  paddingLeft: "1.5rem",
-  maxWidth: "36rem",
-};
+// ── Components ──────────────────────────────────────────────────────
 
-// ── Primitives ──────────────────────────────────────────────────────
-const Stat = ({ label, value }: { label: string; value: string }) => (
-  <div style={{ display: "flex", flexDirection: "column" }}>
-    <span style={statLabelStyle}>{label}</span>
-    <span style={statValueStyle}>{value}</span>
-  </div>
-);
-
-// ── Lazy image with fade-in ──────────────────────────────────────────
 function FadeImage({ src, alt, style }: { src: string; alt: string; style?: React.CSSProperties }) {
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  if (failed) {
+    return (
+      <div
+        role="img"
+        aria-label={`${alt} Screenshot pending.`}
+        style={{
+          ...style,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "var(--paper-2)",
+          border: "1px solid var(--rule)",
+          minHeight: "12rem",
+        }}
+      >
+        <span style={labelStyle}>[ IMAGE_UNAVAILABLE ]</span>
+      </div>
+    );
+  }
+
   return (
     <img
       src={src}
@@ -125,20 +104,59 @@ function FadeImage({ src, alt, style }: { src: string; alt: string; style?: Reac
       loading="lazy"
       decoding="async"
       onLoad={() => setLoaded(true)}
+      onError={() => setFailed(true)}
       style={{
         ...style,
         opacity: loaded ? 1 : 0,
         transition: "opacity 0.4s ease",
+        filter: "grayscale(15%) contrast(1.05)",
       }}
     />
-  )
+  );
+}
+
+function TypewriterRow({
+  label,
+  value,
+  isLink,
+  href,
+}: {
+  label: string;
+  value: string;
+  isLink?: boolean;
+  href?: string;
+}) {
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "100px 1fr", gap: "1rem" }}>
+      <span style={labelStyle}>{label}</span>
+      {isLink && href ? (
+        <a href={href} target="_blank" rel="noopener noreferrer" style={linkStyle}>
+          {value}
+        </a>
+      ) : (
+        <span style={valueStyle}>{value}</span>
+      )}
+    </div>
+  );
+}
+
+function SectionHeader({ title }: { title: string }) {
+  return (
+    <div style={{ marginBottom: "1.5rem" }}>
+      <span style={labelStyle}>// {title}</span>
+      <div style={{ borderTop: "1px dashed var(--rule-strong)", marginTop: "0.5rem" }} />
+    </div>
+  );
 }
 
 // ── Content model ───────────────────────────────────────────────────
-interface EngineeringCard { title: string; body: string }
+interface EngineeringCard {
+  title: string;
+  body: string;
+}
 interface CaseStudyContent {
+  label: string;
   vision: string;
-  visionExtra?: "orbital" | "first-image" | null;
   engineering: EngineeringCard[];
   outcome?: string;
 }
@@ -146,93 +164,84 @@ interface CaseStudyContent {
 const buildContent = (project: Project): CaseStudyContent => {
   const slug = project.slug ?? "";
   const title = project.title.toLowerCase();
+  const isSnapshot = !project.liveUrl && project.status === "Prototype";
+  const fallbackEngineering =
+    project.engineering ?? project.learned ?? "No engineering notes recorded.";
 
-  if (title.includes("orbital ui")) {
+  if (
+    title.includes("orbital ui") ||
+    slug === "cowboy-2050" ||
+    title.includes("cowboy 2050") ||
+    slug === "floral-origami" ||
+    title.includes("floral origami")
+  ) {
     return {
-      vision: "A spatial exploration of data navigation utilizing 3D orbital mechanics to break the traditional 2D grid layout.",
-      visionExtra: "orbital",
+      label: "Project Snapshot",
+      vision: project.overview ?? project.description,
       engineering: [
-        { title: "3D Perspective", body: "Engineered a complex 3D perspective system using trigonometry and requestAnimationFrame to create a seamless, orbital navigation experience." },
-        { title: "Spatial Logic", body: "Broke the traditional 2D grid to allow users to traverse information in a spherical coordinate system." },
+        { title: "Approach", body: project.approach ?? project.description },
+        { title: "Build", body: fallbackEngineering },
       ],
-      outcome: "An experimental spatial UI that demonstrates how non-euclidean navigation can reduce cognitive load for deeply nested data structures.",
-    };
-  }
-
-  if (slug === "cowboy2050" || title.includes("cowboy 2050")) {
-    return {
-      vision: "Craft a premium western archive landing experience with a modern digital interface — combining cinematic brand storytelling, responsive layout, and polished motion transitions.",
-      engineering: [
-        { title: "Design System", body: "Defined a custom 2050 Western token palette in CSS custom properties, supporting light/dark theme, consistent shadows, and a branded color hierarchy." },
-        { title: "Interaction", body: "Built a motion-led homepage with scroll reveals, parallax accents, a marquee, and responsive navigation for an immersive brand-first experience." },
-      ],
-      outcome: "A polished modern western demo shop built for brand storytelling, motion-led interaction, and static deployment readiness.",
-    };
-  }
-
-  if (slug === "floral-origami" || title.includes("floral origami")) {
-    return {
-      vision: "A neon interactive experiment that blends motion-driven UI, stage-based input, and responsive particle animation.",
-      visionExtra: "first-image",
-      engineering: [
-        { title: "Motion-Driven UI", body: "Crafted a stage-based interaction surface with Framer Motion and layered neon glow styling for a tactile, responsive experience." },
-        { title: "Interaction System", body: "Built an event-driven press counter with animated particles, stage transitions, and reactive button feedback for a playful physics-inspired interface." },
-      ],
-      outcome: "A focused micro-experience that proves a single well-designed interaction can carry an entire product's emotional character.",
-    };
-  }
-
-  if (title.includes("montana civic")) {
-    return {
-      vision: project.description,
-      engineering: [
-        { title: "Data Pipeline", body: "Sourced and structured 499 municipality records across 56 Montana counties into a queryable schema with demographic, government, and historical fields." },
-        { title: "Interface", body: "Built a searchable, filterable reference atlas with editorial clarity — prioritizing fast lookup over visual complexity." },
-      ],
-      outcome: project.learned,
-    };
-  }
-
-  if (title.includes("figma prompt")) {
-    return {
-      vision: project.description,
-      engineering: [
-        { title: "Prompt Architecture", body: "Designed a structured prompt-building interface that guides users through constraint selection, style tokens, and output format for AI design workflows." },
-        { title: "UX", body: "Streamlined a repetitive workflow into a single-page utility with immediate copy-to-clipboard output — zero friction from idea to prompt." },
-      ],
-      outcome: project.learned,
+      outcome: project.outcome,
     };
   }
 
   return {
-    vision: project.description,
-    engineering: [{ title: "Approach", body: project.learned ?? "" }],
-    outcome: project.description,
+    label: isSnapshot ? "Project Snapshot" : "Case Study",
+    vision: project.overview ?? project.description,
+    engineering: [
+      { title: "Approach", body: project.approach ?? project.learned ?? project.description },
+      { title: "Build", body: fallbackEngineering },
+    ],
+    outcome: project.outcome ?? project.summary ?? project.description,
   };
 };
 
+function shouldShowCaseStudyImages(project: Project): boolean {
+  return project.slug !== "orbital-ui-concept";
+}
+
+// ── Scroll-triggered annotation wrapper ────────────────────────────
+// Plain div with ref so useInView fires correctly on scroll entry
+function InViewSection({
+  children,
+  style,
+  onVisible,
+}: {
+  children: (inView: boolean) => React.ReactNode;
+  style?: React.CSSProperties;
+  onVisible?: () => void;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
+
+  React.useEffect(() => {
+    if (inView) onVisible?.();
+  }, [inView, onVisible]);
+
+  return (
+    <div ref={ref} style={{ position: "relative", ...style }}>
+      {children(inView)}
+    </div>
+  );
+}
+
 // ── Main ─────────────────────────────────────────────────────────────
-export default function CaseStudy() {
+export default function CaseStudy(): JSX.Element {
   const { projectId } = useParams<{ projectId: string }>();
   const project = projects.find(
-    (p) => p.slug === projectId || p.title.toLowerCase().replace(/\s+/g, "-") === projectId
+    (p) => (p.slug ?? p.title.toLowerCase().replace(/\s+/g, "-")) === projectId
   );
 
   if (!project) {
     return (
-      <div style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "var(--paper)",
-      }}>
+      <div
+        style={{ ...pageStyle, display: "flex", alignItems: "center", justifyContent: "center" }}
+      >
         <div style={{ textAlign: "center" }}>
-          <h1 style={{ fontFamily: "var(--font-display)", fontSize: "3rem", fontWeight: 300, color: "var(--ink)", marginBottom: "1.5rem" }}>
-            Project Not Found
-          </h1>
-          <Link to="/" style={{ ...eyebrowStyle, color: "var(--ac-blue)", textDecoration: "none" }}>
-            ← Back to home
+          <div style={{ marginBottom: "1rem" }}>[ ERROR: RECORD_NOT_FOUND ]</div>
+          <Link to="/" style={linkStyle}>
+            ← RETURN_TO_INDEX
           </Link>
         </div>
       </div>
@@ -240,221 +249,243 @@ export default function CaseStudy() {
   }
 
   const content = buildContent(project);
-  const images = project.screenshots?.length
-    ? project.screenshots
-    : project.screenshot
-    ? [project.screenshot]
-    : [];
-  const hasGallery = images.length > 1;
+  const images = shouldShowCaseStudyImages(project) ? getProjectScreenshots(project) : [];
+  const liveUrl = project.liveUrl ?? (!project.url.startsWith("/work") ? project.url : undefined);
 
   return (
-    <div style={{ background: "var(--paper)", color: "var(--ink)" }}>
+    <div style={pageStyle}>
+      {/* Shared SVG displacement filters — rendered once at top of page */}
+      <InkFilterDefs />
 
-      {/* ── Hero ── */}
-      <header style={{
-        position: "relative",
-        minHeight: "60vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "flex-end",
-        padding: "5rem 1.5rem 3.5rem",
-        overflow: "hidden",
-        background: "var(--cameo-onyx)",
-      }}>
-        {/* Background image — blurred, scaled up to avoid edge bleed */}
-        {images[0] && (
-          <>
-            <div style={{
-              position: "absolute",
-              inset: "-8%",
-              backgroundImage: `url(${images[0]})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              filter: "blur(18px) saturate(0.7) brightness(0.45)",
-              transform: "scale(1.04)",
-              zIndex: 0,
-            }} />
-            {/* Bottom-weighted gradient so text stays legible */}
-            <div style={{
-              position: "absolute",
-              inset: 0,
-              background: "linear-gradient(to bottom, rgba(10,9,6,0.35) 0%, rgba(10,9,6,0.55) 55%, rgba(10,9,6,0.82) 100%)",
-              zIndex: 1,
-            }} />
-          </>
-        )}
-        <div style={{ position: "relative", zIndex: 2, maxWidth: "56rem", margin: "0 auto", width: "100%" }}>
-
-          <motion.div custom={0} variants={fadeUp} initial="hidden" animate="show">
-            <span style={eyebrowStyle}>{project.label} — Case Study</span>
-          </motion.div>
-
-          <motion.h1 custom={1} variants={fadeUp} initial="hidden" animate="show" style={displayH1Style}>
-            {project.title}
-          </motion.h1>
-
-          <motion.p custom={2} variants={fadeUp} initial="hidden" animate="show" style={heroLeadStyle}>
-            {project.description}
-          </motion.p>
-
-          <motion.div
-            custom={3}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            style={{
-              marginTop: "3rem",
-              paddingTop: "2rem",
-              borderTop: "1px dashed rgba(255,255,255,0.1)",
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(120px, auto))",
-              gap: "2rem",
-            }}
-          >
-            <Stat label="Type" value={project.label} />
-            <Stat label="Date" value={project.date} />
-            {project.url && project.url !== "#" && !project.url.startsWith("/work") && (
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <span style={statLabelStyle}>Live</span>
-                <a
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={liveLinkStyle}
-                >
-                  View Project ↗
-                </a>
-              </div>
-            )}
-          </motion.div>
-        </div>
-      </header>
-
-      {/* ── Image gallery ── */}
-      {images.length > 0 && (
-        <div style={{
-          background: "var(--paper-3)",
-          borderTop: "1px dashed var(--rule)",
-          padding: "2.5rem 1.5rem",
-        }}>
-          <div style={{ maxWidth: "56rem", margin: "0 auto" }}>
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: hasGallery ? "repeat(auto-fit, minmax(260px, 1fr))" : "1fr",
-              gap: "0.875rem",
-            }}>
-              {images.map((src, i) => (
-                <FadeImage
-                  key={src}
-                  src={src}
-                  alt={`${project.title} — screen ${i + 1}`}
-                  style={{
-                    width: "100%",
-                    aspectRatio: hasGallery ? "16 / 10" : "16 / 9",
-                    objectFit: "cover",
-                    borderRadius: "var(--r-2)",
-                    border: "1px solid var(--rule)",
-                    display: "block",
-                  }}
-                />
-              ))}
-            </div>
-            {hasGallery && (
-              <p style={{ ...eyebrowStyle, marginTop: "1rem", display: "block" }}>
-                Reference frames from the live deploy
-              </p>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* ── Content ── */}
-      <section style={{
-        background: "var(--paper)",
-        borderTop: "1px dashed var(--rule)",
-        padding: "3.5rem 1.5rem",
-      }}>
-        <div style={{ maxWidth: "56rem", margin: "0 auto", display: "flex", flexDirection: "column", gap: "3rem" }}>
-
-          {/* Vision */}
-          <div>
-            <p style={{ ...eyebrowStyle, marginBottom: "1rem", display: "block" }}>The Vision</p>
-            <p style={proseStyle}>{content.vision}</p>
-            {content.visionExtra === "first-image" && images[0] && (
-              <FadeImage
-                src={images[0]}
-                alt={`${project.title} preview`}
-                style={{
-                  width: "100%",
-                  borderRadius: "var(--r-2)",
-                  border: "1px solid var(--rule)",
-                  display: "block",
-                  marginTop: "1.5rem",
-                }}
-              />
-            )}
-          </div>
-
-          <div style={{ borderTop: "1px dashed var(--rule)" }} />
-
-          {/* Engineering */}
-          <div>
-            <p style={{ ...eyebrowStyle, marginBottom: "1.5rem", display: "block" }}>Engineering</p>
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-              gap: "2rem",
-            }}>
-              {content.engineering.map((card) => (
-                <div key={card.title}>
-                  <h3 style={subHeadStyle}>{card.title}</h3>
-                  <p style={bodyStyle}>{card.body}</p>
+      <motion.main style={containerStyle} variants={stagger} initial="hidden" animate="show">
+        {/* ── Metadata Header ─────────────────────────────────────── */}
+        <motion.section variants={typeIn}>
+          <InViewSection>
+            {(inView) => (
+              <>
+                {/* Archive label + blue wavy underline */}
+                <div style={{ ...labelStyle, marginBottom: "2.5rem" }}>
+                  [ ARCHIVE RECORD :: {new Date().getFullYear()} ]
+                  <ArchiveLabelUnderline animate={inView} />
                 </div>
-              ))}
-            </div>
-          </div>
 
-          {content.outcome && (
-            <>
-              <div style={{ borderTop: "1px dashed var(--rule)" }} />
+                {/* Red bracket in left margin around the metadata rows */}
+                <div style={{ position: "relative" }}>
+                  <TitleBracketAnnotation animate={inView} />
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                    <TypewriterRow label="TITLE:" value={project.title} />
+                    <TypewriterRow label="DATE:" value={project.date} />
+                    <TypewriterRow label="CLASS:" value={project.label} />
+                    {project.status && (
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "100px 1fr",
+                          gap: "1rem",
+                        }}
+                      >
+                        <span style={labelStyle}>STATUS:</span>
+                        {/* Blue oval circling the status value */}
+                        <span style={{ position: "relative", display: "inline-block" }}>
+                          <StatusCircleAnnotation animate={inView} />
+                          <span style={valueStyle}>{project.status}</span>
+                        </span>
+                      </div>
+                    )}
+                    {liveUrl && (
+                      <TypewriterRow
+                        label="LINK:"
+                        value="[ VIEW_DEPLOYMENT ]"
+                        isLink
+                        href={liveUrl}
+                      />
+                    )}
+                  </div>
+                </div>
 
-              {/* Outcome */}
-              <div>
-                <p style={{ ...eyebrowStyle, marginBottom: "1rem", display: "block" }}>Outcome</p>
-                <blockquote style={blockquoteStyle}>
-                  {content.outcome}
-                </blockquote>
-              </div>
-            </>
-          )}
-        </div>
-      </section>
+                <div style={dividerStyle} />
+              </>
+            )}
+          </InViewSection>
+        </motion.section>
 
-      {/* ── Back nav ── */}
-      <div style={{
-        borderTop: "1px dashed var(--rule)",
-        background: "var(--paper)",
-        padding: "2rem 1.5rem",
-      }}>
-        <div style={{ maxWidth: "56rem", margin: "0 auto" }}>
-          <Link
-            to="/"
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--t-micro)",
-              letterSpacing: "var(--track-mono)",
-              textTransform: "uppercase",
-              textDecoration: "none",
-              color: "var(--ink-3)",
-              transition: "color 0.15s ease",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--ink)")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--ink-3)")}
-          >
-            ← Back to work
-          </Link>
-        </div>
-      </div>
+        {/* ── Overview ─────────────────────────────────────────────── */}
+        <motion.section variants={typeIn}>
+          <InViewSection>
+            {(inView) => (
+              <>
+                {/* Red double-underline on section header */}
+                <div style={{ marginBottom: "1.5rem" }}>
+                  <span style={labelStyle}>// OVERVIEW</span>
+                  <OverviewUnderline animate={inView} />
+                  <div
+                    style={{
+                      borderTop: "1px dashed var(--rule-strong)",
+                      marginTop: "0.25rem",
+                    }}
+                  />
+                </div>
+                <p style={{ whiteSpace: "pre-wrap" }}>{content.vision}</p>
+
+                {/* Red curl arrow in right margin pointing down toward Exhibits */}
+                {images.length > 0 && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      right: -80,
+                      bottom: -100,
+                      opacity: 0.9,
+                    }}
+                  >
+                    <CurlArrowDown animate={inView} />
+                  </div>
+                )}
+              </>
+            )}
+          </InViewSection>
+        </motion.section>
+
+        {/* ── Exhibits ─────────────────────────────────────────────── */}
+        {images.length > 0 && (
+          <motion.section variants={typeIn}>
+            <InViewSection>
+              {(inView) => (
+                <>
+                  <SectionHeader title="EXHIBITS" />
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "3rem",
+                      marginTop: "1.5rem",
+                    }}
+                  >
+                    {images.map((src, i) => (
+                      <figure key={src} style={{ margin: 0 }}>
+                        {/* Blue corner brackets drawn over each image */}
+                        <div
+                          style={{
+                            position: "relative",
+                            display: "block",
+                            width: "100%",
+                          }}
+                        >
+                          <FadeImage
+                            src={src}
+                            alt={`${project.title} exhibit ${i + 1}`}
+                            style={{
+                              width: "100%",
+                              height: "auto",
+                              border: "1px solid var(--rule-strong)",
+                              display: "block",
+                              backgroundColor: "var(--paper-2)",
+                            }}
+                          />
+                          <FigBracketAnnotation animate={inView} />
+                        </div>
+                        <figcaption
+                          style={{
+                            ...labelStyle,
+                            marginTop: "0.75rem",
+                            display: "flex",
+                            gap: "1rem",
+                          }}
+                        >
+                          <span>[FIG. 0{i + 1}]</span>
+                          <span>{i === 0 ? "PRIMARY CAPTURE" : "SUPPORTING CAPTURE"}</span>
+                        </figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                </>
+              )}
+            </InViewSection>
+          </motion.section>
+        )}
+
+        {/* ── Engineering Notes ────────────────────────────────────── */}
+        {content.engineering.length > 0 && (
+          <motion.section variants={typeIn}>
+            <InViewSection>
+              {(inView) => (
+                <>
+                  {/* Red downward arrow in left margin */}
+                  <EngineeringMarginArrow animate={inView} />
+
+                  {/* Blue wavy underline on section header */}
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    <span style={labelStyle}>// ENGINEERING_NOTES</span>
+                    <EngineeringWaveUnderline animate={inView} />
+                    <div
+                      style={{
+                        borderTop: "1px dashed var(--rule-strong)",
+                        marginTop: "0.25rem",
+                      }}
+                    />
+                  </div>
+
+                  <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+                    {content.engineering.map((card) => (
+                      <div key={card.title}>
+                        <h3
+                          style={{
+                            ...labelStyle,
+                            color: "var(--ink)",
+                            marginBottom: "0.5rem",
+                          }}
+                        >
+                          &gt; {card.title.toUpperCase()}
+                        </h3>
+                        <p style={{ whiteSpace: "pre-wrap" }}>{card.body}</p>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </InViewSection>
+          </motion.section>
+        )}
+
+        {/* ── Outcome ──────────────────────────────────────────────── */}
+        {content.outcome && (
+          <motion.section variants={typeIn}>
+            <InViewSection>
+              {(inView) => (
+                <>
+                  {/* Red asterisk star in left margin */}
+                  <OutcomeStarMark animate={inView} />
+                  <SectionHeader title="OUTCOME" />
+                  <p style={{ whiteSpace: "pre-wrap" }}>{content.outcome}</p>
+                </>
+              )}
+            </InViewSection>
+          </motion.section>
+        )}
+
+        {/* ── Footer ───────────────────────────────────────────────── */}
+        <motion.footer variants={typeIn}>
+          <InViewSection>
+            {(inView) => (
+              <>
+                <div style={dividerStyle} />
+                {/* Blue curved underline + left-pointing arrow on return link */}
+                <div style={{ position: "relative", display: "inline-block" }}>
+                  <ReturnArrowAnnotation animate={inView} />
+                  <Link
+                    to="/"
+                    style={{ ...linkStyle, textDecoration: "none", display: "inline-block" }}
+                  >
+                    [ ← RETURN_TO_DIRECTORY ]
+                  </Link>
+                </div>
+                <div style={{ ...labelStyle, marginTop: "4rem", textAlign: "center" }}>
+                  *** END OF RECORD ***
+                </div>
+              </>
+            )}
+          </InViewSection>
+        </motion.footer>
+      </motion.main>
     </div>
   );
 }
