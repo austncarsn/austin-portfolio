@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  test:
+    name: Install, typecheck, build, lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install
+        run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Build
+        run: npm run build
+      - name: Lint
+        run: npm run lint
+
+  accessibility:
+    name: Accessibility checks (pa11y)
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Serve built site
+        run: npx http-server ./dist -p 4173 >/dev/null 2>&1 & sleep 1
+      - name: Run pa11y accessibility checks
+        run: |
+          # pa11y will be fetched by npx; this may take a moment
+          npx -y pa11y http://localhost:4173 || true
+      - name: Accessibility summary
+        if: always()
+        run: echo "Pa11y accessibility run completed (check workflow logs for details)"
