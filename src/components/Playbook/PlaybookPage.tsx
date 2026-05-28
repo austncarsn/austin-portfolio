@@ -201,7 +201,13 @@ export default function PlaybookPage(): React.ReactElement {
         onClose={() => setMobileNavOpen(false)}
       />
 
-      {mobileNavOpen && <div className={`playbook-backdrop open`} onClick={() => setMobileNavOpen(false)} aria-hidden="true" />}
+      {mobileNavOpen && (
+        <div
+          className={`playbook-backdrop open`}
+          onClick={() => setMobileNavOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
       <main className="playbook-main" aria-labelledby="overview">
         <div className="playbook-mobile-top">
@@ -306,8 +312,7 @@ export default function PlaybookPage(): React.ReactElement {
 
           <div className="playbook-grid">
             <article className="playbook-card">
-              <span className="tag-badge tag-yellow">Problem 1</span>
-              <h4>Memory Overload, Context Bloat</h4>
+              <h3>Memory Overload, Context Bloat</h3>
               <p>
                 <strong>What it means:</strong> The conversation history has gotten too long because
                 you've pasted big files, massive terminal error logs, or endless strings of
@@ -321,8 +326,7 @@ export default function PlaybookPage(): React.ReactElement {
             </article>
 
             <article className="playbook-card">
-              <span className="tag-badge tag-red">Problem 2</span>
-              <h4>Bad Assumptions, Context Poisoning</h4>
+              <h3>Bad Assumptions, Context Poisoning</h3>
               <p>
                 <strong>What it means:</strong> The AI made a small code mistake or generated a
                 broken variable name early in the chat, and neither of you corrected it.
@@ -382,13 +386,13 @@ export default function PlaybookPage(): React.ReactElement {
             copy-pasteable prompts to force the AI out of its stuck state.
           </p>
 
-          <h4>Fix 1 // Use this when the AI keeps repeating a broken error</h4>
+          <h3>Fix 1 // Use this when the AI keeps repeating a broken error</h3>
           <CodeBlock label="Copy-paste this text block" text={PROMPT_B1} onCopy={showToast} />
 
-          <h4>Fix 2 // Use this when the AI gets lazy or vague in a long chat</h4>
+          <h3>Fix 2 // Use this when the AI gets lazy or vague in a long chat</h3>
           <CodeBlock label="Copy-paste this text block" text={PROMPT_B2} onCopy={showToast} />
 
-          <h4>Fix 3 // Use this when the AI over-steps and refactors unrelated files</h4>
+          <h3>Fix 3 // Use this when the AI over-steps and refactors unrelated files</h3>
           <CodeBlock label="Copy-paste this text block" text={PROMPT_B3} onCopy={showToast} />
         </section>
 

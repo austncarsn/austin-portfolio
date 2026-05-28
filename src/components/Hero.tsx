@@ -1,141 +1,240 @@
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
+import type { MouseEvent } from "react";
+import { Link } from "react-router-dom";
 
-const EASE = [0.22, 0.6, 0.22, 1] as const;
+const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
-};
+const fadeUp = (delay = 0) => ({
+  hidden: { opacity: 0, y: 22 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: EASE, delay },
+  },
+});
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 18 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE } },
-};
+const reveal = (delay = 0) => ({
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 1.0, ease: EASE, delay },
+  },
+});
 
-const capabilities = ["Design", "Engineering", "Systems"];
+const scaleIn = (delay = 0) => ({
+  hidden: { opacity: 0, scale: 0.94, y: 12 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.85, ease: EASE, delay },
+  },
+});
 
-export default function Hero() {
+function HeroContent({ onScrollToWork }: { onScrollToWork: (e: MouseEvent<HTMLAnchorElement>) => void }): JSX.Element {
   return (
-    <motion.section
-      className="hero-outer"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      aria-label="Introduction"
-    >
-      <div aria-hidden="true" className="hero-atmosphere" />
+    <div className="hc-content">
+      <motion.p
+        className="hc-eyebrow"
+        variants={fadeUp(0.1)}
+        initial="hidden"
+        animate="visible"
+      >
+        <span>Design Engineer</span>
+        <span className="hc-eyebrow-dot" aria-hidden="true" />
+        <span>AI Interfaces</span>
+        <span className="hc-eyebrow-dot" aria-hidden="true" />
+        <span>Visual Systems</span>
+      </motion.p>
 
-      <div className="hero-catalog-shell">
-        <div className="hero-topline" aria-hidden="true">
-          <span>Catalog ID</span>
-          <span>AC-2026-01</span>
-          <span>Personal Interface System</span>
-        </div>
+      <motion.h1
+        className="hc-name"
+        variants={fadeUp(0.22)}
+        initial="hidden"
+        animate="visible"
+      >
+        <span className="hc-name-line">Austin</span>
+        <span className="hc-name-line">Carson</span>
+      </motion.h1>
 
-        <div className="hero-cover">
-          <div className="hero-cover-main">
-            <motion.h1 variants={itemVariants} className="hero-name">
-              Austin
-              <br />
-              Carson
-            </motion.h1>
+      <motion.div
+        className="hc-divider"
+        aria-hidden="true"
+        variants={reveal(0.48)}
+        initial="hidden"
+        animate="visible"
+      >
+        <span className="hc-divider-line" />
+        <span className="hc-divider-mark" aria-hidden="true" />
+        <span className="hc-divider-line" />
+      </motion.div>
 
-            <motion.div variants={itemVariants} className="hero-rule" aria-hidden="true" />
+      <motion.p
+        className="hc-tagline"
+        variants={fadeUp(0.56)}
+        initial="hidden"
+        animate="visible"
+      >
+        I build expressive digital systems, AI-powered interfaces, and visual
+        tools that turn strange ideas into polished products.
+      </motion.p>
 
-            <motion.p variants={itemVariants} className="hero-positioning">
-              Design engineer building refined interfaces, AI tools, and visual
-              systems for the web.
-            </motion.p>
+      <motion.div
+        className="hc-actions"
+        variants={fadeUp(0.68)}
+        initial="hidden"
+        animate="visible"
+      >
+        <Link
+          to="/#work"
+          className="hc-btn hc-btn--primary"
+          onClick={onScrollToWork}
+        >
+          <span>View Projects</span>
+          <ArrowDown size={12} strokeWidth={2} aria-hidden="true" />
+        </Link>
+        <Link to="/playbook" className="hc-btn hc-btn--ghost">
+          <span>Playbook</span>
+          <ArrowUpRight size={12} strokeWidth={2} aria-hidden="true" />
+        </Link>
+      </motion.div>
 
-            <motion.div variants={itemVariants} className="hero-actions">
-              <Link to="/#work" className="hero-action hero-action--primary">
-                <span>View projects</span>
-                <span aria-hidden="true">↗</span>
-              </Link>
-              <Link to="/playbook" className="hero-action hero-action--secondary">
-                <span>Playbook</span>
-                <span aria-hidden="true">↗</span>
-              </Link>
-            </motion.div>
+      <motion.ul
+        className="hc-tags"
+        aria-label="Selected expertise"
+        variants={fadeUp(0.8)}
+        initial="hidden"
+        animate="visible"
+      >
+        {[
+          "Design Systems",
+          "AI Interfaces",
+          "Prototyping",
+          "Creative Direction",
+        ].map((tag) => (
+          <li key={tag} className="hc-tag">
+            {tag}
+          </li>
+        ))}
+      </motion.ul>
+    </div>
+  );
+}
 
-            <motion.div variants={itemVariants} className="hero-catalog-card" aria-hidden="true">
-              <span>
-                Catalog ID
-                <strong>AC-2026-07</strong>
-              </span>
-              <img src="/assets/favicons/ac-favicon.png" alt="" />
-            </motion.div>
-          </div>
+function HeroVisualCluster(): JSX.Element {
+  return (
+    <div className="hvc-root" aria-hidden="true">
 
-          <motion.aside variants={itemVariants} className="hero-discipline-card" aria-hidden="true">
-            <span className="hero-corner hero-corner--tl" />
-            <span className="hero-corner hero-corner--tr" />
-            <span className="hero-corner hero-corner--bl" />
-            <span className="hero-corner hero-corner--br" />
-            {capabilities.map((capability) => (
-              <span key={capability}>{capability}</span>
-            ))}
-          </motion.aside>
-        </div>
+      {/* Atmospheric depth layer behind all objects */}
+      <div className="hvc-atmosphere" />
 
-        <motion.figure variants={itemVariants} className="hero-specimen-wrap">
-          <span className="hero-corner hero-corner--tl" />
-          <span className="hero-corner hero-corner--tr" />
-          <span className="hero-corner hero-corner--bl" />
-          <span className="hero-corner hero-corner--br" />
+      {/* SHRIMPS panel — primary object, centre of cluster */}
+      <motion.div
+        className="hvc-panel"
+        variants={scaleIn(0.3)}
+        initial="hidden"
+        animate="visible"
+      >
+        <img
+          src="/assets/images/shrimps-panel.png"
+          alt=""
+          className="hvc-panel-img"
+          loading="eager"
+          decoding="async"
+        />
+        {/* Grounded contact shadow */}
+        <div className="hvc-panel-shadow" />
+      </motion.div>
 
-          <figcaption className="hero-specimen-id">
-            <span>//001</span>
-            <span>Shrimp Specimen</span>
-          </figcaption>
+      {/* Squirrel on cloud — upper right, behind panel */}
+      <motion.div
+        className="hvc-artifact hvc-artifact--squirrel"
+        variants={scaleIn(0.55)}
+        initial="hidden"
+        animate="visible"
+      >
+        <img
+          src="/assets/images/squirrel-hero.png"
+          alt=""
+          className="hvc-artifact-img hvc-artifact-img--multiply"
+          loading="eager"
+          decoding="async"
+        />
+      </motion.div>
 
-          <span className="hero-specimen-label hero-specimen-label--left">
-            Penaeus Vannamei
-          </span>
-          <span className="hero-specimen-label hero-specimen-label--right">
-            Class: Malacostraca
-          </span>
+      {/* Hamster cameo — lower left, in front of panel */}
+      <motion.div
+        className="hvc-artifact hvc-artifact--cameo"
+        variants={scaleIn(0.7)}
+        initial="hidden"
+        animate="visible"
+      >
+        <img
+          src="/assets/images/hamster-cameo.png"
+          alt=""
+          className="hvc-artifact-img"
+          loading="lazy"
+          decoding="async"
+        />
+      </motion.div>
 
-          <img
-            src="/assets/images/shrimp_4k.webp"
-            alt="Shrimp specimen floating above a catalog plinth"
-            className="hero-specimen-img"
-          />
+      {/* Tulip — lower right, foreground, partial crop */}
+      <motion.div
+        className="hvc-artifact hvc-artifact--tulip"
+        variants={scaleIn(0.62)}
+        initial="hidden"
+        animate="visible"
+      >
+        <img
+          src="/assets/images/hero-tulip.png"
+          alt=""
+          className="hvc-artifact-img"
+          loading="lazy"
+          decoding="async"
+        />
+      </motion.div>
 
-          <div className="hero-specimen-note hero-specimen-note--left" aria-hidden="true">
-            <span>Observation</span>
-            <span>Structure</span>
-          </div>
+    </div>
+  );
+}
 
-          <div className="hero-specimen-note hero-specimen-note--right" aria-hidden="true">
-            <span>Fig. A</span>
-          </div>
-        </motion.figure>
+export function Hero(): JSX.Element {
+  const scrollToWork = (event: MouseEvent<HTMLAnchorElement>): void => {
+    event.preventDefault();
+    const el = document.getElementById("work");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    window.location.href = "/#work";
+  };
 
-        <motion.div variants={itemVariants} className="hero-data-bar" aria-label="Portfolio metadata">
-          <div className="hero-data-cell">
-            <span className="hero-data-label">Location</span>
-            <span className="hero-data-value">Missoula, Montana</span>
-            <span className="hero-data-sub">46.8721° N / 113.9940° W</span>
-          </div>
-          <div className="hero-data-cell">
-            <span className="hero-data-label">System</span>
-            <span className="hero-data-value">SHRIMPS v1.0</span>
-            <span className="hero-data-sub hero-data-active">
-              <span className="hero-data-dot hero-data-dot--green" /> Active
-            </span>
-          </div>
-          <div className="hero-data-cell hero-data-cell--caps">
-            <span className="hero-data-label">Capabilities</span>
-            <div className="hero-data-caps-grid">
-              <span>Interface Design</span>
-              <span>Frontend Engineering</span>
-              <span>Creative Coding</span>
-            </div>
-          </div>
-        </motion.div>
+  return (
+    <section className="hero" aria-label="Introduction">
+
+      {/* Background: sky + statue photograph */}
+      <div className="hero-bg" aria-hidden="true">
+        <img
+          src="/assets/images/hero-bg.png"
+          alt=""
+          className="hero-bg-img"
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+        />
+        <div className="hero-bg-veil" />
       </div>
-    </motion.section>
+
+      {/* Two-column layout */}
+      <div className="hero-layout">
+        <HeroContent onScrollToWork={scrollToWork} />
+        <HeroVisualCluster />
+      </div>
+
+      {/* Bottom gradient: scene dissolves into page */}
+      <div className="hero-floor" aria-hidden="true" />
+
+    </section>
   );
 }
