@@ -243,7 +243,9 @@
 .site-header {
   border-bottom-left-radius: 18px;
   border-bottom-right-radius: 18px;
-  transition: border-radius var(--transition-base), background-color var(--transition-base);
+  transition:
+    border-radius var(--transition-base),
+    background-color var(--transition-base);
 }
 
 .dark .site-header {
@@ -251,6 +253,84 @@
   box-shadow:
     0 2px 16px -4px rgba(0, 0, 0, 0.6),
     0 1px 0 0 var(--rule);
+}
+
+/* Ornate stone-shelf decorative treatment */
+.site-header {
+  /* ensure we can layer decoration inside the header */
+  position: sticky;
+}
+
+.site-header::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 64px;
+  pointer-events: none;
+  z-index: 2;
+  /* layered gradients emulate carved horizontal lines and a repeating motif */
+  background-image:
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--paper) 92%, transparent) 0 6px,
+      color-mix(in srgb, var(--paper-2) 80%, transparent) 6px 10px,
+      color-mix(in srgb, var(--paper-3) 36%, transparent) 10px 12px,
+      transparent 12px
+    ),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 36px),
+    radial-gradient(circle at 50% 38%, rgba(0, 0, 0, 0.06) 4px, transparent 5px);
+  background-size:
+    100% 100%,
+    36px 100%,
+    120px 100%;
+  background-position:
+    0 0,
+    0 0,
+    50% 12px;
+  background-repeat: repeat-x, repeat-x, repeat-x;
+  box-shadow:
+    inset 0 -4px 6px rgba(0, 0, 0, 0.06),
+    inset 0 2px 4px rgba(255, 255, 255, 0.55);
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+/* a narrow carved band that reads as the shelf edge */
+.site-header::after {
+  content: "";
+  position: absolute;
+  left: clamp(0.6rem, 2vw, 1rem);
+  right: clamp(0.6rem, 2vw, 1rem);
+  top: 44px;
+  height: 10px;
+  border-radius: 8px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--paper-2) 78%, transparent),
+    color-mix(in srgb, var(--paper-3) 48%, transparent)
+  );
+  box-shadow: 0 6px 14px -8px rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* nudge the inner content down so the ornament doesn't overlap the brand */
+.site-header-inner {
+  padding-top: 1.1rem;
+  min-height: calc(4rem + 0.6rem);
+}
+
+@media (max-width: 860px) {
+  .site-header::before,
+  .site-header::after {
+    display: none;
+  }
+  .site-header-inner {
+    padding-top: 0.7rem;
+    min-height: 3.6rem;
+  }
 }
 
 /* ── Meta strip ─────────────────────────────── */
@@ -308,15 +388,23 @@
 /* Stamp / favicon mark */
 .site-header-stamp {
   align-items: center;
-  background: color-mix(in srgb, var(--ac-sage) 78%, var(--bone));
+  /* carved stamp — subtle gradient and inset shadow to read like stone */
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ac-sage) 68%, var(--paper)) 0%,
+    color-mix(in srgb, var(--ac-sage) 30%, var(--paper-2)) 100%
+  );
   border: 1px solid var(--rule-strong);
-  border-radius: 2px;
+  border-radius: 8px;
   display: flex;
   flex-shrink: 0;
   height: 2.25rem;
   justify-content: center;
   position: relative;
   width: 2.25rem;
+  box-shadow:
+    inset 0 -2px 0 rgba(0, 0, 0, 0.06),
+    0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .site-header-stamp-monogram {
@@ -404,8 +492,11 @@
   border-radius: 10px;
   background: color-mix(in srgb, var(--ac-shrimp) 8%, transparent);
   opacity: 0;
-  transition: transform var(--transition-base), opacity var(--transition-base), box-shadow var(--transition-base);
-  box-shadow: 0 6px 12px -10px rgba(0,0,0,0.18);
+  transition:
+    transform var(--transition-base),
+    opacity var(--transition-base),
+    box-shadow var(--transition-base);
+  box-shadow: 0 6px 12px -10px rgba(0, 0, 0, 0.18);
   pointer-events: none;
   z-index: 0;
 }
@@ -4436,309 +4527,438 @@ button {
   }
 }
 
-/* ══════════════════════════════════════════════════════════════
-   HERO STAGE — Panoramic art-directed scene
-   Reference: centered SHRIMPS panel, statue left, surreal accents
-   ══════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════
+   HERO — Editorial two-column stage
+   Left: identity (name, copy, CTAs, tags)
+   Right: visual cluster (panel + surreal accents)
+   ══════════════════════════════════════════════════════════════════ */
 
-/* ── Outer container ─────────────────────────────────────────── */
+/* ─── Outer shell ──────────────────────────────────────────────── */
 
-.hero-stage {
+.hero {
   isolation: isolate;
-  /* Cinematic 21:9-ish ratio, tall enough to breathe */
-  min-height: clamp(480px, 52vw, 720px);
   overflow: hidden;
   position: relative;
   width: 100%;
+  /* Tall enough to breathe at all widths */
+  min-height: clamp(560px, 58vw, 840px);
 }
 
-/* ── Sky + statue background ─────────────────────────────────── */
+/* ─── Background ───────────────────────────────────────────────── */
 
-.hero-stage-bg {
+.hero-bg {
   inset: 0;
   position: absolute;
   z-index: 0;
 }
 
-.hero-stage-bg-img {
+.hero-bg-img {
   height: 100%;
+  /* Statue anchored at ~20% from left — shows figure + full sky */
   object-fit: cover;
-  /* 24%: shows the statue left-of-centre against the open sky */
-  object-position: 24% center;
+  object-position: 20% center;
   width: 100%;
 }
 
 /*
- * Four-layer gradient:
- *  1. Strong left ivory wash → text legibility over the statue
- *  2. Gentle right fade so the sky stays open for the floating accents
- *  3. Top vignette so the headline doesn't compete with bright sky
- *  4. Bottom ivory fade into the content below
+ * Veil: left-to-right gradient that:
+ *   – fully covers the far-left edge (content zone) in the page colour
+ *   – fades to near-transparent at the right third (sky zone)
+ * Also adds a very subtle top darkening so the sky doesn't overwhelm.
  */
-.hero-stage-bg-gradient {
+.hero-bg-veil {
   background:
     linear-gradient(
       to right,
-      rgba(237, 236, 226, 0.88) 0%,
-      rgba(237, 236, 226, 0.6) 24%,
-      rgba(237, 236, 226, 0.18) 46%,
-      rgba(237, 236, 226, 0) 62%
+      var(--paper) 0%,
+      var(--paper) 8%,
+      rgba(237, 236, 226, 0.92) 22%,
+      rgba(237, 236, 226, 0.55) 40%,
+      rgba(237, 236, 226, 0.12) 58%,
+      rgba(237, 236, 226, 0) 72%
     ),
     linear-gradient(
       to bottom,
-      rgba(26, 24, 22, 0.1) 0%,
-      transparent 12%,
-      transparent 72%,
-      rgba(237, 236, 226, 0.7) 100%
+      rgba(26, 24, 22, 0.07) 0%,
+      transparent 10%,
+      transparent 80%,
+      rgba(237, 236, 226, 0.4) 100%
     );
   inset: 0;
   position: absolute;
 }
 
-.dark .hero-stage-bg-img {
-  opacity: 0.75;
+.dark .hero-bg-img {
+  opacity: 0.6;
 }
 
-.dark .hero-stage-bg-gradient {
+.dark .hero-bg-veil {
   background:
     linear-gradient(
       to right,
-      rgba(14, 13, 12, 0.9) 0%,
-      rgba(14, 13, 12, 0.6) 24%,
-      rgba(14, 13, 12, 0.15) 46%,
-      rgba(14, 13, 12, 0) 62%
+      #0e0d0c 0%,
+      #0e0d0c 8%,
+      rgba(14, 13, 12, 0.94) 22%,
+      rgba(14, 13, 12, 0.62) 40%,
+      rgba(14, 13, 12, 0.18) 58%,
+      rgba(14, 13, 12, 0) 72%
     ),
     linear-gradient(
       to bottom,
-      rgba(14, 13, 12, 0.25) 0%,
-      transparent 14%,
-      transparent 70%,
-      rgba(14, 13, 12, 0.65) 100%
+      rgba(14, 13, 12, 0.2) 0%,
+      transparent 12%,
+      transparent 78%,
+      rgba(14, 13, 12, 0.55) 100%
     );
 }
 
-/* ── Identity block: left column ─────────────────────────────── */
+/* ─── Layout: two columns ──────────────────────────────────────── */
 
-.hero-stage-identity {
+.hero-layout {
+  align-items: center;
+  display: grid;
+  /* Left: identity gets ~40% of width; right: visual cluster gets ~60% */
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  min-height: inherit;
+  padding: clamp(5rem, 8vw, 7rem) 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── Floor dissolve ───────────────────────────────────────────── */
+
+/* Softens the hero-to-content transition without a hard edge */
+.hero-floor {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(237, 236, 226, 0.65) 60%,
+    var(--paper) 100%
+  );
+  bottom: 0;
+  height: clamp(80px, 10vw, 140px);
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  z-index: 3;
+}
+
+.dark .hero-floor {
+  background: linear-gradient(to bottom, transparent 0%, rgba(14, 13, 12, 0.6) 60%, #0e0d0c 100%);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   HERO CONTENT — Left column
+   ══════════════════════════════════════════════════════════════════ */
+
+.hc-content {
   display: flex;
   flex-direction: column;
-  left: clamp(1.5rem, 5vw, 5.5rem);
-  max-width: clamp(260px, 34vw, 460px);
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
+  padding: 0 clamp(1.5rem, 4vw, 4rem) 0 clamp(1.5rem, 5vw, 5.5rem);
 }
 
-.hero-stage-eyebrow {
-  color: var(--ink-3);
+/* Eyebrow: quiet role descriptor above the name */
+.hc-eyebrow {
+  align-items: center;
+  color: var(--ink-4);
+  display: flex;
+  flex-wrap: wrap;
   font-family: var(--font-mono);
-  font-size: clamp(0.52rem, 0.75vw, 0.65rem);
+  font-size: clamp(0.5rem, 0.7vw, 0.62rem);
   font-weight: 500;
-  letter-spacing: 0.18em;
-  margin: 0 0 clamp(0.6rem, 1.4vw, 1rem);
+  gap: 0.55rem;
+  letter-spacing: 0.2em;
+  margin: 0 0 clamp(1rem, 2vw, 1.6rem);
   text-transform: uppercase;
 }
 
-.dark .hero-stage-eyebrow {
-  color: rgba(237, 236, 226, 0.48);
+.dark .hc-eyebrow {
+  color: rgba(237, 236, 226, 0.38);
 }
 
-.hero-stage-name {
-  color: var(--ink);
+.hc-eyebrow-dot {
+  background: var(--ink-4);
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+  height: 3px;
+  opacity: 0.5;
+  width: 3px;
+}
+
+.dark .hc-eyebrow-dot {
+  background: rgba(237, 236, 226, 0.38);
+}
+
+/* Name: dominant Orbitron display lockup */
+.hc-name {
+  display: flex;
+  flex-direction: column;
   font-family: var(--font-futuristic);
-  font-size: clamp(2.8rem, 7.5vw, 8.5rem);
+  font-size: clamp(3rem, 6.8vw, 8rem);
   font-weight: 800;
-  letter-spacing: -0.025em;
-  line-height: 0.87;
-  margin: 0 0 clamp(1rem, 2.2vw, 1.75rem);
+  gap: 0;
+  letter-spacing: 0.01em;
+  line-height: 0.9;
+  margin: 0 0 clamp(1.25rem, 2.5vw, 2rem);
   text-transform: uppercase;
 }
 
-.dark .hero-stage-name {
+.hc-name-line {
+  color: var(--ink);
+  display: block;
+}
+
+.dark .hc-name-line {
   color: #f2f1ea;
 }
 
-.hero-stage-rule {
-  background: var(--rule-strong);
-  height: 1px;
-  margin: 0 0 clamp(0.85rem, 1.8vw, 1.4rem);
-  width: clamp(2.5rem, 4vw, 4rem);
+/*
+ * Divider: three-part ornament — line · diamond · line
+ * Acts as a breath between the commanding name and the quieter body copy.
+ */
+.hc-divider {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  margin: 0 0 clamp(1rem, 2vw, 1.6rem);
 }
 
-.hero-stage-tagline {
+.hc-divider-line {
+  background: var(--rule-strong);
+  display: block;
+  height: 1px;
+  width: clamp(2rem, 4vw, 3.5rem);
+}
+
+.hc-divider-mark {
+  background: var(--ink-3);
+  display: block;
+  flex-shrink: 0;
+  height: 5px;
+  opacity: 0.55;
+  transform: rotate(45deg);
+  width: 5px;
+}
+
+.dark .hc-divider-line {
+  background: rgba(237, 236, 226, 0.22);
+}
+
+.dark .hc-divider-mark {
+  background: rgba(237, 236, 226, 0.4);
+}
+
+/* Tagline: measured prose, confident but not loud */
+.hc-tagline {
   color: var(--ink-2);
   font-family: var(--font-body);
-  font-size: clamp(0.78rem, 1.1vw, 0.92rem);
+  font-size: clamp(0.82rem, 1.1vw, 0.96rem);
   font-weight: 400;
-  line-height: 1.68;
-  margin: 0 0 clamp(1.4rem, 2.8vw, 2.25rem);
-  opacity: 0.9;
+  line-height: 1.72;
+  margin: 0 0 clamp(1.6rem, 3vw, 2.5rem);
+  max-width: 32rem;
+  opacity: 0.88;
 }
 
-.dark .hero-stage-tagline {
-  color: rgba(237, 236, 226, 0.68);
+.dark .hc-tagline {
+  color: rgba(237, 236, 226, 0.64);
   opacity: 1;
 }
 
-/* ── CTA buttons ─────────────────────────────────────────────── */
+/* ─── CTA buttons ──────────────────────────────────────────────── */
 
-.hero-stage-actions {
+.hc-actions {
   align-items: center;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem;
-  margin-bottom: clamp(1rem, 2vw, 1.6rem);
+  gap: 0.6rem;
+  margin: 0 0 clamp(1.25rem, 2.5vw, 2rem);
 }
 
-.hero-stage-btn {
+.hc-btn {
   align-items: center;
   border-radius: 2px;
   display: inline-flex;
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.59rem;
   font-weight: 600;
   gap: 0.5rem;
-  letter-spacing: 0.13em;
-  min-height: 2.5rem;
-  padding: 0.45rem 1.1rem;
+  letter-spacing: 0.14em;
+  min-height: 2.6rem;
+  padding: 0.45rem 1.15rem;
   text-decoration: none;
   text-transform: uppercase;
   transition:
-    transform 140ms var(--ease),
-    background-color 140ms var(--ease),
-    box-shadow 140ms var(--ease);
+    transform 130ms ease,
+    box-shadow 130ms ease,
+    background 130ms ease,
+    opacity 130ms ease;
+  white-space: nowrap;
 }
 
-.hero-stage-btn:active {
-  transform: translateY(1px);
+.hc-btn:active {
+  transform: translateY(1px) !important;
 }
 
-.hero-stage-btn--primary {
-  background: #0c0c0e;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.18), 0 4px 14px rgba(0,0,0,0.12);
-  color: #f0efe8;
+/* Primary: near-black, crisp and commanding */
+.hc-btn--primary {
+  background: var(--ink);
+  border: 1px solid transparent;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    0 4px 16px rgba(0, 0, 0, 0.14);
+  color: var(--paper);
 }
 
-.hero-stage-btn--primary:hover {
-  background: #18181e;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.22), 0 6px 20px rgba(0,0,0,0.18);
+.hc-btn--primary:hover {
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.22),
+    0 8px 24px rgba(0, 0, 0, 0.16);
+  opacity: 0.88;
   transform: translateY(-1px);
 }
 
-.hero-stage-btn--secondary {
-  backdrop-filter: blur(6px);
-  background: rgba(237, 236, 226, 0.65);
-  border: 1px solid rgba(26, 24, 22, 0.15);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-  color: var(--ink);
+/* Ghost: glassy, quiet secondary action */
+.hc-btn--ghost {
+  background: rgba(237, 236, 226, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(26, 24, 22, 0.14);
+  color: var(--ink-2);
 }
 
-.dark .hero-stage-btn--secondary {
-  background: rgba(30, 28, 26, 0.6);
-  border-color: rgba(237, 236, 226, 0.15);
-  color: #f0efe8;
+.dark .hc-btn--ghost {
+  background: rgba(26, 24, 22, 0.5);
+  border-color: rgba(237, 236, 226, 0.14);
+  color: rgba(237, 236, 226, 0.85);
 }
 
-.hero-stage-btn--secondary:hover {
-  background: rgba(237, 236, 226, 0.88);
+.hc-btn--ghost:hover {
+  background: rgba(237, 236, 226, 0.82);
   transform: translateY(-1px);
 }
 
-.dark .hero-stage-btn--secondary:hover {
-  background: rgba(30, 28, 26, 0.8);
+.dark .hc-btn--ghost:hover {
+  background: rgba(26, 24, 22, 0.75);
 }
 
-/* ── Expertise chips ─────────────────────────────────────────── */
+/* ─── Tags ─────────────────────────────────────────────────────── */
 
-.hero-stage-chips {
+.hc-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  gap: 0.4rem;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.hero-stage-chip {
-  background: rgba(26, 24, 22, 0.06);
-  border: 1px solid rgba(26, 24, 22, 0.1);
-  border-radius: 2px;
-  color: var(--ink-3);
+.hc-tag {
+  border: 1px solid rgba(26, 24, 22, 0.12);
+  border-radius: 1px;
+  color: var(--ink-4);
   font-family: var(--font-mono);
-  font-size: 0.5rem;
+  font-size: 0.48rem;
   font-weight: 500;
-  letter-spacing: 0.12em;
-  padding: 0.25rem 0.55rem;
+  letter-spacing: 0.14em;
+  padding: 0.22rem 0.55rem;
   text-transform: uppercase;
 }
 
-.dark .hero-stage-chip {
-  background: rgba(237, 236, 226, 0.06);
+.dark .hc-tag {
   border-color: rgba(237, 236, 226, 0.12);
-  color: rgba(237, 236, 226, 0.45);
+  color: rgba(237, 236, 226, 0.36);
 }
 
-/* ── Centre: SHRIMPS panel ───────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════
+   HERO VISUAL CLUSTER — Right column
+   Triangular composition: panel centre, squirrel upper-right,
+   cameo lower-left, tulip lower-right foreground
+   ══════════════════════════════════════════════════════════════════ */
 
-.hero-stage-panel {
-  /* Horizontally centred, vertically centred with slight upward shift */
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -52%) rotate(1deg);
-  transition: transform 380ms var(--ease);
-  width: clamp(200px, 26vw, 360px);
-  z-index: 8;
+.hvc-root {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: clamp(380px, 48vw, 680px);
+  position: relative;
 }
 
-.hero-stage-panel:hover {
-  transform: translate(-50%, -54%) rotate(0deg);
-}
-
-/* Contact shadow below the panel */
-.hero-stage-panel::after {
+/*
+ * Soft atmospheric ellipse behind the cluster — adds perceived depth
+ * and gently lifts the objects off the photographic sky.
+ * Uses the palette's pale blue accent.
+ */
+.hvc-atmosphere {
   background: radial-gradient(
-    ellipse 72% 20% at 50% 100%,
-    rgba(26, 24, 22, 0.32) 0%,
+    ellipse 76% 62% at 52% 54%,
+    rgba(168, 192, 207, 0.14) 0%,
+    rgba(168, 192, 207, 0.04) 60%,
     transparent 100%
   );
-  bottom: -18px;
-  content: "";
-  height: 36px;
-  left: 4%;
+  inset: 0;
   pointer-events: none;
   position: absolute;
-  width: 92%;
-  z-index: -1;
+  z-index: 0;
 }
 
-.hero-stage-panel-img {
-  border-radius: 18px;
+/* ─── Panel: primary object ────────────────────────────────────── */
+
+.hvc-panel {
+  position: relative;
+  /* Slight deliberate tilt — "placed on a surface" not "floating" */
+  transform: rotate(2.5deg);
+  transition: transform 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  width: clamp(190px, 22vw, 320px);
+  z-index: 4;
+}
+
+.hvc-panel:hover {
+  transform: rotate(0.5deg) translateY(-6px);
+}
+
+.hvc-panel-img {
+  border-radius: 16px;
   box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.08),
-    0 10px 28px rgba(0, 0, 0, 0.14),
-    0 28px 56px rgba(0, 0, 0, 0.07);
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    0 8px 24px rgba(0, 0, 0, 0.13),
+    0 24px 48px rgba(0, 0, 0, 0.08);
   display: block;
   height: auto;
-  /* Burns the black canvas fill outside the rounded corners */
+  /* Burns the black canvas outside the panel's rounded corners */
   mix-blend-mode: multiply;
   width: 100%;
 }
 
-.dark .hero-stage-panel-img {
+.dark .hvc-panel-img {
   mix-blend-mode: screen;
 }
 
-/* ── Floating accent elements ────────────────────────────────── */
+/* Elliptical contact shadow — panel is resting on something */
+.hvc-panel-shadow {
+  background: radial-gradient(
+    ellipse 80% 28% at 50% 100%,
+    rgba(26, 24, 22, 0.26) 0%,
+    transparent 100%
+  );
+  bottom: -20px;
+  height: 40px;
+  left: 5%;
+  pointer-events: none;
+  position: absolute;
+  width: 90%;
+  z-index: -1;
+}
 
-.hero-stage-float {
+/* ─── Artifact base ────────────────────────────────────────────── */
+
+.hvc-artifact {
   pointer-events: none;
   position: absolute;
 }
 
-.hero-stage-float img {
+.hvc-artifact-img {
   display: block;
   height: 100%;
   object-fit: contain;
@@ -4746,207 +4966,192 @@ button {
 }
 
 /*
- * Squirrel on cloud — top right quadrant.
- * True alpha PNG (white matte) so multiply removes any fringing.
+ * multiply: burns black or white mattes against the light background.
+ * Applied selectively — tulip has a clean alpha, doesn't need it.
  */
-.hero-stage-float--squirrel {
-  height: clamp(100px, 14vw, 200px);
-  right: clamp(1rem, 3vw, 4rem);
-  top: clamp(0.5rem, 3vw, 2.5rem);
-  width: clamp(130px, 18vw, 260px);
-  z-index: 12;
-}
-
-.hero-stage-float--squirrel img {
-  /* White cloud bg — multiply leaves clouds visible, removes pure white fill */
-  mix-blend-mode: multiply;
-  opacity: 0.92;
-}
-
-.dark .hero-stage-float--squirrel img {
-  mix-blend-mode: screen;
-  opacity: 0.78;
-}
-
-/*
- * Banana — rendered as a styled emoji, positioned between squirrel and panel.
- * No asset available so we use the system emoji at large scale.
- * filter: drop-shadow gives it soft object dimensionality.
- */
-.hero-stage-float--banana {
-  right: clamp(1rem, 8vw, 10rem);
-  top: clamp(1.5rem, 5vw, 4rem);
-  z-index: 11;
-}
-
-.hero-stage-banana {
-  display: block;
-  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.18));
-  font-size: clamp(2.5rem, 4.5vw, 6rem);
-  line-height: 1;
-  transform: rotate(-18deg);
-  /* Palette-harmonise the banana yellow to sit warmly in the ivory scene */
-  filter: saturate(0.85) brightness(1.05) drop-shadow(0 6px 14px rgba(0,0,0,0.15));
-}
-
-/*
- * Tulip — foreground anchor, bottom centre-right.
- * Cropped by the frame bottom edge for depth.
- */
-.hero-stage-float--tulip {
-  bottom: -8%;
-  height: clamp(180px, 22vw, 300px);
-  /* Positioned just right of panel centre */
-  left: calc(50% + clamp(4rem, 8vw, 12rem));
-  width: clamp(70px, 9vw, 130px);
-  z-index: 13;
-}
-
-.hero-stage-float--tulip img {
-  filter: saturate(0.78) hue-rotate(6deg) brightness(1.03);
-}
-
-/*
- * Hamster cameo — bottom right, classical portrait ornament.
- * Black bg removed with multiply.
- */
-.hero-stage-float--cameo {
-  bottom: clamp(1rem, 3vw, 3rem);
-  height: clamp(90px, 10vw, 150px);
-  right: clamp(0.75rem, 2vw, 2.5rem);
-  width: clamp(90px, 10vw, 150px);
-  z-index: 12;
-}
-
-.hero-stage-float--cameo img {
-  filter: brightness(1.05) saturate(0.88);
+.hvc-artifact-img--multiply {
   mix-blend-mode: multiply;
 }
 
-.dark .hero-stage-float--cameo img {
-  filter: brightness(0.88) saturate(0.82);
+.dark .hvc-artifact-img--multiply {
   mix-blend-mode: screen;
 }
 
-/* ── Responsive ──────────────────────────────────────────────── */
+/* ─── Squirrel: upper right, background layer ──────────────────── */
 
-/* Large desktop: give more room */
-@media (min-width: 1400px) {
-  .hero-stage-identity {
-    max-width: 500px;
+/*
+ * Larger than the cameo — more distant reads as "background."
+ * Positioned top-right so the eye travels: squirrel → panel → cameo/tulip.
+ * Slight opacity reduces it from competing with the panel.
+ */
+.hvc-artifact--squirrel {
+  height: clamp(110px, 15vw, 210px);
+  right: clamp(-2rem, -1vw, -0.5rem);
+  top: clamp(-1rem, -1vw, 0rem);
+  width: clamp(140px, 19vw, 270px);
+  z-index: 2;
+}
+
+.hvc-artifact--squirrel .hvc-artifact-img {
+  opacity: 0.88;
+}
+
+/* ─── Cameo: lower left, medium depth ─────────────────────────── */
+
+/*
+ * Smaller than panel, overlapping its bottom-left edge — creates depth.
+ * The gold frame harmonises with the warm ivory palette.
+ */
+.hvc-artifact--cameo {
+  bottom: clamp(0rem, 4vw, 3rem);
+  height: clamp(80px, 9vw, 130px);
+  left: clamp(-1rem, -0.5vw, 0rem);
+  width: clamp(80px, 9vw, 130px);
+  z-index: 6;
+}
+
+.hvc-artifact--cameo .hvc-artifact-img {
+  filter: brightness(1.04) saturate(0.85);
+}
+
+.dark .hvc-artifact--cameo .hvc-artifact-img {
+  filter: brightness(0.85) saturate(0.8);
+}
+
+/* ─── Tulip: lower right, foreground ──────────────────────────── */
+
+/*
+ * Placed at the bottom-right of the cluster, partially cropped by the
+ * component edge — classic foreground-depth trick.
+ * The tightest desaturation filter keeps it in the palette.
+ */
+.hvc-artifact--tulip {
+  bottom: clamp(-3rem, -5vw, -2rem);
+  height: clamp(170px, 22vw, 300px);
+  right: clamp(-1.5rem, -1vw, 0rem);
+  width: clamp(64px, 8.5vw, 120px);
+  z-index: 8;
+}
+
+.hvc-artifact--tulip .hvc-artifact-img {
+  filter: saturate(0.72) hue-rotate(5deg) brightness(1.02);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Wide: increase name scale, give more breathing room */
+@media (min-width: 1440px) {
+  .hero-layout {
+    grid-template-columns: minmax(0, 1.8fr) minmax(0, 3.2fr);
+  }
+
+  .hvc-panel {
+    width: clamp(280px, 20vw, 340px);
   }
 }
 
-/* Tablet (≤ 960px): stack identity above the panel */
-@media (max-width: 960px) {
-  .hero-stage {
+/* Tablet: collapse to single column, visual cluster moves below */
+@media (max-width: 900px) {
+  .hero {
     min-height: unset;
-    padding-bottom: clamp(8rem, 18vw, 14rem);
-    padding-top: clamp(5rem, 10vw, 8rem);
   }
 
-  .hero-stage-identity {
-    left: clamp(1.25rem, 4vw, 3rem);
-    max-width: clamp(260px, 58vw, 440px);
-    position: relative;
-    top: auto;
-    transform: none;
+  .hero-layout {
+    grid-template-columns: 1fr;
+    padding: clamp(4.5rem, 9vw, 7rem) 0 0;
+    row-gap: 0;
   }
 
-  /* Panel: keep centred but slightly lower */
-  .hero-stage-panel {
-    top: auto;
-    bottom: clamp(-1rem, -2vw, -2rem);
-    left: 50%;
-    transform: translateX(-50%) rotate(1deg);
-    width: clamp(180px, 38vw, 300px);
+  .hc-content {
+    padding: 0 clamp(1.5rem, 5vw, 3rem);
   }
 
-  .hero-stage-panel:hover {
-    transform: translateX(-50%) rotate(0deg) translateY(-4px);
+  .hc-name {
+    font-size: clamp(3rem, 10vw, 6rem);
   }
 
-  .hero-stage-float--squirrel {
-    height: clamp(80px, 16vw, 150px);
-    width: clamp(100px, 20vw, 190px);
+  .hvc-root {
+    min-height: clamp(280px, 55vw, 460px);
   }
 
-  .hero-stage-float--tulip {
-    left: auto;
-    right: clamp(8rem, 20vw, 14rem);
+  /* Cluster scales down proportionally */
+  .hvc-panel {
+    width: clamp(160px, 32vw, 260px);
   }
 
-  .hero-stage-float--banana {
-    right: clamp(0.5rem, 4vw, 4rem);
-    top: clamp(1rem, 4vw, 3rem);
+  .hvc-artifact--squirrel {
+    height: clamp(90px, 18vw, 160px);
+    width: clamp(110px, 22vw, 200px);
+  }
+
+  .hvc-artifact--cameo {
+    height: clamp(64px, 12vw, 100px);
+    width: clamp(64px, 12vw, 100px);
+  }
+
+  .hvc-artifact--tulip {
+    height: clamp(140px, 25vw, 220px);
+    width: clamp(52px, 9vw, 90px);
   }
 }
 
-/* Mobile (≤ 560px): single column, strip accents */
+/* Mobile: single column, strip non-essential decoration */
 @media (max-width: 560px) {
-  .hero-stage {
-    padding-bottom: clamp(12rem, 28vw, 18rem);
-    padding-top: clamp(4rem, 10vw, 6rem);
+  .hero-layout {
+    padding-top: clamp(4rem, 10vw, 5.5rem);
   }
 
-  .hero-stage-identity {
-    left: 1.25rem;
-    max-width: calc(100vw - 2.5rem);
+  .hc-content {
+    padding: 0 1.25rem;
   }
 
-  .hero-stage-name {
-    font-size: clamp(2.8rem, 13.5vw, 4.2rem);
+  .hc-name {
+    font-size: clamp(2.8rem, 14vw, 4rem);
   }
 
-  .hero-stage-tagline {
-    font-size: 0.88rem;
+  .hc-tagline {
+    font-size: 0.86rem;
+    max-width: 100%;
   }
 
-  /* Panel: centred stamp below content */
-  .hero-stage-panel {
-    bottom: clamp(-0.5rem, -1vw, -1rem);
-    width: clamp(160px, 44vw, 220px);
+  .hvc-root {
+    min-height: clamp(220px, 55vw, 360px);
+    overflow: hidden;
   }
 
-  /* Hide squirrel — crowds the headline area on small screens */
-  .hero-stage-float--squirrel {
+  .hvc-panel {
+    width: clamp(140px, 38vw, 200px);
+  }
+
+  /* Squirrel hides — too crowded at this scale */
+  .hvc-artifact--squirrel {
     display: none;
   }
 
-  /* Keep banana as a small right-edge accent */
-  .hero-stage-float--banana {
-    right: 0.5rem;
-    top: 1rem;
+  /* Cameo becomes a small corner ornament */
+  .hvc-artifact--cameo {
+    height: 58px;
+    left: 0.5rem;
+    width: 58px;
   }
 
-  .hero-stage-banana {
-    font-size: clamp(1.8rem, 7vw, 3rem);
-  }
-
-  /* Tulip: pull further right so it doesn't overlap text */
-  .hero-stage-float--tulip {
-    height: clamp(150px, 26vw, 200px);
-    left: auto;
-    right: clamp(6rem, 16vw, 10rem);
-    width: clamp(55px, 9vw, 80px);
-  }
-
-  /* Tiny cameo corner ornament */
-  .hero-stage-float--cameo {
-    bottom: 0.75rem;
-    height: 60px;
-    right: 0.5rem;
-    width: 60px;
+  /* Tulip stays — it anchors the cluster's lower right */
+  .hvc-artifact--tulip {
+    height: clamp(120px, 30vw, 180px);
+    right: -0.5rem;
+    width: clamp(46px, 10vw, 72px);
   }
 }
 
-/* Very small (≤ 380px) */
+/* Very small screens */
 @media (max-width: 380px) {
-  .hero-stage-name {
-    font-size: clamp(2.4rem, 14vw, 3rem);
+  .hc-name {
+    font-size: clamp(2.4rem, 15vw, 3rem);
   }
 
-  .hero-stage-float--tulip {
+  .hvc-artifact--cameo {
     display: none;
   }
 }
