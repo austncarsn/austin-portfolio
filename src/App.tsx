@@ -19,7 +19,7 @@ function CaseStudyRoute() {
   return <CaseStudy />;
 }
 
-export default function App() {
+export default function App(): JSX.Element {
   const [dark, setDark] = React.useState(() => {
     const stored = window.localStorage.getItem("theme");
     if (stored === "dark") return true;

@@ -9,7 +9,7 @@ const links: LinkItem[] = [
   { label: "Email", href: "mailto:austncarsn@gmail.com" },
 ];
 
-export default function Footer() {
+export default function Footer(): JSX.Element {
   return (
     <footer className="site-footer-v2">
       {/* ── Bottom bar ────────────────────────────────── */}

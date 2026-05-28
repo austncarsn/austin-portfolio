@@ -227,7 +227,7 @@ function InViewSection({
 }
 
 // ── Main ─────────────────────────────────────────────────────────────
-export default function CaseStudy() {
+export default function CaseStudy(): JSX.Element {
   const { projectId } = useParams<{ projectId: string }>();
   const project = projects.find(
     (p) => (p.slug ?? p.title.toLowerCase().replace(/\s+/g, "-")) === projectId

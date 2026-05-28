@@ -6,7 +6,7 @@ interface Props {
   onToggle: () => void
 }
 
-export default function ThemeToggle({ dark, onToggle }: Props) {
+export default function ThemeToggle({ dark, onToggle }: Props): JSX.Element {
   return (
     <motion.button
       onClick={onToggle}

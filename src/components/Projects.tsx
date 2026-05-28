@@ -59,7 +59,7 @@ interface ProjectCardProps {
   index: number;
 }
 
-function ProjectCard({ project, index }: ProjectCardProps) {
+function ProjectCard({ project, index }: ProjectCardProps): JSX.Element {
   const [failed, setFailed] = useState(false);
   const screenshots = getProjectScreenshots(project);
   const screenshot = screenshots[0];
@@ -110,7 +110,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
   );
 }
 
-export default function Projects() {
+export default function Projects(): JSX.Element | null {
   const [filter, setFilter] = useState<Filter>("All");
 
   const visibleProjects = useMemo(
