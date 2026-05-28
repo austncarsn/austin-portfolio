@@ -286,7 +286,11 @@
   top: 44px;
   height: 6px;
   border-radius: 6px;
-  background: linear-gradient(to bottom, color-mix(in srgb, var(--paper-2) 48%, transparent), transparent);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--paper-2) 48%, transparent),
+    transparent
+  );
   box-shadow: none;
   pointer-events: none;
   z-index: 3;
@@ -325,34 +329,12 @@
   text-transform: uppercase;
 }
 
-.site-header-meta-dot {
-  opacity: 0.5;
+.site-header::before,
+.site-header::after {
+  /* Decorative header shelf removed per user request */
+  display: none !important;
+  pointer-events: none;
 }
-
-.site-header-meta-spacer {
-  flex: 1;
-}
-
-/* ── Main bar ───────────────────────────────── */
-
-.site-header-inner {
-  align-items: stretch;
-  display: flex;
-  gap: 0;
-  margin: 0 auto;
-  max-width: var(--container-max);
-  min-height: 4rem;
-}
-
-/* ── Brand block ────────────────────────────── */
-
-.site-header-brand {
-  align-items: center;
-  color: inherit;
-  display: flex;
-  flex-shrink: 0;
-  gap: 0.75rem;
-  padding: 0.7rem clamp(0.85rem, 2vw, 1.15rem) 0.7rem 0;
   text-decoration: none;
   transition: background-color var(--transition-base);
 }
